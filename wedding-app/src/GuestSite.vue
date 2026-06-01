@@ -1,7 +1,7 @@
 <template>
   <div class="w-full min-h-screen overflow-x-hidden">
 
-      <NavBar :active="active" :force-solid="tweaks.cover === 'split'" />
+      <NavBar :active="active" :force-solid="true" />
 
       <HeroCover :wedding="w" />
 
@@ -101,13 +101,11 @@
                 showFab ? 'translate-y-0' : 'translate-y-[140px]']"
        style="transition-timing-function:cubic-bezier(.2,.8,.2,1)">Confirmar asistencia</a>
 
-    <TweaksPanel />
 </template>
 
 <script setup>
 import { ref, computed, defineAsyncComponent, onMounted, onUnmounted } from 'vue';
 import { useData } from '@/composables/useData.js';
-import { useTweaks } from '@/composables/useTweaks.js';
 import { scrollToId } from '@/composables/scroll.js';
 // Above-fold: carga inmediata
 import NavBar from '@/components/NavBar.vue';
@@ -125,11 +123,9 @@ const GuestBook      = defineAsyncComponent(() => import('@/components/GuestBook
 const FaqList        = defineAsyncComponent(() => import('@/components/FaqList.vue'));
 const RsvpForm       = defineAsyncComponent(() => import('@/components/RsvpForm.vue'));
 const ClosingFooter  = defineAsyncComponent(() => import('@/components/ClosingFooter.vue'));
-const TweaksPanel    = defineAsyncComponent(() => import('@/components/TweaksPanel.vue'));
 
 const { state, load } = useData();
 load();
-const tweaks = useTweaks();
 
 const w = computed(() => state.wedding);
 const img = (f) => '/img/' + f;
