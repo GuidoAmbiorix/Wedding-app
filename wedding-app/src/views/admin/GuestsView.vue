@@ -164,20 +164,20 @@ const mealOptions = [
 </script>
 
 <template>
-  <div class="p-6 lg:p-8 min-h-full">
+  <div class="p-4 sm:p-6 lg:p-8 min-h-full pb-24 sm:pb-8">
 
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <div class="flex items-center justify-between gap-4 mb-6">
       <div>
-        <h1 class="text-2xl font-bold text-gray-900">Lista de Invitados</h1>
-        <p class="text-sm text-gray-400 mt-0.5">
-          {{ stats.total }} registros &middot; {{ stats.totalPeople }} personas &middot;
-          {{ stats.confirmado }} confirmados
+        <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Invitados</h1>
+        <p class="text-xs sm:text-sm text-gray-400 mt-0.5">
+          {{ stats.total }} registros &middot; {{ stats.totalPeople }} personas &middot; {{ stats.confirmado }} confirmados
         </p>
       </div>
+      <!-- Desktop add button -->
       <button
         @click="openAdd"
-        class="inline-flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl hover:opacity-90 active:scale-95 transition-all cursor-pointer border-none shadow"
+        class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 text-white text-sm font-semibold rounded-xl hover:opacity-90 active:scale-95 transition-all cursor-pointer border-none shadow"
         style="background: linear-gradient(135deg, #2c4628, #3a5733);"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -222,157 +222,234 @@ const mealOptions = [
     </div>
 
     <!-- Filters -->
-    <div class="flex flex-col sm:flex-row gap-3 mb-5">
-      <div class="relative flex-1">
+    <div class="space-y-2 mb-5">
+      <div class="relative">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
         <input v-model="search" type="text"
-          placeholder="Buscar por nombre, email o WhatsApp..."
+          placeholder="Buscar nombre, email o WhatsApp..."
           class="w-full rounded-xl border border-gray-200 bg-white pl-10 pr-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition"
         />
       </div>
-      <select v-model="filterGroup" class="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition cursor-pointer">
-        <option value="">Todos los grupos</option>
-        <option v-for="g in groupOptions" :key="g.value" :value="g.value">{{ g.label }}</option>
-      </select>
-      <select v-model="filterStatus" class="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition cursor-pointer">
-        <option value="">Todos los estados</option>
-        <option v-for="s in statusOptions" :key="s.value" :value="s.value">{{ s.label }}</option>
-      </select>
-      <select v-model="filterSide" class="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition cursor-pointer">
-        <option value="">Jennifer &amp; Guido</option>
-        <option v-for="s in sideOptions" :key="s.value" :value="s.value">{{ s.label }}</option>
-      </select>
+      <div class="grid grid-cols-3 gap-2">
+        <select v-model="filterSide" class="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition cursor-pointer">
+          <option value="">Todos</option>
+          <option v-for="s in sideOptions" :key="s.value" :value="s.value">{{ s.label }}</option>
+        </select>
+        <select v-model="filterStatus" class="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition cursor-pointer">
+          <option value="">Estado</option>
+          <option v-for="s in statusOptions" :key="s.value" :value="s.value">{{ s.short }}</option>
+        </select>
+        <select v-model="filterGroup" class="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition cursor-pointer">
+          <option value="">Grupo</option>
+          <option v-for="g in groupOptions" :key="g.value" :value="g.value">{{ g.label }}</option>
+        </select>
+      </div>
     </div>
 
-    <!-- Table -->
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-      <div v-if="loading" class="py-20 flex justify-center">
-        <div class="w-8 h-8 border-4 border-green-200 border-t-green-600 rounded-full animate-spin" />
-      </div>
-      <div v-else class="overflow-x-auto">
-        <table class="w-full text-sm min-w-[700px]">
-          <thead>
-            <tr class="border-b border-gray-100 bg-gray-50/60">
-              <th class="px-5 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Invitado</th>
-              <th class="px-4 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Parte de</th>
-              <th class="px-4 py-3.5 text-center text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Personas</th>
-              <th class="px-4 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Mesa</th>
-              <th class="px-4 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Estado</th>
-              <th class="px-4 py-3.5 text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Acciones</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-50">
-            <tr v-for="guest in filteredGuests" :key="guest.id"
-                class="hover:bg-gray-50/70 transition-colors group">
+    <!-- Loading -->
+    <div v-if="loading" class="bg-white rounded-2xl border border-gray-100 shadow-sm py-20 flex justify-center">
+      <div class="w-8 h-8 border-4 border-green-200 border-t-green-600 rounded-full animate-spin" />
+    </div>
 
-              <!-- Invitado -->
-              <td class="px-5 py-3.5">
-                <div class="flex items-center gap-3">
-                  <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
-                       :style="guest.side === 'jennifer' ? 'background:linear-gradient(135deg,#be185d,#db2777)' :
-                               guest.side === 'guido'    ? 'background:linear-gradient(135deg,#1d4ed8,#2563eb)' :
-                                                           'background:linear-gradient(135deg,#2c4628,#3a5733)'">
-                    {{ (guest.guest_display_name || guest.first_name || '?')[0].toUpperCase() }}
-                  </div>
-                  <div>
-                    <p class="font-semibold text-gray-900 leading-snug">
-                      {{ guest.guest_display_name || `${guest.first_name} ${guest.last_name}` }}
-                    </p>
-                    <p class="text-[11px] text-gray-400 mt-0.5 flex items-center gap-1.5">
-                      <span class="px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 font-medium">
-                        {{ guest.guest_type === 'grupo' ? 'Grupo' : 'Individual' }}
-                      </span>
-                      <span v-if="guest.guest_type === 'grupo' && guest.members?.length" class="text-gray-400">
-                        {{ guest.members.length }} miembro{{ guest.members.length !== 1 ? 's' : '' }}
-                      </span>
-                      <span v-if="guest.whatsapp" class="text-gray-400">· {{ guest.whatsapp }}</span>
-                    </p>
-                  </div>
-                </div>
-              </td>
+    <template v-else>
+      <!-- ── MOBILE: Cards ── -->
+      <div class="sm:hidden space-y-3">
+        <div v-if="filteredGuests.length === 0" class="bg-white rounded-2xl border border-gray-100 py-16 text-center">
+          <p class="text-sm font-semibold text-gray-400">No hay invitados</p>
+          <p class="text-xs text-gray-300 mt-1">Toca + para agregar el primero</p>
+        </div>
 
-              <!-- Parte de -->
-              <td class="px-4 py-3.5">
+        <div v-for="guest in filteredGuests" :key="guest.id"
+             class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 active:bg-gray-50 transition-colors">
+          <!-- Top row: avatar + name + status -->
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold flex-shrink-0 mt-0.5"
+                 :style="guest.side === 'jennifer' ? 'background:linear-gradient(135deg,#be185d,#db2777)' :
+                         guest.side === 'guido'    ? 'background:linear-gradient(135deg,#1d4ed8,#2563eb)' :
+                                                     'background:linear-gradient(135deg,#2c4628,#3a5733)'">
+              {{ (guest.guest_display_name || guest.first_name || '?')[0].toUpperCase() }}
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-gray-900 text-sm leading-snug truncate">
+                {{ guest.guest_display_name || `${guest.first_name} ${guest.last_name}` }}
+              </p>
+              <div class="flex items-center gap-1.5 mt-1 flex-wrap">
                 <span v-if="guest.side"
-                      class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold text-white"
-                      :style="`background:${sideCfg[guest.side]?.color || '#6b7280'}`">
-                  {{ sideCfg[guest.side]?.label || guest.side }}
+                      class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold text-white"
+                      :style="`background:${sideCfg[guest.side]?.color}`">
+                  {{ sideCfg[guest.side]?.label }}
                 </span>
-                <span v-else class="text-gray-300 text-xs">—</span>
-              </td>
-
-              <!-- Personas -->
-              <td class="px-4 py-3.5 text-center">
-                <span class="text-base font-bold text-gray-800">
-                  {{ (guest.adults_count ?? 1) + (guest.children_count ?? 0) }}
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-500">
+                  {{ guest.guest_type === 'grupo' ? 'Grupo' : 'Individual' }}
                 </span>
-                <p class="text-[10px] text-gray-400 leading-none mt-0.5">
-                  {{ guest.adults_count ?? 1 }}A
-                  <template v-if="guest.children_count"> · {{ guest.children_count }}N</template>
-                </p>
-              </td>
+              </div>
+            </div>
+            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold whitespace-nowrap flex-shrink-0"
+                  :class="statusCfg[guest.status]?.cls || statusCfg.sin_enviar.cls">
+              {{ statusCfg[guest.status]?.short || 'Sin enviar' }}
+            </span>
+          </div>
 
-              <!-- Mesa -->
-              <td class="px-4 py-3.5">
-                <span v-if="guest.table_name" class="text-sm text-gray-600 font-medium">{{ guest.table_name }}</span>
-                <span v-else class="text-gray-300 text-xs">Sin asignar</span>
-              </td>
+          <!-- Info row -->
+          <div class="mt-3 flex items-center gap-4 text-xs text-gray-500">
+            <span class="flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m4-4a4 4 0 100-8 4 4 0 000 8zm6 0a3 3 0 100-6 3 3 0 000 6z"/>
+              </svg>
+              <b class="text-gray-700">{{ (guest.adults_count ?? 1) + (guest.children_count ?? 0) }}</b>
+              personas
+            </span>
+            <span v-if="guest.table_name" class="flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18M10 4v16M14 4v16"/>
+              </svg>
+              {{ guest.table_name }}
+            </span>
+            <span v-if="guest.whatsapp" class="flex items-center gap-1 text-gray-400 truncate">
+              {{ guest.whatsapp }}
+            </span>
+          </div>
 
-              <!-- Estado -->
-              <td class="px-4 py-3.5">
-                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap"
-                      :class="statusCfg[guest.status]?.cls || statusCfg.sin_enviar.cls">
-                  {{ statusCfg[guest.status]?.short || 'Sin enviar' }}
-                </span>
-              </td>
+          <!-- Actions -->
+          <div class="mt-3 flex gap-2 pt-3 border-t border-gray-50">
+            <button @click="openEdit(guest)"
+              class="flex-1 py-2 text-xs font-semibold rounded-xl border border-gray-200 text-gray-600 bg-white active:bg-green-50 active:border-green-400 active:text-green-700 transition cursor-pointer">
+              Editar
+            </button>
+            <button @click="remove(guest.id)"
+              class="flex-1 py-2 text-xs font-semibold rounded-xl border border-gray-200 text-gray-400 bg-white active:bg-red-50 active:border-red-300 active:text-red-500 transition cursor-pointer">
+              Borrar
+            </button>
+          </div>
+        </div>
 
-              <!-- Acciones -->
-              <td class="px-4 py-3.5">
-                <div class="flex items-center justify-end gap-2">
-                  <button @click="openEdit(guest)"
-                    class="px-3 py-1.5 text-xs font-semibold rounded-lg border bg-white text-gray-600 border-gray-200 hover:border-green-400 hover:text-green-700 hover:bg-green-50 transition cursor-pointer">
-                    Editar
-                  </button>
-                  <button @click="remove(guest.id)"
-                    class="px-3 py-1.5 text-xs font-semibold rounded-lg border bg-white text-gray-400 border-gray-200 hover:border-red-300 hover:text-red-500 hover:bg-red-50 transition cursor-pointer">
-                    Borrar
-                  </button>
-                </div>
-              </td>
-            </tr>
-
-            <!-- Totals row -->
-            <tr v-if="filteredGuests.length > 0" class="border-t-2 border-gray-100 bg-gray-50">
-              <td class="px-5 py-3 text-xs font-semibold text-gray-500">
-                {{ filteredGuests.length }} registro{{ filteredGuests.length !== 1 ? 's' : '' }}
-              </td>
-              <td />
-              <td class="px-4 py-3 text-center">
-                <span class="text-sm font-bold text-gray-800">{{ filteredTotals.total }}</span>
-                <p class="text-[10px] text-gray-400">{{ filteredTotals.adults }}A · {{ filteredTotals.children }}N</p>
-              </td>
-              <td colspan="3" />
-            </tr>
-
-            <!-- Empty state -->
-            <tr v-if="filteredGuests.length === 0 && !loading">
-              <td colspan="6" class="py-20 text-center">
-                <div class="w-14 h-14 rounded-2xl bg-gray-50 flex items-center justify-center mx-auto mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4h-1M9 20H4v-2a4 4 0 014-4h1m4-4a4 4 0 100-8 4 4 0 000 8zm6 0a3 3 0 100-6 3 3 0 000 6z"/>
-                  </svg>
-                </div>
-                <p class="text-sm font-semibold text-gray-400">No hay invitados</p>
-                <p class="text-xs text-gray-300 mt-1">Agrega el primero con el botón de arriba</p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <!-- Mobile totals -->
+        <div v-if="filteredGuests.length > 0" class="text-center text-xs text-gray-400 py-2">
+          {{ filteredGuests.length }} registros · {{ filteredTotals.total }} personas ({{ filteredTotals.adults }}A · {{ filteredTotals.children }}N)
+        </div>
       </div>
-    </div>
+
+      <!-- ── DESKTOP: Table ── -->
+      <div class="hidden sm:block bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm min-w-[700px]">
+            <thead>
+              <tr class="border-b border-gray-100 bg-gray-50/60">
+                <th class="px-5 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Invitado</th>
+                <th class="px-4 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Parte de</th>
+                <th class="px-4 py-3.5 text-center text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Personas</th>
+                <th class="px-4 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Mesa</th>
+                <th class="px-4 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Estado</th>
+                <th class="px-4 py-3.5 text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+              <tr v-for="guest in filteredGuests" :key="guest.id" class="hover:bg-gray-50/70 transition-colors">
+                <!-- Invitado -->
+                <td class="px-5 py-3.5">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
+                         :style="guest.side === 'jennifer' ? 'background:linear-gradient(135deg,#be185d,#db2777)' :
+                                 guest.side === 'guido'    ? 'background:linear-gradient(135deg,#1d4ed8,#2563eb)' :
+                                                             'background:linear-gradient(135deg,#2c4628,#3a5733)'">
+                      {{ (guest.guest_display_name || guest.first_name || '?')[0].toUpperCase() }}
+                    </div>
+                    <div>
+                      <p class="font-semibold text-gray-900 leading-snug">
+                        {{ guest.guest_display_name || `${guest.first_name} ${guest.last_name}` }}
+                      </p>
+                      <p class="text-[11px] text-gray-400 mt-0.5 flex items-center gap-1.5">
+                        <span class="px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 font-medium">
+                          {{ guest.guest_type === 'grupo' ? 'Grupo' : 'Individual' }}
+                        </span>
+                        <span v-if="guest.guest_type === 'grupo' && guest.members?.length">
+                          {{ guest.members.length }} miembro{{ guest.members.length !== 1 ? 's' : '' }}
+                        </span>
+                        <span v-if="guest.whatsapp">· {{ guest.whatsapp }}</span>
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <!-- Parte de -->
+                <td class="px-4 py-3.5">
+                  <span v-if="guest.side"
+                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold text-white"
+                        :style="`background:${sideCfg[guest.side]?.color}`">
+                    {{ sideCfg[guest.side]?.label }}
+                  </span>
+                  <span v-else class="text-gray-300 text-xs">—</span>
+                </td>
+                <!-- Personas -->
+                <td class="px-4 py-3.5 text-center">
+                  <span class="text-base font-bold text-gray-800">{{ (guest.adults_count ?? 1) + (guest.children_count ?? 0) }}</span>
+                  <p class="text-[10px] text-gray-400 leading-none mt-0.5">
+                    {{ guest.adults_count ?? 1 }}A<template v-if="guest.children_count"> · {{ guest.children_count }}N</template>
+                  </p>
+                </td>
+                <!-- Mesa -->
+                <td class="px-4 py-3.5">
+                  <span v-if="guest.table_name" class="text-sm text-gray-600 font-medium">{{ guest.table_name }}</span>
+                  <span v-else class="text-gray-300 text-xs">Sin asignar</span>
+                </td>
+                <!-- Estado -->
+                <td class="px-4 py-3.5">
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap"
+                        :class="statusCfg[guest.status]?.cls || statusCfg.sin_enviar.cls">
+                    {{ statusCfg[guest.status]?.short || 'Sin enviar' }}
+                  </span>
+                </td>
+                <!-- Acciones -->
+                <td class="px-4 py-3.5">
+                  <div class="flex items-center justify-end gap-2">
+                    <button @click="openEdit(guest)"
+                      class="px-3 py-1.5 text-xs font-semibold rounded-lg border bg-white text-gray-600 border-gray-200 hover:border-green-400 hover:text-green-700 hover:bg-green-50 transition cursor-pointer">
+                      Editar
+                    </button>
+                    <button @click="remove(guest.id)"
+                      class="px-3 py-1.5 text-xs font-semibold rounded-lg border bg-white text-gray-400 border-gray-200 hover:border-red-300 hover:text-red-500 hover:bg-red-50 transition cursor-pointer">
+                      Borrar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Totals -->
+              <tr v-if="filteredGuests.length > 0" class="border-t-2 border-gray-100 bg-gray-50">
+                <td class="px-5 py-3 text-xs font-semibold text-gray-500">{{ filteredGuests.length }} registro{{ filteredGuests.length !== 1 ? 's' : '' }}</td>
+                <td />
+                <td class="px-4 py-3 text-center">
+                  <span class="text-sm font-bold text-gray-800">{{ filteredTotals.total }}</span>
+                  <p class="text-[10px] text-gray-400">{{ filteredTotals.adults }}A · {{ filteredTotals.children }}N</p>
+                </td>
+                <td colspan="3" />
+              </tr>
+
+              <!-- Empty -->
+              <tr v-if="filteredGuests.length === 0">
+                <td colspan="6" class="py-20 text-center">
+                  <p class="text-sm font-semibold text-gray-400">No hay invitados</p>
+                  <p class="text-xs text-gray-300 mt-1">Agrega el primero con el botón de arriba</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </template>
   </div>
+
+  <!-- FAB móvil para agregar -->
+  <button
+    @click="openAdd"
+    class="sm:hidden fixed bottom-6 right-5 z-30 w-14 h-14 rounded-full shadow-xl flex items-center justify-center text-white border-none cursor-pointer active:scale-95 transition-transform"
+    style="background: linear-gradient(135deg, #2c4628, #3a5733);"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+    </svg>
+  </button>
 
   <!-- Backdrop -->
   <Transition

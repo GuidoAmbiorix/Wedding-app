@@ -67,7 +67,7 @@ async function save() {
 </script>
 
 <template>
-  <div class="p-6 lg:p-8">
+  <div class="p-4 sm:p-6 lg:p-8 pb-24 sm:pb-8">
 
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
@@ -84,7 +84,7 @@ async function save() {
             </div>
             <p class="text-sm font-semibold text-gray-800">Los novios</p>
           </div>
-          <div class="p-6 grid grid-cols-2 gap-4">
+          <div class="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Nombre 1 *</label>
               <input v-model="form.couple_name_1" required
@@ -110,13 +110,13 @@ async function save() {
             </div>
             <p class="text-sm font-semibold text-gray-800">Fecha y lugar</p>
           </div>
-          <div class="p-6 space-y-4">
+          <div class="p-4 sm:p-6 space-y-4">
             <div>
               <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Fecha de la boda *</label>
               <input v-model="form.wedding_date" type="date" required
                 class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition" />
             </div>
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Venue / Salón</label>
                 <input v-model="form.venue"
@@ -143,7 +143,7 @@ async function save() {
             </div>
             <p class="text-sm font-semibold text-gray-800">Foto de portada</p>
           </div>
-          <div class="p-6">
+          <div class="p-4 sm:p-6">
             <input v-model="form.cover_photo_url"
               class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition"
               placeholder="https://tu-foto.com/imagen.jpg" />
@@ -172,7 +172,7 @@ async function save() {
             <p class="text-sm font-semibold text-gray-800">Nuestra historia</p>
             <span class="ml-auto text-xs text-gray-400">{{ form.story?.length || 0 }} caracteres</span>
           </div>
-          <div class="p-6 space-y-4">
+          <div class="p-4 sm:p-6 space-y-4">
             <textarea v-model="form.story" rows="5"
               class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition resize-none"
               placeholder="Cuéntanos cómo se conocieron, qué los une, qué los hace especiales..." />
@@ -197,7 +197,7 @@ async function save() {
             </div>
             <p class="text-sm font-semibold text-gray-800">El lugar</p>
           </div>
-          <div class="p-6">
+          <div class="p-4 sm:p-6">
             <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Descripción del venue</label>
             <textarea v-model="form.venue_description" rows="3"
               class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition resize-none"
@@ -216,7 +216,7 @@ async function save() {
             </div>
             <p class="text-sm font-semibold text-gray-800">Código de vestimenta</p>
           </div>
-          <div class="p-6 space-y-4">
+          <div class="p-4 sm:p-6 space-y-4">
             <textarea v-model="form.dress_code" rows="3"
               class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition resize-none"
               placeholder="Etiqueta formal. Nos inspira la paleta del bosque: verdes profundos, salvia y tonos tierra..." />
@@ -239,7 +239,7 @@ async function save() {
             </div>
             <p class="text-sm font-semibold text-gray-800">Fotos adicionales</p>
           </div>
-          <div class="p-6 space-y-4">
+          <div class="p-4 sm:p-6 space-y-4">
             <p class="text-xs text-gray-400">Pega URLs públicas de Supabase Storage, Cloudinary u otro host. Si se dejan vacíos se usan las imágenes por defecto de <code class="bg-gray-100 px-1 rounded">public/img/</code>.</p>
             <div v-for="field in [
               { key: 'couple_photo_url',   label: 'Foto de la pareja',   hint: 'Sección Nuestra Historia' },
@@ -266,10 +266,10 @@ async function save() {
             </div>
             <p class="text-sm font-semibold text-gray-800">Cupos de invitados</p>
           </div>
-          <div class="p-6 space-y-5">
+          <div class="p-4 sm:p-6 space-y-5">
 
             <!-- Inputs de cuotas -->
-            <div class="grid grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Total del evento</label>
                 <input v-model.number="form.total_capacity" type="number" min="0"
@@ -307,7 +307,7 @@ async function save() {
                 <!-- Jennifer -->
                 <div class="px-4 py-3.5 flex items-center gap-4">
                   <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:#be185d;"></div>
-                  <p class="text-sm font-semibold text-gray-700 w-24">Jennifer</p>
+                  <p class="text-sm font-semibold text-gray-700 w-16 sm:w-24">Jennifer</p>
                   <div class="flex-1">
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
                       <div class="h-full rounded-full transition-all"
@@ -316,7 +316,7 @@ async function save() {
                       </div>
                     </div>
                   </div>
-                  <div class="text-right flex-shrink-0 w-32">
+                  <div class="text-right flex-shrink-0 w-24 sm:w-32">
                     <p class="text-sm font-bold text-gray-800">{{ quotaStats.jUsed }} <span class="text-gray-400 font-normal">/ {{ form.jennifer_quota || '—' }}</span></p>
                     <p class="text-[11px] text-gray-400">{{ form.jennifer_quota ? `${quotaStats.jLeft} disponibles` : 'Sin cupo definido' }}</p>
                   </div>
@@ -325,7 +325,7 @@ async function save() {
                 <!-- Guido -->
                 <div class="px-4 py-3.5 flex items-center gap-4">
                   <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:#1d4ed8;"></div>
-                  <p class="text-sm font-semibold text-gray-700 w-24">Guido</p>
+                  <p class="text-sm font-semibold text-gray-700 w-16 sm:w-24">Guido</p>
                   <div class="flex-1">
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
                       <div class="h-full rounded-full transition-all"
@@ -334,7 +334,7 @@ async function save() {
                       </div>
                     </div>
                   </div>
-                  <div class="text-right flex-shrink-0 w-32">
+                  <div class="text-right flex-shrink-0 w-24 sm:w-32">
                     <p class="text-sm font-bold text-gray-800">{{ quotaStats.gUsed }} <span class="text-gray-400 font-normal">/ {{ form.guido_quota || '—' }}</span></p>
                     <p class="text-[11px] text-gray-400">{{ form.guido_quota ? `${quotaStats.gLeft} disponibles` : 'Sin cupo definido' }}</p>
                   </div>
@@ -343,9 +343,9 @@ async function save() {
                 <!-- Ambos -->
                 <div v-if="quotaStats.bothUsed > 0" class="px-4 py-3.5 flex items-center gap-4">
                   <div class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:#2c4628;"></div>
-                  <p class="text-sm font-semibold text-gray-700 w-24">Ambos</p>
+                  <p class="text-sm font-semibold text-gray-700 w-16 sm:w-24">Ambos</p>
                   <div class="flex-1" />
-                  <div class="text-right flex-shrink-0 w-32">
+                  <div class="text-right flex-shrink-0 w-24 sm:w-32">
                     <p class="text-sm font-bold text-gray-800">{{ quotaStats.bothUsed }}</p>
                     <p class="text-[11px] text-gray-400">Compartidos</p>
                   </div>
@@ -354,7 +354,7 @@ async function save() {
                 <!-- Total vs capacidad -->
                 <div class="px-4 py-3.5 flex items-center gap-4 bg-gray-50/50">
                   <div class="w-2.5 h-2.5 rounded-full flex-shrink-0 bg-gray-400"></div>
-                  <p class="text-sm font-semibold text-gray-500 w-24">Total</p>
+                  <p class="text-sm font-semibold text-gray-500 w-16 sm:w-24">Total</p>
                   <div class="flex-1">
                     <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
                       <div class="h-full rounded-full transition-all bg-gray-400"
@@ -362,7 +362,7 @@ async function save() {
                       </div>
                     </div>
                   </div>
-                  <div class="text-right flex-shrink-0 w-32">
+                  <div class="text-right flex-shrink-0 w-24 sm:w-32">
                     <p class="text-sm font-bold text-gray-700">{{ quotaStats.total }} <span class="text-gray-400 font-normal">/ {{ form.total_capacity || '—' }}</span></p>
                     <p class="text-[11px] text-gray-400">{{ form.total_capacity ? `${Math.max(0, form.total_capacity - quotaStats.total)} libres` : 'Sin capacidad definida' }}</p>
                   </div>
@@ -373,10 +373,10 @@ async function save() {
         </div>
 
         <!-- Save bar -->
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-4 flex items-center gap-4">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 sm:px-6 py-4 flex flex-wrap items-center gap-3">
           <button
             type="submit"
-            class="px-6 py-2.5 text-white text-sm font-semibold rounded-xl hover:opacity-90 active:opacity-80 transition cursor-pointer border-none shadow-sm"
+            class="w-full sm:w-auto px-6 py-2.5 text-white text-sm font-semibold rounded-xl hover:opacity-90 active:opacity-80 transition cursor-pointer border-none shadow-sm"
             style="background: linear-gradient(135deg, #3d1f6b, #2d5a27);"
           >
             Guardar cambios
@@ -389,7 +389,7 @@ async function save() {
               Guardado correctamente
             </span>
           </Transition>
-          <span class="ml-auto text-xs text-gray-400">Los cambios se reflejan en el sitio público al instante</span>
+          <span class="hidden sm:block sm:ml-auto text-xs text-gray-400">Los cambios se reflejan en el sitio público al instante</span>
         </div>
       </form>
 

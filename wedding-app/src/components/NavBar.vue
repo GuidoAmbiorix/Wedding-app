@@ -1,13 +1,13 @@
 <template>
   <nav :class="['sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 py-3 transition-all duration-500',
                 isSolid ? 'bg-forest-900/95 backdrop-blur shadow-[0_1px_0_rgba(255,255,255,.06)]' : 'bg-transparent']">
-    <div class="flex gap-4">
+    <div class="hidden md:flex gap-4">
       <a v-for="l in left" :key="l.id" href="#" @click.prevent="go(l.id)" :class="linkCls(l.id)">{{ l.label }}</a>
     </div>
     <a href="#" @click.prevent="go('home')"
        class="font-script-var text-3xl leading-none text-ondark text-center px-1 drop-shadow">J<span class="text-[.7em] opacity-80">&amp;</span>G</a>
     <div class="flex gap-4 justify-end items-center">
-      <a v-for="l in right" :key="l.id" href="#" @click.prevent="go(l.id)" :class="linkCls(l.id)">{{ l.label }}</a>
+      <a v-for="l in right" :key="l.id" href="#" @click.prevent="go(l.id)" :class="[linkCls(l.id), 'hidden md:inline']">{{ l.label }}</a>
       <button class="flex flex-col gap-1 items-end p-1.5" aria-label="Más" @click="open = true">
         <span class="block w-[18px] h-px bg-ondark"></span>
         <span class="block w-3 h-px bg-ondark"></span>
