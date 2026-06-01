@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+/* ── Fuentes & colores del nuevo diseño ─────────────────────── */
+@theme {
+  /* Forest greens */
+  --color-forest-900: #1b2c1c;
+  --color-forest-800: #243a24;
+  --color-forest-700: #2c4628;
+  --color-forest-600: #3a5733;
+
+  /* Greens */
+  --color-green:     #4f7142;
+  --color-green-500: #4f7142;
+
+  /* Sage */
+  --color-sage-400: #7e9667;
+  --color-sage-300: #a8bd92;
+
+  /* Neutrals */
+  --color-ivory:  #f4f0e2;
+  --color-cream:  #faf7ec;
+  --color-paper:  #efe9d8;
+  --color-gold:   #c6a86a;
+  --color-line:   #cdd2bd;
+
+  /* Ink */
+  --color-ink:      #2a2c23;
+  --color-ink-mute: #6c705f;
+
+  /* On-dark */
+  --color-ondark:      #eef1e2;
+  --color-ondark-soft: #bcc8a8;
+
+  /* Fonts */
+  --font-serif:   "Cormorant Garamond", Georgia, serif;
+  --font-display: Cormorant, "Cormorant Garamond", serif;
+  --font-script:  "Pinyon Script", cursive;
+}
+
+/* ── Custom utilities ───────────────────────────────────────── */
+@layer utilities {
+  /* Contenedor centrado para full-width layout */
+  .wrap {
+    width: 100%;
+    max-width: 72rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1.5rem, 5vw, 4rem);
+    padding-right: clamp(1.5rem, 5vw, 4rem);
+  }
+  .max-w-device { max-width: 448px; }
+  .font-script-var { font-family: var(--script-font, 'Pinyon Script', cursive); }
+  .text-accent-var { color: var(--accent, #2c4628); }
+  .bg-accent-var   { background-color: var(--accent, #2c4628); }
+  .border-accent-var { border-color: var(--accent, #2c4628); }
+  .animate-fade { animation: fade .5s ease; }
+  .animate-cue  { animation: cue 2s ease-in-out infinite; }
+}
+
+/* ── Keyframes ──────────────────────────────────────────────── */
+@keyframes fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes cue {
+  0%, 100% { opacity: .3; transform: scaleY(.7); }
+  50%       { opacity: 1; transform: scaleY(1); }
+}
+
+/* ── Global base ────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+/* ── Scroll reveal ──────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .9s ease, transform .9s cubic-bezier(.2,.8,.2,1);
+}
+.reveal.in { opacity: 1; transform: none; }
+.no-anim .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+
+/* ── Timeline ───────────────────────────────────────────────── */
+.tl-line::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 1px;
+  background: var(--accent, #2c4628);
+  transform: translateX(-.5px);
+}
+.tl-item::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  width: 18px; height: 1px;
+  background: var(--accent, #2c4628);
+}
+.tl-item.left::after  { right: -1px; }
+.tl-item.right::after { left: -1px; }
+
+/* ── Scroll cue bar ─────────────────────────────────────────── */
+.cue-bar {
+  width: 1px; height: 34px;
+  background: linear-gradient(#bcc8a8, transparent);
+  animation: cue 2s ease-in-out infinite;
+}
+
+/* ── Admin scrollbar ────────────────────────────────────────── */
+.thin-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.thin-scroll::-webkit-scrollbar-thumb { background: #cdd2bd; border-radius: 8px; }
+
+/* ── Admin: texto visible sobre fondos blancos ──────────────── */
+.bg-white, .bg-gray-50, .bg-gray-100 { color: #111827; }
