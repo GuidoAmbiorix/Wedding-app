@@ -10,6 +10,7 @@ const state = reactive({
   accommodations: [],
   gallery: [],
   guestbook: [],
+  weddingParty: [],
   guests: [],
   rsvps: [],
 });
@@ -23,6 +24,7 @@ function seedDemo() {
   state.accommodations = demo.demoAccommodations.map(x => ({ ...x }));
   state.gallery        = demo.demoGallery.map(x => ({ ...x }));
   state.guestbook      = demo.demoGuestbook.map(x => ({ ...x }));
+  state.weddingParty   = demo.demoWeddingParty.map(x => ({ ...x }));
   state.guests         = demo.demoGuests.map(x => ({ ...x }));
   state.rsvps          = demo.demoRsvps.map(x => ({ ...x }));
 }
@@ -35,7 +37,7 @@ async function load() {
     // - Reduce queries innecesarias (~40% menos data)
     // - Evita exponer la lista de invitados en el cliente
     // - findGuest() hace la query puntual al momento de buscar
-    const [w, ev, fq, rg, ac, ga, gb] = await Promise.all([
+    const [w, ev, fq, rg, ac, ga, gb, wp] = await Promise.all([
       supabase.from('weddings').select('*').limit(1).single(),
       supabase.from('events').select('*').order('sort_order'),
       supabase.from('faq').select('*').order('sort_order'),
@@ -43,6 +45,7 @@ async function load() {
       supabase.from('accommodations').select('*'),
       supabase.from('gallery_photos').select('*').order('sort_order'),
       supabase.from('guestbook').select('*').order('created_at', { ascending: false }),
+      supabase.from('wedding_party').select('*').order('sort_order'),
     ]);
     if (w.data) state.wedding    = w.data;
     state.events         = ev.data  || [];
@@ -51,6 +54,7 @@ async function load() {
     state.accommodations = ac.data  || [];
     state.gallery        = ga.data  || [];
     state.guestbook      = gb.data  || [];
+    state.weddingParty   = wp.data  || [];
   } catch (e) {
     console.warn('Supabase falló, usando demo:', e);
     seedDemo();
@@ -174,6 +178,7 @@ const actions = {
   gallery:        table('gallery', 'gallery_photos'),
   guests:         table('guests', 'guests'),
   guestbook:      table('guestbook', 'guestbook'),
+  weddingParty:   table('weddingParty', 'wedding_party'),
 };
 
 async function updateWedding(patch) {

@@ -3,7 +3,7 @@ import { reactive, watchEffect } from 'vue';
 const KEY = 'jg-tweaks';
 const defaults = {
   cover: 'boat',
-  accent: ['#2c4628', '#4f7142'],
+  accent: ['#3a3623', '#6b6640'],
   script: "'Pinyon Script', cursive",
   countdown: true,
   animations: true,
@@ -45,8 +45,8 @@ export const COVER_OPTS = [
   { value: 'framed', label: 'Marco' },
 ];
 export const ACCENTS = [
-  ['#2c4628', '#4f7142'], ['#1b2c1c', '#3a5733'],
-  ['#566b3a', '#7e9667'], ['#3d4f2c', '#6b7d44'],
+  ['#3a3623', '#6b6640'], ['#241d16', '#4a4530'],
+  ['#4a4530', '#8a8354'], ['#332619', '#6b6640'],
 ];
 export const SCRIPTS = [
   { value: "'Pinyon Script', cursive",  label: 'Pinyon' },

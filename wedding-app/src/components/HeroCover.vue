@@ -1,48 +1,38 @@
 <template>
-  <!-- SPLIT: apilado en móvil, lado a lado en desktop -->
-  <header id="home" class="-mt-[54px] flex flex-col md:flex-row min-h-[100svh]">
+  <header id="home" class="relative min-h-[100svh] flex flex-col justify-end overflow-hidden">
+    <video v-if="wedding.cover_video_url && !reduceMotion"
+           class="absolute inset-0 w-full h-full object-cover"
+           :poster="wedding.cover_photo_url || undefined"
+           autoplay muted loop playsinline preload="auto">
+      <source :src="wedding.cover_video_url" type="video/mp4">
+    </video>
+    <img v-else
+         :src="wedding.cover_photo_url || wedding.couple_photo_url"
+         :alt="names"
+         class="absolute inset-0 w-full h-full object-cover"
+         loading="eager" fetchpriority="high" />
+    <!-- Overlay: oscurece arriba (nav) y abajo (texto) para legibilidad -->
+    <div class="absolute inset-0"
+         style="background:linear-gradient(180deg, rgba(20,18,10,.4) 0%, rgba(20,18,10,.05) 32%, rgba(20,18,10,.18) 62%, rgba(20,18,10,.62) 100%)"></div>
 
-    <!-- Foto: 45vh en móvil, 45% ancho en desktop -->
-    <div class="h-[45svh] md:h-auto md:w-[45%] flex-shrink-0 relative overflow-hidden">
-      <img :src="wedding.couple_photo_url || wedding.cover_photo_url"
-           :alt="names"
-           class="absolute inset-0 w-full h-full object-cover object-top"
-           loading="eager" fetchpriority="high" />
-      <!-- Blend hacia la crema: abajo en móvil, derecha en desktop -->
-      <div class="absolute inset-x-0 bottom-0 h-16 md:hidden"
-           style="background:linear-gradient(to bottom,transparent,#faf7ec)"></div>
-      <div class="absolute inset-y-0 right-0 w-12 hidden md:block"
-           style="background:linear-gradient(to right,transparent,#faf7ec)"></div>
+    <div class="relative z-10 text-center px-6 pb-14 pt-32">
+      <p class="text-[11px] tracking-[.32em] uppercase text-ondark/90 mb-4">La boda de</p>
+      <h1 class="font-script-var text-ondark leading-[.9] flex items-center justify-center gap-4 flex-wrap drop-shadow-[0_2px_20px_rgba(0,0,0,.3)]"
+          style="font-size:clamp(3rem,10vw,6rem)">
+        <span>{{ wedding.couple_name_1 }}</span>
+        <span class="font-display italic text-ondark/85" style="font-size:.42em;font-weight:300">&amp;</span>
+        <span>{{ wedding.couple_name_2 }}</span>
+      </h1>
     </div>
 
-    <!-- Nombres -->
-    <div class="flex-1 bg-cream flex flex-col justify-center px-8 md:px-[clamp(2rem,5vw,5rem)] pt-6 md:pt-[54px] pb-16 relative">
-      <p class="text-[10px] tracking-[.28em] uppercase text-ink-mute mb-5">
-        Acompáñanos en la boda de
-      </p>
-      <h1 class="font-script-var text-accent-var leading-[.85]"
-          style="font-size:clamp(3rem,9vw,6rem)">
-        {{ wedding.couple_name_1 }}
-      </h1>
-      <div class="flex items-center gap-3 my-4 max-w-[200px]">
-        <span class="h-px flex-1 bg-line"></span>
-        <span class="font-serif text-[11px] tracking-[.28em] text-ink-mute uppercase">&amp;</span>
-        <span class="h-px flex-1 bg-line"></span>
-      </div>
-      <h1 class="font-script-var text-accent-var leading-[.85]"
-          style="font-size:clamp(3rem,9vw,6rem)">
-        {{ wedding.couple_name_2 }}
-      </h1>
-      <p class="font-serif text-[11px] tracking-[.28em] uppercase text-ink-mute mt-7">{{ shortDate }}</p>
-      <p v-if="wedding.venue" class="font-serif text-[11px] tracking-[.18em] uppercase text-ink-mute/60 mt-1.5">
-        {{ wedding.venue }}
-      </p>
-      <!-- Scroll cue -->
-      <div class="absolute bottom-8 left-8 md:left-[clamp(2rem,5vw,5rem)] flex flex-col items-start gap-2 text-ink-mute/40 text-[9px] tracking-[.28em] uppercase">
-        <i class="cue-bar" style="background:linear-gradient(#6c705f,transparent)"></i>
-        <span>Desliza</span>
-      </div>
+    <div class="relative z-10 flex justify-between items-center px-6 md:px-12 pb-8 text-[11px] tracking-[.22em] uppercase text-ondark/90">
+      <span>{{ shortDate }}</span>
+      <span class="hidden sm:block h-6 w-px bg-ondark/30"></span>
+      <span>{{ wedding.venue }}</span>
     </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 cue-bar" style="background:linear-gradient(#f1e9d6,transparent)"></div>
   </header>
 </template>
 
@@ -51,8 +41,10 @@ import { computed } from 'vue';
 
 const props = defineProps({ wedding: { type: Object, required: true } });
 const names  = computed(() => `${props.wedding.couple_name_1} & ${props.wedding.couple_name_2}`);
+const reduceMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const shortDate = computed(() => {
   const d = new Date(props.wedding.wedding_date + 'T00:00:00');
-  return `${String(d.getDate()).padStart(2,'0')} · ${String(d.getMonth()+1).padStart(2,'0')} · ${String(d.getFullYear()).slice(2)}`;
+  return `${d.getDate()} de ${MESES[d.getMonth()]}, ${d.getFullYear()}`;
 });
 </script>

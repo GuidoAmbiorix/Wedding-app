@@ -1,35 +1,36 @@
 @import "tailwindcss";
 
-/* ── Fuentes & colores del nuevo diseño ─────────────────────── */
+/* ── Fuentes & colores del nuevo diseño (oliva/chocolate/crema) ── */
 @theme {
-  /* Forest greens */
-  --color-forest-900: #1b2c1c;
-  --color-forest-800: #243a24;
-  --color-forest-700: #2c4628;
-  --color-forest-600: #3a5733;
+  /* Brown / chocolate (antes "forest") — bandas oscuras */
+  --color-forest-900: #241d16;
+  --color-forest-800: #332619;
+  --color-forest-700: #4a4530;
+  --color-forest-600: #6b6640;
 
-  /* Greens */
-  --color-green:     #4f7142;
-  --color-green-500: #4f7142;
+  /* Olive greens (antes "green") — acentos y botones */
+  --color-green:     #6b6640;
+  --color-green-500: #6b6640;
+  --color-olive-800: #3a3623;
 
-  /* Sage */
-  --color-sage-400: #7e9667;
-  --color-sage-300: #a8bd92;
+  /* Sage (antes "sage") — texto suave sobre oscuro */
+  --color-sage-400: #8a8354;
+  --color-sage-300: #c9bd9c;
 
   /* Neutrals */
-  --color-ivory:  #f4f0e2;
-  --color-cream:  #faf7ec;
-  --color-paper:  #efe9d8;
-  --color-gold:   #c6a86a;
-  --color-line:   #cdd2bd;
+  --color-ivory:  #f8f3e7;
+  --color-cream:  #f3ecdc;
+  --color-paper:  #ece3cd;
+  --color-gold:   #c9a24b;
+  --color-line:   #c9bd9c;
 
   /* Ink */
-  --color-ink:      #2a2c23;
-  --color-ink-mute: #6c705f;
+  --color-ink:      #2a2620;
+  --color-ink-mute: #6e6552;
 
   /* On-dark */
-  --color-ondark:      #eef1e2;
-  --color-ondark-soft: #bcc8a8;
+  --color-ondark:      #f1e9d6;
+  --color-ondark-soft: #c9bd9c;
 
   /* Fonts */
   --font-serif:   "Cormorant Garamond", Georgia, serif;
@@ -50,9 +51,9 @@
   }
   .max-w-device { max-width: 448px; }
   .font-script-var { font-family: var(--script-font, 'Pinyon Script', cursive); }
-  .text-accent-var { color: var(--accent, #2c4628); }
-  .bg-accent-var   { background-color: var(--accent, #2c4628); }
-  .border-accent-var { border-color: var(--accent, #2c4628); }
+  .text-accent-var { color: var(--accent, #3a3623); }
+  .bg-accent-var   { background-color: var(--accent, #3a3623); }
+  .border-accent-var { border-color: var(--accent, #3a3623); }
   .animate-fade { animation: fade .5s ease; }
   .animate-cue  { animation: cue 2s ease-in-out infinite; }
 }
@@ -81,35 +82,42 @@ body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; 
 .no-anim .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
 
 
-/* ── Timeline ───────────────────────────────────────────────── */
-.tl-line::before {
-  content: "";
-  position: absolute;
-  left: 50%; top: 0; bottom: 0;
-  width: 1px;
-  background: var(--accent, #2c4628);
-  transform: translateX(-.5px);
-}
-.tl-item::after {
-  content: "";
-  position: absolute;
-  top: 8px;
-  width: 18px; height: 1px;
-  background: var(--accent, #2c4628);
-}
-.tl-item.left::after  { right: -1px; }
-.tl-item.right::after { left: -1px; }
-
 /* ── Scroll cue bar ─────────────────────────────────────────── */
 .cue-bar {
   width: 1px; height: 34px;
-  background: linear-gradient(#bcc8a8, transparent);
+  background: linear-gradient(#c9bd9c, transparent);
   animation: cue 2s ease-in-out infinite;
 }
 
 /* ── Admin scrollbar ────────────────────────────────────────── */
 .thin-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
-.thin-scroll::-webkit-scrollbar-thumb { background: #cdd2bd; border-radius: 8px; }
+.thin-scroll::-webkit-scrollbar-thumb { background: #c9bd9c; border-radius: 8px; }
 
 /* ── Admin: texto visible sobre fondos blancos ──────────────── */
 .bg-white, .bg-gray-50, .bg-gray-100 { color: #111827; }
+
+/* ── Foto estilo polaroid (Love Story) ─────────────────────── */
+.polaroid {
+  background: #fff;
+  padding: 10px 10px 30px;
+  box-shadow: 0 14px 26px rgba(0,0,0,.35);
+}
+.polaroid img { display:block; width:100%; height:100%; object-fit:cover; }
+.polaroid .cap {
+  position:absolute; bottom:4px; left:0; right:0; text-align:center;
+  font-family: var(--font-script, 'Pinyon Script', cursive); font-size:1.2rem; color:#333;
+}
+
+/* ── Marco dorado (venue map / fotos enmarcadas) ─────────────── */
+.gold-frame {
+  border: 8px solid var(--color-gold, #c9a24b);
+  box-shadow: 0 0 0 1px #241d16, 0 20px 40px rgba(0,0,0,.35);
+}
+
+/* ── Tarjeta itinerario con borde punteado tipo encaje ───────── */
+.lace-card { position: relative; background: var(--color-ivory, #f8f3e7); }
+.lace-card::before {
+  content: ""; position: absolute; inset: 8px;
+  border: 1px dashed var(--color-line, #c9bd9c);
+  pointer-events: none;
+}

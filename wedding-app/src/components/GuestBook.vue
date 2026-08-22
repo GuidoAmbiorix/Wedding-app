@@ -11,20 +11,20 @@
     </div>
 
     <button v-if="!showForm && !justSent" v-reveal
-            class="w-full inline-flex items-center justify-center font-serif font-medium text-[13px] tracking-[.22em] uppercase px-7 py-3.5 border border-accent-var text-accent-var rounded-full transition hover:bg-accent-var hover:text-cream"
+            class="w-full inline-flex items-center justify-center font-display text-[13px] tracking-[.2em] uppercase px-7 py-3.5 border border-olive-800 text-olive-800 transition hover:bg-olive-800 hover:text-ivory"
             @click="showForm = true">Dejar un mensaje</button>
 
     <form v-if="showForm" class="mt-2" @submit.prevent="submit">
       <div class="mb-4">
-        <label class="block text-[11px] tracking-[.2em] uppercase text-ink-mute mb-2">Tu nombre</label>
-        <input v-model="name" type="text" required class="w-full font-serif text-[1.04rem] bg-cream border border-line px-3.5 py-3 rounded-sm focus:border-accent-var outline-none">
+        <label class="block text-[12px] tracking-[.08em] italic text-ink-mute mb-2">Tu nombre</label>
+        <input v-model="name" type="text" required class="w-full font-serif text-[1.02rem] bg-paper border border-line px-3.5 py-3 focus:border-olive-800 outline-none">
       </div>
       <div class="mb-4">
-        <label class="block text-[11px] tracking-[.2em] uppercase text-ink-mute mb-2">Mensaje</label>
-        <textarea v-model="message" required class="w-full font-serif text-[1.04rem] bg-cream border border-line px-3.5 py-3 rounded-sm min-h-[90px] focus:border-accent-var outline-none resize-none"></textarea>
+        <label class="block text-[12px] tracking-[.08em] italic text-ink-mute mb-2">Mensaje</label>
+        <textarea v-model="message" required class="w-full font-serif text-[1.02rem] bg-paper border border-line px-3.5 py-3 min-h-[90px] focus:border-olive-800 outline-none resize-none"></textarea>
       </div>
       <button type="submit"
-              class="w-full inline-flex items-center justify-center font-serif font-medium text-[13px] tracking-[.22em] uppercase px-7 py-3.5 bg-accent-var text-cream border border-accent-var rounded-full transition hover:bg-forest-900">
+              class="w-full inline-flex items-center justify-center font-display text-[13px] tracking-[.2em] uppercase px-7 py-3.5 bg-green text-ivory transition hover:bg-olive-800">
         Publicar mensaje
       </button>
     </form>

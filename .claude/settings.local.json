@@ -7,7 +7,13 @@
       "Bash(npm run:*)",
       "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(list\\(d.get\\(''''exports'''',{}\\).keys\\(\\)\\)[:20]\\)\")",
       "Bash(npm uninstall:*)",
-      "Bash(\"C:/Users/Ing Guido/Desktop/Wedding:*)"
+      "Bash(\"C:/Users/Ing Guido/Desktop/Wedding:*)",
+      "WebFetch(domain:support.claude.com)",
+      "Bash(ffmpeg -version)",
+      "Bash('/c/Users/Ing Guido/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0-full_build/bin/ffmpeg.exe' -i '/c/Users/Ing Guido/Downloads/From Klickpin.com- Save these smart ways to style your fall decor everyone will ask you about for a polished look that still feels personal and to.mp4')",
+      "Bash(pkill -f \"http.server 8931\")",
+      "Bash('/c/Users/Ing Guido/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0-full_build/bin/ffmpeg.exe' -y -i '/c/Users/Ing Guido/Downloads/17200945-hd_1920_1080_30fps.mp4' -an -vf scale=1920:1080 -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 26 -preset slow -movflags +faststart '/c/Users/Ing Guido/Desktop/Wedding page/wedding-app/public/video/hero.mp4')",
+      "Bash('/c/Users/Ing Guido/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0-full_build/bin/ffmpeg.exe' -y -i '/c/Users/Ing Guido/Downloads/17200945-hd_1920_1080_30fps.mp4' -an -vf scale=1920:1080 -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 30 -preset medium -movflags +faststart '/c/Users/Ing Guido/Desktop/Wedding page/wedding-app/public/video/hero.mp4')"
     ]
   }
 }

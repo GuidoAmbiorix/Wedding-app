@@ -1,31 +1,21 @@
 <template>
-  <section id="schedule" class="bg-cream text-ink py-20">
-    <div class="wrap">
-      <h2 v-reveal class="font-script-var text-center text-accent-var leading-[.92] mb-12"
-          style="font-size:clamp(2.8rem,4vw,4.5rem)">El Horario</h2>
-      <!-- Móvil: lista vertical simple -->
-      <div class="md:hidden space-y-0 max-w-lg mx-auto">
-        <div v-for="(e, i) in events" :key="e.id" v-reveal="i*0.04"
-             class="relative pl-6 pb-8 border-l border-line last:border-transparent">
-          <div class="absolute left-[-5px] top-1 w-2.5 h-2.5 rounded-full bg-accent-var"></div>
-          <p class="font-serif font-bold text-[11px] tracking-[.12em] uppercase text-ink mb-1">{{ fmt(e.event_time) }} · {{ e.name }}</p>
-          <p class="text-[.9rem] leading-snug text-ink-mute">{{ e.notes }}</p>
-        </div>
-      </div>
-      <!-- Desktop: alternado izq/der -->
-      <div class="tl-line hidden md:block relative max-w-2xl mx-auto">
-        <div v-for="(e, i) in events" :key="e.id" v-reveal="i*0.04"
-             :class="['tl-item relative w-1/2 pb-10', i % 2 === 0 ? 'left text-right pr-8' : 'right ml-[50%] text-left pl-8']">
-          <p class="font-serif font-bold text-[11px] tracking-[.12em] uppercase text-ink mb-1">{{ fmt(e.event_time) }} · {{ e.name }}</p>
-          <p class="text-[.9rem] leading-snug text-ink-mute">{{ e.notes }}</p>
-        </div>
+  <section id="details" class="relative py-20 px-6 flex justify-center"
+           :style="{ backgroundImage: `linear-gradient(rgba(20,16,10,.6),rgba(20,16,10,.35)), url('${image}')`, backgroundSize:'cover', backgroundPosition:'center' }">
+    <div v-reveal class="lace-card w-full max-w-[300px] px-7 py-8 shadow-2xl">
+      <span class="font-script-var block text-center text-olive-800 mb-5" style="font-size:1.4rem">Itinerario</span>
+      <div v-for="e in events" :key="e.id" class="flex justify-between gap-4 py-2.5 border-b border-line last:border-none text-[.92rem]">
+        <span class="italic text-ink-mute whitespace-nowrap">{{ fmt(e.event_time) }}</span>
+        <span class="text-ink tracking-[.02em] text-right">{{ e.name }}</span>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-defineProps({ events: { type: Array, default: () => [] } });
+defineProps({
+  events: { type: Array, default: () => [] },
+  image:  { type: String, default: '/img/forest.jpg' },
+});
 function fmt(t) {
   if (!t) return '';
   const [h, m] = t.split(':').map(Number);

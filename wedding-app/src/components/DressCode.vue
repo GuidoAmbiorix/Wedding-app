@@ -1,36 +1,39 @@
 <template>
-  <section class="bg-cream text-ink py-20">
-    <div class="wrap text-center">
-      <h3 v-reveal class="font-display font-medium tracking-[.12em] uppercase" style="font-size:clamp(1.5rem,2.5vw,2.2rem)">Código de Vestimenta</h3>
-      <p v-reveal="0.05" class="text-[1.06rem] leading-relaxed text-ink-mute mt-4 max-w-[52ch] mx-auto">
-        {{ text }}
-      </p>
-      <div v-reveal="0.1" class="flex justify-center gap-4 my-8">
-        <span v-for="c in palette" :key="c" class="w-12 h-12 rounded-full shadow-md" :style="{ background: c }"></span>
+  <section class="bg-forest-700 text-ondark py-20 px-6">
+    <p class="text-center text-[11px] tracking-[.34em] uppercase text-ondark-soft mb-14">Additional Information</p>
+    <div class="wrap grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+      <div v-reveal>
+        <span class="font-script-var block mb-4" style="font-size:1.7rem">Ceremony</span>
+        <p class="text-[.92rem] leading-relaxed text-ondark-soft">{{ ceremonyText }}</p>
       </div>
-      <div v-reveal="0.15" class="flex justify-center gap-16">
-        <!-- Vestido -->
-        <svg viewBox="0 0 80 150" class="h-32 w-auto" fill="none" stroke="#243a24" stroke-width="2">
-          <path d="M40 8c-9 0-15 5-15 12v8l-15 10v104h60V38L55 28v-8c0-7-6-12-15-12z"/>
-          <path d="M40 30v100"/><path d="M28 40l12 14 12-14"/>
-          <path d="M40 54l-5 76M40 54l5 76"/>
-          <circle cx="40" cy="70" r="1.6" fill="#243a24"/>
-          <circle cx="40" cy="84" r="1.6" fill="#243a24"/>
-        </svg>
-        <!-- Traje -->
-        <svg viewBox="0 0 80 150" class="h-32 w-auto" fill="none" stroke="#243a24" stroke-width="2">
-          <path d="M40 8c-6 0-10 4-10 9 0 3 1 5 3 7l-8 12c8 5 22 5 30 0l-8-12c2-2 3-4 3-7 0-5-4-9-10-9z"/>
-          <path d="M25 36C14 64 8 110 6 142h68c-2-32-8-78-19-106"/>
-          <path d="M40 36v106"/>
-        </svg>
+      <div v-reveal="0.06">
+        <span class="font-script-var block mb-4" style="font-size:1.7rem">Attire</span>
+        <p class="text-[.92rem] leading-relaxed text-ondark-soft">{{ text }}</p>
+        <div class="flex justify-center gap-2.5 mt-4">
+          <span v-for="c in palette" :key="c" class="w-6 h-6 rounded-full border border-white/25" :style="{ background: c }"></span>
+        </div>
       </div>
+      <div v-reveal="0.12">
+        <span class="font-script-var block mb-4" style="font-size:1.7rem">Transport</span>
+        <p class="text-[.92rem] leading-relaxed text-ondark-soft">{{ transportText }}</p>
+      </div>
+    </div>
+    <div v-reveal="0.16" class="text-center mt-16">
+      <span class="font-script-var block mb-3" style="font-size:1.4rem">Drinking &amp; Smoking</span>
+      <p class="text-[.9rem] leading-relaxed text-ondark-soft max-w-[52ch] mx-auto">{{ drinkingText }}</p>
     </div>
   </section>
 </template>
 
 <script setup>
 const props = defineProps({ wedding: { type: Object, default: () => ({}) } });
-const DEFAULT_TEXT = 'Etiqueta formal. Nos inspira la paleta del bosque: verdes profundos, salvia y tonos tierra. Te pedimos reservar el blanco, marfil y crema para la novia.';
-const text = props.wedding?.dress_code || DEFAULT_TEXT;
-const palette = ['#1b2c1c', '#2c4628', '#4f7142', '#7e9667', '#a8bd92'];
+const text = props.wedding?.dress_code
+  || 'Etiqueta formal. Nos inspira la paleta del bosque: verdes profundos, salvia y tonos tierra. Te pedimos reservar el blanco, marfil y crema para la novia.';
+const ceremonyText = props.wedding?.ceremony_info
+  || `La ceremonia se realizará en ${props.wedding?.venue || 'nuestro venue'}. Te pedimos llegar con anticipación para acomodarte antes de que comience.`;
+const transportText = props.wedding?.transport_info
+  || 'Habrá parqueo disponible en el lugar. Si necesitas transporte, contáctanos para coordinar.';
+const drinkingText = props.wedding?.drinking_note
+  || 'Por favor usa las áreas designadas si deseas fumar. Anima a quienes beban a hacerlo con responsabilidad y a planear transporte seguro.';
+const palette = ['#241d16', '#4a4530', '#6b6640', '#8a8354', '#c9bd9c'];
 </script>

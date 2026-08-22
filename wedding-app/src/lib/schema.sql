@@ -10,6 +10,7 @@ create table if not exists weddings (
   venue text,
   venue_address text,
   cover_photo_url text,
+  cover_video_url text,
   story text,
   theme text default 'ivory',
   created_at timestamptz default now()
@@ -72,6 +73,7 @@ create table if not exists gallery_photos (
   id uuid primary key default gen_random_uuid(),
   url text not null,
   caption text,
+  year text,
   album_id uuid references albums(id) on delete set null,
   sort_order integer default 0,
   uploaded_at timestamptz default now()
@@ -92,6 +94,7 @@ create table if not exists faq (
   id uuid primary key default gen_random_uuid(),
   question text not null,
   answer text not null,
+  category text,
   sort_order integer default 0,
   created_at timestamptz default now()
 );
@@ -105,6 +108,18 @@ create table if not exists accommodations (
   promo_code text,
   price_range text,
   distance_km numeric,
+  created_at timestamptz default now()
+);
+
+-- Wedding party table (padrinos, damas, etc.)
+create table if not exists wedding_party (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  role_label text,
+  role_group text check (role_group in ('honor','bridesmaid','groomsman')) default 'bridesmaid',
+  photo_url text,
+  bio text,
+  sort_order integer default 0,
   created_at timestamptz default now()
 );
 
@@ -129,6 +144,7 @@ alter table registry enable row level security;
 alter table faq enable row level security;
 alter table accommodations enable row level security;
 alter table guestbook enable row level security;
+alter table wedding_party enable row level security;
 
 -- Policies: allow anon to read public data
 create policy "Public read weddings" on weddings for select using (true);
@@ -139,6 +155,7 @@ create policy "Public read registry" on registry for select using (true);
 create policy "Public read faq" on faq for select using (true);
 create policy "Public read accommodations" on accommodations for select using (true);
 create policy "Public read approved guestbook" on guestbook for select using (approved = true);
+create policy "Public read wedding_party" on wedding_party for select using (true);
 
 -- Guests: only readable by token match (handled in app)
 create policy "Public read guests by token" on guests for select using (true);
@@ -171,3 +188,6 @@ create policy "Anyone can update weddings" on weddings for update using (true);
 create policy "Anyone can insert weddings" on weddings for insert with check (true);
 create policy "Anyone can update guestbook" on guestbook for update using (true);
 create policy "Anyone can delete guests" on guests for delete using (true);
+create policy "Anyone can insert wedding_party" on wedding_party for insert with check (true);
+create policy "Anyone can update wedding_party" on wedding_party for update using (true);
+create policy "Anyone can delete wedding_party" on wedding_party for delete using (true);

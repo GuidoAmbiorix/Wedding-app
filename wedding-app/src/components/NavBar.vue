@@ -1,16 +1,21 @@
 <template>
-  <nav :class="['sticky top-0 z-40 grid grid-cols-[1fr_auto_1fr] items-center px-6 py-3 transition-all duration-500',
-                isSolid ? 'bg-forest-900/95 backdrop-blur shadow-[0_1px_0_rgba(255,255,255,.06)]' : 'bg-transparent']">
-    <div class="hidden md:flex gap-4">
-      <a v-for="l in left" :key="l.id" href="#" @click.prevent="go(l.id)" :class="linkCls(l.id)">{{ l.label }}</a>
+  <nav :class="['fixed top-0 left-0 right-0 z-40 flex items-center justify-between gap-4 px-6 md:px-10 py-4 transition-all duration-500',
+                isSolid ? 'bg-ivory/95 backdrop-blur shadow-[0_1px_0_rgba(0,0,0,.05)]' : 'bg-transparent']">
+    <a href="#" @click.prevent="go('home')" :class="['font-script-var text-2xl leading-none px-1', isSolid ? 'text-olive-800' : 'text-ondark drop-shadow']">J&amp;G</a>
+
+    <div class="hidden md:flex gap-8">
+      <a v-for="l in menu" :key="l.id" href="#" @click.prevent="go(l.id)" :class="linkCls(l.id)">{{ l.label }}</a>
     </div>
-    <a href="#" @click.prevent="go('home')"
-       class="font-script-var text-3xl leading-none text-ondark text-center px-1 drop-shadow">J<span class="text-[.7em] opacity-80">&amp;</span>G</a>
-    <div class="flex gap-4 justify-end items-center">
-      <a v-for="l in right" :key="l.id" href="#" @click.prevent="go(l.id)" :class="[linkCls(l.id), 'hidden md:inline']">{{ l.label }}</a>
-      <button class="flex flex-col gap-1 items-end p-1.5" aria-label="Más" @click="open = true">
-        <span class="block w-[18px] h-px bg-ondark"></span>
-        <span class="block w-3 h-px bg-ondark"></span>
+
+    <div class="flex items-center gap-3">
+      <a href="#" @click.prevent="go('rsvp')"
+         :class="['hidden sm:inline-flex items-center gap-2 font-serif text-[11px] tracking-[.2em] uppercase border px-5 py-2 transition',
+                  isSolid ? 'border-olive-800 text-olive-800 hover:bg-olive-800 hover:text-ivory' : 'border-ondark text-ondark hover:bg-ondark hover:text-ink']">
+        RSVP <span>&rarr;</span>
+      </a>
+      <button class="flex flex-col gap-1 items-end p-1.5 md:hidden" aria-label="Menú" @click="open = true">
+        <span class="block w-[18px] h-px" :class="isSolid ? 'bg-olive-800' : 'bg-ondark'"></span>
+        <span class="block w-3 h-px" :class="isSolid ? 'bg-olive-800' : 'bg-ondark'"></span>
       </button>
     </div>
   </nav>
@@ -18,7 +23,7 @@
   <teleport to="body">
     <div :class="['fixed inset-0 z-[60] transition-opacity duration-300 bg-forest-900/60 backdrop-blur-sm',
                   open ? 'opacity-100' : 'opacity-0 pointer-events-none']" @click.self="open = false">
-      <div :class="['absolute top-0 left-0 right-0 bg-forest-700 px-8 pt-16 pb-10 transition-transform duration-500 max-w-xl',
+      <div :class="['absolute top-0 left-0 right-0 bg-forest-800 px-8 pt-16 pb-10 transition-transform duration-500 max-w-xl',
                     open ? 'translate-y-0' : '-translate-y-full']"
            style="transition-timing-function:cubic-bezier(.2,.8,.2,1)">
         <button class="absolute top-5 right-6 text-ondark text-3xl leading-none" @click="open = false">&times;</button>
@@ -40,26 +45,23 @@ const props = defineProps({
 });
 const open   = ref(false);
 const solid  = ref(false);
-// forceSolid: layout split → el nav siempre oscuro para que resalte sobre ambas mitades
 const isSolid = computed(() => props.forceSolid || solid.value);
 
-const left  = [ { id:'home', label:'Inicio' }, { id:'details', label:'Detalles' } ];
-const right = [ { id:'schedule', label:'Horario' } ];
-const menu  = [
-  { id:'home',      label:'Inicio' },
-  { id:'details',   label:'Los Detalles' },
-  { id:'schedule',  label:'El Horario' },
-  { id:'gallery',   label:'Galería' },
-  { id:'guestbook', label:'Libro de Visitas' },
-  { id:'faqs',      label:'Preguntas Frecuentes' },
-  { id:'rsvp',      label:'Confirmar Asistencia' },
+const menu = [
+  { id:'home',    label:'Home' },
+  { id:'venue',   label:'Venue' },
+  { id:'details', label:'Details' },
+  { id:'party',   label:'Wedding Party' },
+  { id:'faqs',    label:'FAQ' },
 ];
 
 function go(id) { scrollToId(id); }
 function goMenu(m) { open.value = false; setTimeout(() => scrollToId(m.id), 120); }
 function linkCls(id) {
-  return ['font-serif font-medium text-[11px] tracking-[.22em] uppercase no-underline transition',
-    props.active === id ? 'text-gold' : 'text-ondark/90 hover:text-white'];
+  const activeColor = isSolid.value ? 'text-olive-800' : 'text-ondark';
+  const idleColor = isSolid.value ? 'text-ink-mute hover:text-olive-800' : 'text-ondark/85 hover:text-ondark';
+  return ['font-display text-[12px] tracking-[.2em] uppercase no-underline transition',
+    props.active === id ? activeColor : idleColor];
 }
 
 function onScroll() { solid.value = window.scrollY > 80; }

@@ -1,8 +1,8 @@
 <template>
-  <section class="bg-cream text-ink px-8 py-16">
-    <h3 v-reveal class="font-display font-medium tracking-[.12em] uppercase text-2xl text-center">Cómo llegar</h3>
+  <section class="bg-forest-900 text-ondark px-8 py-16">
+    <h3 v-reveal class="font-script-var text-center leading-none mb-8" style="font-size:clamp(1.8rem,3.5vw,2.4rem)">Cómo llegar</h3>
 
-    <div v-reveal="0.05" class="relative border border-line overflow-hidden mt-6" style="aspect-ratio:4/3;background:#e8e4d4">
+    <div v-reveal="0.05" class="gold-frame relative overflow-hidden mt-6 max-w-md mx-auto" style="aspect-ratio:4/3;background:#e8e4d4">
       <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 w-full h-full">
         <rect width="400" height="300" fill="#e7e3d2"/>
         <rect width="400" height="300" fill="#dfe6d3" opacity=".5"/>
@@ -17,7 +17,7 @@
         <path d="M300 30 q40 40 30 90 q-10 50 60 70" fill="none" stroke="#bcd0c0" stroke-width="20" opacity=".6"/>
       </svg>
       <div class="absolute top-[46%] left-[52%] -translate-x-1/2 -translate-y-full text-center">
-        <svg viewBox="0 0 24 24" class="w-[30px] h-[30px] mx-auto" fill="#2c4628">
+        <svg viewBox="0 0 24 24" class="w-[30px] h-[30px] mx-auto" fill="#8a2e22">
           <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.5" fill="#fff"/>
         </svg>
         <b class="block bg-forest-700 text-white text-[9px] tracking-[.14em] uppercase px-2 py-0.5 mt-0.5">El lugar</b>
@@ -25,9 +25,9 @@
     </div>
 
     <div v-reveal="0.1" class="text-center mt-5">
-      <p class="text-base text-ink">{{ wedding.venue }}</p>
-      <p class="text-[.86rem] text-ink-mute mt-1">{{ wedding.venue_address }}</p>
-      <a class="inline-flex items-center justify-center font-serif font-medium text-[13px] tracking-[.22em] uppercase px-7 py-3.5 border border-accent-var text-accent-var rounded-full mt-6 transition hover:bg-accent-var hover:text-cream"
+      <p class="text-base text-ondark">{{ wedding.venue }}</p>
+      <p class="text-[.86rem] text-ondark-soft mt-1">{{ wedding.venue_address }}</p>
+      <a class="inline-flex items-center justify-center font-display text-[12px] tracking-[.2em] uppercase px-7 py-3 border border-ondark/60 text-ondark mt-6 transition hover:bg-ondark hover:text-forest-900"
          :href="mapUrl" target="_blank" rel="noopener">Abrir en Mapas</a>
     </div>
   </section>

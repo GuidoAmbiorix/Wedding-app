@@ -8,6 +8,7 @@ export const demoWedding = {
   venue:              'Bosque San Miguel',
   venue_address:      'Bosque San Miguel, Santo Domingo, D.N.',
   cover_photo_url:    IMG + 'hero.jpg',
+  cover_video_url:    '/video/hero.mp4',
   couple_photo_url:   IMG + 'couple.jpg',
   venue_photo_url:    IMG + 'venue.jpg',
   details_photo_url:  IMG + 'lake.jpg',
@@ -16,6 +17,9 @@ export const demoWedding = {
   venue_description:  'Celebraremos entre jardines y luz cálida en uno de los rincones más hermosos de la capital. Ceremonia y recepción serán en el mismo lugar, así que podrás quedarte con nosotros toda la noche.',
   invitation_text:    'Nos encantaría que estuvieras presente el día en que digamos «sí» frente a quienes más amamos. Aquí encontrarás todo lo que necesitas saber.',
   dress_code:         'Etiqueta formal. Nos inspira la paleta del bosque: verdes profundos, salvia y tonos tierra. Te pedimos reservar el blanco, marfil y crema para la novia.',
+  ceremony_info:      'La ceremonia se realizará en Bosque San Miguel a las 5:00 PM. Te pedimos llegar 30 minutos antes para acomodarte.',
+  transport_info:     'Habrá transporte disponible desde puntos de encuentro designados, con servicio de regreso al finalizar la celebración.',
+  drinking_note:      'Por favor usa las áreas exteriores designadas si deseas fumar. Anima a quienes beban a hacerlo con responsabilidad y a planear transporte seguro.',
   rsvp_deadline:      '2026-10-01',
   theme:              'forest',
   total_capacity:     150,
@@ -34,13 +38,13 @@ export const demoEvents = [
 ];
 
 export const demoFaq = [
-  { id:'f1', question:'¿Cuándo es la boda?',              answer:'El domingo 15 de noviembre de 2026. La ceremonia comienza a las 5:00 PM.', sort_order:1 },
-  { id:'f2', question:'¿Dónde es el lugar?',               answer:'En Bosque San Miguel, Santo Domingo. Hay estacionamiento gratuito y servicio de valet.', sort_order:2 },
-  { id:'f3', question:'¿A qué hora debo llegar?',          answer:'Recomendamos llegar 30 minutos antes (4:30 PM). La ceremonia empieza puntual a las 5:00 PM.', sort_order:3 },
-  { id:'f4', question:'¿Cuál es el código de vestimenta?', answer:'Etiqueta formal. Por favor evita el blanco, marfil y crema — reservados para la novia.', sort_order:4 },
-  { id:'f5', question:'¿Puedo llevar a mis hijos?',        answer:'Adoramos a los pequeños, pero será una celebración solo para adultos. ¡Disfruta una noche libre con nosotros!', sort_order:5 },
-  { id:'f6', question:'¿Puedo llevar acompañante?',        answer:'Tu invitación indica si tienes un cupo adicional. Si el nombre aparece al confirmar, ¡con gusto lo recibimos!', sort_order:6 },
-  { id:'f7', question:'¿Puedo tomar fotos durante la ceremonia?', answer:'Tendremos una «ceremonia sin pantallas». Nuestro fotógrafo capturará cada momento.', sort_order:7 },
+  { id:'f1', question:'¿Cuándo es la boda?',              answer:'El domingo 15 de noviembre de 2026. La ceremonia comienza a las 5:00 PM.', category:'Detalles generales', sort_order:1 },
+  { id:'f2', question:'¿Dónde es el lugar?',               answer:'En Bosque San Miguel, Santo Domingo. Hay estacionamiento gratuito y servicio de valet.', category:'Detalles generales', sort_order:2 },
+  { id:'f3', question:'¿A qué hora debo llegar?',          answer:'Recomendamos llegar 30 minutos antes (4:30 PM). La ceremonia empieza puntual a las 5:00 PM.', category:'Detalles generales', sort_order:3 },
+  { id:'f4', question:'¿Cuál es el código de vestimenta?', answer:'Etiqueta formal. Por favor evita el blanco, marfil y crema — reservados para la novia.', category:'Detalles generales', sort_order:4 },
+  { id:'f5', question:'¿Puedo llevar a mis hijos?',        answer:'Adoramos a los pequeños, pero será una celebración solo para adultos. ¡Disfruta una noche libre con nosotros!', category:'RSVP e invitaciones', sort_order:5 },
+  { id:'f6', question:'¿Puedo llevar acompañante?',        answer:'Tu invitación indica si tienes un cupo adicional. Si el nombre aparece al confirmar, ¡con gusto lo recibimos!', category:'RSVP e invitaciones', sort_order:6 },
+  { id:'f7', question:'¿Puedo tomar fotos durante la ceremonia?', answer:'Tendremos una «ceremonia sin pantallas». Nuestro fotógrafo capturará cada momento.', category:'Otros detalles', sort_order:7 },
 ];
 
 export const demoRegistry = [
@@ -56,18 +60,27 @@ export const demoAccommodations = [
 ];
 
 export const demoGallery = [
-  { id:'g1', url:IMG+'g1.jpg', caption:'El primer paseo',    sort_order:1 },
-  { id:'g2', url:IMG+'g2.jpg', caption:'Tarde de campo',     sort_order:2 },
-  { id:'g3', url:IMG+'g3.jpg', caption:'Luces cálidas',      sort_order:3 },
-  { id:'g4', url:IMG+'g4.jpg', caption:'Entre los árboles',  sort_order:4 },
-  { id:'g5', url:IMG+'g5.jpg', caption:'Manos entrelazadas', sort_order:5 },
-  { id:'g6', url:IMG+'g6.jpg', caption:'El bosque',          sort_order:6 },
+  { id:'g1', url:IMG+'g1.jpg', caption:'El primer paseo',    year:'2019', sort_order:1 },
+  { id:'g2', url:IMG+'g2.jpg', caption:'Tarde de campo',     year:'2021', sort_order:2 },
+  { id:'g3', url:IMG+'g3.jpg', caption:'Luces cálidas',      year:'2023', sort_order:3 },
+  { id:'g4', url:IMG+'g4.jpg', caption:'Entre los árboles',  year:'2024', sort_order:4 },
+  { id:'g5', url:IMG+'g5.jpg', caption:'Manos entrelazadas', year:'2025', sort_order:5 },
+  { id:'g6', url:IMG+'g6.jpg', caption:'El bosque',          year:'2026', sort_order:6 },
 ];
 
 export const demoGuestbook = [
   { id:'gb1', guest_name:'Familia Rodríguez', message:'No puedo esperar a celebrar con ustedes. ¡Los amamos!',  approved:true,  created_at:'2026-05-02' },
   { id:'gb2', guest_name:'Carolina & Marcos', message:'Qué felicidad ver este día llegar. Allí estaremos.',     approved:true,  created_at:'2026-05-10' },
   { id:'gb3', guest_name:'Tía Rosa',          message:'¡Bendiciones para esta hermosa pareja!',                 approved:false, created_at:'2026-05-18' },
+];
+
+export const demoWeddingParty = [
+  { id:'wp1', name:'Amelia Davis', role_label:'Madrina de honor', role_group:'honor', photo_url:IMG+'party1.jpg', sort_order:1 },
+  { id:'wp2', name:'David Watson',  role_label:'Padrino de honor', role_group:'honor', photo_url:IMG+'party2.jpg', sort_order:2 },
+  { id:'wp3', name:'Taylor Banks',  role_label:'', role_group:'bridesmaid', photo_url:IMG+'party3.jpg', sort_order:3 },
+  { id:'wp4', name:'Jessica Hodges',role_label:'', role_group:'bridesmaid', photo_url:IMG+'party4.jpg', sort_order:4 },
+  { id:'wp5', name:'Luis Fernández',role_label:'', role_group:'groomsman', photo_url:IMG+'party5.jpg', sort_order:5 },
+  { id:'wp6', name:'Marcos Reyes',  role_label:'', role_group:'groomsman', photo_url:IMG+'party6.jpg', sort_order:6 },
 ];
 
 export const demoGuests = [

@@ -21,6 +21,7 @@ const form = ref({
   venue: '',
   venue_address: '',
   cover_photo_url: '',
+  cover_video_url: '',
   couple_photo_url: '',
   venue_photo_url: '',
   details_photo_url: '',
@@ -29,6 +30,9 @@ const form = ref({
   invitation_text: '',
   venue_description: '',
   dress_code: '',
+  ceremony_info: '',
+  transport_info: '',
+  drinking_note: '',
   rsvp_deadline: '',
   total_capacity: 0,
   jennifer_quota: 0,
@@ -143,20 +147,36 @@ async function save() {
             </div>
             <p class="text-sm font-semibold text-gray-800">Foto de portada</p>
           </div>
-          <div class="p-4 sm:p-6">
-            <input v-model="form.cover_photo_url"
-              class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition"
-              placeholder="https://tu-foto.com/imagen.jpg" />
-            <p class="text-xs text-gray-400 mt-2">Pega la URL pública de Supabase Storage, Cloudinary o cualquier host de imágenes.</p>
+          <div class="p-4 sm:p-6 space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Foto de fondo</label>
+              <input v-model="form.cover_photo_url"
+                class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition"
+                placeholder="https://tu-foto.com/imagen.jpg" />
+              <p class="text-xs text-gray-400 mt-2">Pega la URL pública de Supabase Storage, Cloudinary o cualquier host de imágenes. También se usa como poster mientras carga el video.</p>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Video de fondo (opcional)</label>
+              <input v-model="form.cover_video_url"
+                class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition"
+                placeholder="https://tu-video.com/hero.mp4" />
+              <p class="text-xs text-gray-400 mt-2">Si se llena, el hero reproduce este video en loop (sin audio) en vez de la foto. Recomendado: mp4 H.264, 1920×1080, sin audio, pocos MB. Se ignora si el visitante tiene "reducir movimiento" activado.</p>
+            </div>
             <!-- Preview inline -->
-            <div v-if="form.cover_photo_url" class="mt-3 rounded-xl overflow-hidden bg-gray-100 relative" style="height:140px;">
+            <div v-if="form.cover_video_url" class="mt-3 rounded-xl overflow-hidden bg-gray-100 relative" style="height:140px;">
+              <video :src="form.cover_video_url" class="w-full h-full object-cover" autoplay muted loop playsinline></video>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end p-3">
+                <span class="text-white text-xs font-medium">Vista previa del video</span>
+              </div>
+            </div>
+            <div v-else-if="form.cover_photo_url" class="mt-3 rounded-xl overflow-hidden bg-gray-100 relative" style="height:140px;">
               <img :src="form.cover_photo_url" alt="Preview" class="w-full h-full object-cover" @error="$event.target.style.display='none'" />
               <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end p-3">
                 <span class="text-white text-xs font-medium">Vista previa del hero</span>
               </div>
             </div>
             <div v-else class="mt-3 rounded-xl border-2 border-dashed border-gray-200 h-24 flex items-center justify-center">
-              <p class="text-xs text-gray-400">La imagen aparecerá aquí</p>
+              <p class="text-xs text-gray-400">La imagen o video aparecerá aquí</p>
             </div>
           </div>
         </div>
@@ -226,6 +246,39 @@ async function save() {
                 class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition" />
               <p class="text-xs text-gray-400 mt-1">Los invitados verán esta fecha como límite para confirmar.</p>
             </div>
+          </div>
+        </div>
+
+        <!-- Sección: Información adicional -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-50 flex items-center gap-3">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center bg-purple-50">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <p class="text-sm font-semibold text-gray-800">Información adicional</p>
+          </div>
+          <div class="p-4 sm:p-6 space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Ceremonia</label>
+              <textarea v-model="form.ceremony_info" rows="2"
+                class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition resize-none"
+                placeholder="La ceremonia se realizará en... Te pedimos llegar..." />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Transporte</label>
+              <textarea v-model="form.transport_info" rows="2"
+                class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition resize-none"
+                placeholder="Habrá transporte disponible desde..." />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Nota sobre bebidas / fumar</label>
+              <textarea v-model="form.drinking_note" rows="2"
+                class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition resize-none"
+                placeholder="Por favor usa las áreas designadas..." />
+            </div>
+            <p class="text-xs text-gray-400">Aparecen en la sección "Additional Information" del sitio. Los padrinos/damas se administran en la tabla <code class="bg-gray-100 px-1 rounded">wedding_party</code> de Supabase.</p>
           </div>
         </div>
 
