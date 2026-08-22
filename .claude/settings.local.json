@@ -13,7 +13,15 @@
       "Bash('/c/Users/Ing Guido/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0-full_build/bin/ffmpeg.exe' -i '/c/Users/Ing Guido/Downloads/From Klickpin.com- Save these smart ways to style your fall decor everyone will ask you about for a polished look that still feels personal and to.mp4')",
       "Bash(pkill -f \"http.server 8931\")",
       "Bash('/c/Users/Ing Guido/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0-full_build/bin/ffmpeg.exe' -y -i '/c/Users/Ing Guido/Downloads/17200945-hd_1920_1080_30fps.mp4' -an -vf scale=1920:1080 -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 26 -preset slow -movflags +faststart '/c/Users/Ing Guido/Desktop/Wedding page/wedding-app/public/video/hero.mp4')",
-      "Bash('/c/Users/Ing Guido/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0-full_build/bin/ffmpeg.exe' -y -i '/c/Users/Ing Guido/Downloads/17200945-hd_1920_1080_30fps.mp4' -an -vf scale=1920:1080 -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 30 -preset medium -movflags +faststart '/c/Users/Ing Guido/Desktop/Wedding page/wedding-app/public/video/hero.mp4')"
+      "Bash('/c/Users/Ing Guido/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0-full_build/bin/ffmpeg.exe' -y -i '/c/Users/Ing Guido/Downloads/17200945-hd_1920_1080_30fps.mp4' -an -vf scale=1920:1080 -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 30 -preset medium -movflags +faststart '/c/Users/Ing Guido/Desktop/Wedding page/wedding-app/public/video/hero.mp4')",
+      "Bash(curl -s -o /tmp/bucket_check.json -w 'HTTP_%{http_code}\\\\n' https://api.enosisaccess.com/storage/v1/bucket/media -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg1MDgwOTQ0LCJleHAiOjIxMDA0NDA5NDR9.T8OuFXWMRxdAov2jppru7Hx8MX3IYdWnyxXY5p5OHzA' -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg1MDgwOTQ0LCJleHAiOjIxMDA0NDA5NDR9.T8OuFXWMRxdAov2jppru7Hx8MX3IYdWnyxXY5p5OHzA')",
+      "Read(//tmp/**)",
+      "Bash(curl -s -w '\\\\nHTTP_%{http_code}\\\\n' https://api.enosisaccess.com/storage/v1/bucket -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg1MDgwOTQ0LCJleHAiOjIxMDA0NDA5NDR9.T8OuFXWMRxdAov2jppru7Hx8MX3IYdWnyxXY5p5OHzA' -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg1MDgwOTQ0LCJleHAiOjIxMDA0NDA5NDR9.T8OuFXWMRxdAov2jppru7Hx8MX3IYdWnyxXY5p5OHzA')",
+      "Bash(curl -s -w '\\\\nHTTP_%{http_code}\\\\n' https://api.enosisaccess.com/storage/v1/bucket/Wedding -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg1MDgwOTQ0LCJleHAiOjIxMDA0NDA5NDR9.T8OuFXWMRxdAov2jppru7Hx8MX3IYdWnyxXY5p5OHzA' -H 'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg1MDgwOTQ0LCJleHAiOjIxMDA0NDA5NDR9.T8OuFXWMRxdAov2jppru7Hx8MX3IYdWnyxXY5p5OHzA')",
+      "Bash(curl *)",
+      "Bash(taskkill //F //PID 32948)",
+      "Bash(taskkill //F //PID 34572)",
+      "Bash(netstat -ano)"
     ]
   }
 }

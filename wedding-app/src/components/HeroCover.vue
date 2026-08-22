@@ -1,6 +1,7 @@
 <template>
   <header id="home" class="relative min-h-[100svh] flex flex-col justify-end overflow-hidden">
-    <video v-if="wedding.cover_video_url && !reduceMotion"
+    <video v-if="wedding.cover_video_url && (!reduceMotion || !(wedding.cover_photo_url || wedding.couple_photo_url))"
+           :key="wedding.cover_video_url"
            class="absolute inset-0 w-full h-full object-cover"
            :poster="wedding.cover_photo_url || undefined"
            autoplay muted loop playsinline preload="auto">
