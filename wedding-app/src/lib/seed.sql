@@ -4,7 +4,7 @@
 -- ============================================
 
 -- 1. Datos principales de la boda
-INSERT INTO weddings (
+INSERT INTO wedding_info (
   couple_name_1, couple_name_2, wedding_date,
   venue, venue_address, story, theme
 ) VALUES (
@@ -18,7 +18,7 @@ INSERT INTO weddings (
 ) ON CONFLICT DO NOTHING;
 
 -- 2. Eventos
-INSERT INTO events (name, event_date, event_time, venue, address, dress_code, notes, sort_order)
+INSERT INTO wedding_events (name, event_date, event_time, venue, address, dress_code, notes, sort_order)
 VALUES
   (
     'Ceremonia',
@@ -50,7 +50,7 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- 3. FAQ
-INSERT INTO faq (question, answer, sort_order)
+INSERT INTO wedding_faq (question, answer, sort_order)
 VALUES
   (
     '¿Cuál es el dress code?',
@@ -85,7 +85,7 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- 4. Opciones de alojamiento
-INSERT INTO accommodations (hotel_name, address, url, promo_code, price_range, distance_km)
+INSERT INTO wedding_accommodations (hotel_name, address, url, promo_code, price_range, distance_km)
 VALUES
   (
     'Hotel Bosque & Spa',
@@ -114,7 +114,7 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- 5. Mesa de regalos
-INSERT INTO registry (store_name, store_url, description)
+INSERT INTO wedding_registry (store_name, store_url, description)
 VALUES
   (
     'Liverpool',
@@ -134,7 +134,7 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- 6. Álbum de galería
-INSERT INTO albums (name)
+INSERT INTO wedding_albums (name)
 VALUES
   ('Sesión de Compromiso'),
   ('Nuestra Historia'),
@@ -144,7 +144,7 @@ ON CONFLICT DO NOTHING;
 -- 7. Invitados de ejemplo + RSVP automático
 -- (descomenta para cargar invitados de prueba)
 /*
-INSERT INTO guests (first_name, last_name, email, guest_group, plus_one_allowed, table_name)
+INSERT INTO wedding_guests (first_name, last_name, email, guest_group, plus_one_allowed, table_name)
 VALUES
   ('María', 'García', 'maria@ejemplo.com', 'family', true, 'Mesa 1'),
   ('Carlos', 'López', 'carlos@ejemplo.com', 'friends', false, 'Mesa 2'),

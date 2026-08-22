@@ -14,17 +14,17 @@
 -- completo, basta con correr este archivo.
 -- ═══════════════════════════════════════════════════════════
 
-ALTER TABLE weddings
+ALTER TABLE wedding_info
   ADD COLUMN IF NOT EXISTS ceremony_info   text,
   ADD COLUMN IF NOT EXISTS transport_info  text,
   ADD COLUMN IF NOT EXISTS drinking_note   text,
   ADD COLUMN IF NOT EXISTS cover_video_url text;
 
-ALTER TABLE faq
+ALTER TABLE wedding_faq
   ADD COLUMN IF NOT EXISTS category text;
 
 -- Año a mostrar en la foto polaroid de la sección "Our love story"
-ALTER TABLE gallery_photos
+ALTER TABLE wedding_gallery_photos
   ADD COLUMN IF NOT EXISTS year text;
 
 -- Wedding party (padrinos, damas, etc.) — sección "Wedding Party"

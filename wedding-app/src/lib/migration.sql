@@ -3,8 +3,8 @@
 -- Ejecutar en: Supabase Dashboard → SQL Editor
 -- ═══════════════════════════════════════════════════════════
 
--- ── weddings: campos de contenido ───────────────────────────
-ALTER TABLE weddings
+-- ── wedding_info: campos de contenido ───────────────────────
+ALTER TABLE wedding_info
   ADD COLUMN IF NOT EXISTS rsvp_deadline      date,
   ADD COLUMN IF NOT EXISTS theme              text DEFAULT 'forest',
   ADD COLUMN IF NOT EXISTS dress_code         text,
@@ -15,8 +15,8 @@ ALTER TABLE weddings
   ADD COLUMN IF NOT EXISTS details_photo_url  text,
   ADD COLUMN IF NOT EXISTS registry_photo_url text;
 
--- ── guests: campos de invitación v1 (ya aplicados) ──────────
-ALTER TABLE guests
+-- ── wedding_guests: campos de invitación v1 (ya aplicados) ──
+ALTER TABLE wedding_guests
   ADD COLUMN IF NOT EXISTS whatsapp              text,
   ADD COLUMN IF NOT EXISTS invitation_channel    text DEFAULT 'whatsapp',
   ADD COLUMN IF NOT EXISTS invitation_sent_at    timestamptz,
@@ -24,8 +24,8 @@ ALTER TABLE guests
   ADD COLUMN IF NOT EXISTS adults_count          integer DEFAULT 1,
   ADD COLUMN IF NOT EXISTS children_count        integer DEFAULT 0;
 
--- ── guests: nuevo modelo de estado y grupos familiares ───────
-ALTER TABLE guests
+-- ── wedding_guests: nuevo modelo de estado y grupos familiares ───────
+ALTER TABLE wedding_guests
   ADD COLUMN IF NOT EXISTS guest_display_name text,
   ADD COLUMN IF NOT EXISTS guest_type         text DEFAULT 'individual',
   ADD COLUMN IF NOT EXISTS side               text DEFAULT '',
@@ -34,18 +34,18 @@ ALTER TABLE guests
   ADD COLUMN IF NOT EXISTS rsvp_notes         text;
 
 -- Inferir guest_type desde datos existentes (si tienen members no vacíos = grupo)
-UPDATE guests SET guest_type = 'grupo'
+UPDATE wedding_guests SET guest_type = 'grupo'
 WHERE members IS NOT NULL AND jsonb_array_length(members) > 0;
 
 -- Poblar guest_display_name con datos existentes
-UPDATE guests
+UPDATE wedding_guests
 SET guest_display_name = TRIM(COALESCE(first_name,'') || ' ' || COALESCE(last_name,''))
 WHERE guest_display_name IS NULL OR guest_display_name = '';
 
 -- Constraint de valores válidos para status
 -- (sin vista — todo es manual)
-ALTER TABLE guests DROP CONSTRAINT IF EXISTS guests_status_check;
-ALTER TABLE guests ADD CONSTRAINT guests_status_check
+ALTER TABLE wedding_guests DROP CONSTRAINT IF EXISTS wedding_guests_status_check;
+ALTER TABLE wedding_guests ADD CONSTRAINT wedding_guests_status_check
   CHECK (status IN (
     'sin_enviar',
     'enviada',
@@ -55,8 +55,8 @@ ALTER TABLE guests ADD CONSTRAINT guests_status_check
     'lista_de_espera'
   ));
 
--- Migrar status existente desde rsvps hacia guests.status
-UPDATE guests g
+-- Migrar status existente desde wedding_rsvps hacia wedding_guests.status
+UPDATE wedding_guests g
 SET status = CASE r.status
   WHEN 'attending' THEN 'confirmado'
   WHEN 'declined'  THEN 'no_puede_ir'
@@ -67,15 +67,15 @@ SET status = CASE r.status
       ELSE 'sin_enviar'
     END
 END
-FROM rsvps r
+FROM wedding_rsvps r
 WHERE r.guest_id = g.id;
 
--- ── rsvps: columna para respuestas por miembro ───────────────
-ALTER TABLE rsvps
+-- ── wedding_rsvps: columna para respuestas por miembro ───────
+ALTER TABLE wedding_rsvps
   ADD COLUMN IF NOT EXISTS members_responses jsonb DEFAULT '[]';
 
--- ── weddings: valores por defecto ───────────────────────────
-UPDATE weddings SET
+-- ── wedding_info: valores por defecto ───────────────────────
+UPDATE wedding_info SET
   rsvp_deadline     = '2026-10-01',
   dress_code        = 'Etiqueta formal. Nos inspira la paleta del bosque: verdes profundos, salvia y tonos tierra. Te pedimos reservar el blanco, marfil y crema para la novia.',
   venue_description = 'Celebraremos entre jardines y luz calida en uno de los rincones mas hermosos de la capital. Ceremonia y recepcion seran en el mismo lugar.',
