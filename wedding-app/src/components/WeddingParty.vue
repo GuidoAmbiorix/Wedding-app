@@ -1,6 +1,6 @@
 <template>
   <section v-if="members.length" id="party" class="bg-forest-900 text-ondark py-20 px-6 text-center">
-    <p class="font-display text-lg tracking-[.05em] mb-2">Meet the BEST people</p>
+    <p class="font-display text-lg tracking-[.05em] mb-2">Nuestra gente favorita</p>
     <div class="w-px h-10 mx-auto mb-8" style="background:linear-gradient(var(--color-ondark-soft,#c9bd9c),transparent)"></div>
 
     <template v-for="group in groups" :key="group.key">

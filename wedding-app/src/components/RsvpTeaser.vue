@@ -18,7 +18,7 @@
              style="border-left:110px solid transparent;border-right:110px solid transparent;border-top:86px solid var(--color-sage-400,#8a8354)"></div>
         <div class="absolute top-3.5 left-1/2 -translate-x-1/2 w-[140px] h-[140px] bg-ivory flex flex-col items-center justify-center text-center shadow-lg"
              style="clip-path:path('M70 136 C10 94 5 52 33 28 C51 11 70 23 70 42 C70 23 89 11 107 28 C135 52 130 94 70 136 Z')">
-          <span class="font-script-var text-olive-800" style="font-size:1.15rem">Kindly Respond</span>
+          <span class="font-script-var text-olive-800" style="font-size:1.15rem">Confirma tu asistencia</span>
           <span class="text-[9px] tracking-[.14em] uppercase text-ink-mute mt-1.5">Antes del {{ deadline }}</span>
         </div>
         <div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-11 h-11 rounded-full flex items-center justify-center text-[13px] text-forest-900 font-display font-semibold"

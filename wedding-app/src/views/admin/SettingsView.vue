@@ -278,7 +278,7 @@ async function save() {
                 class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition resize-none"
                 placeholder="Por favor usa las áreas designadas..." />
             </div>
-            <p class="text-xs text-gray-400">Aparecen en la sección "Additional Information" del sitio. Los padrinos/damas se administran en la tabla <code class="bg-gray-100 px-1 rounded">wedding_party</code> de Supabase.</p>
+            <p class="text-xs text-gray-400">Aparecen en la sección "Información adicional" del sitio. Los padrinos/damas se administran en la tabla <code class="bg-gray-100 px-1 rounded">wedding_party</code> de Supabase.</p>
           </div>
         </div>
 

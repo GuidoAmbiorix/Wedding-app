@@ -12,10 +12,12 @@
          :alt="names"
          class="absolute inset-0 w-full h-full object-cover"
          loading="eager" fetchpriority="high" />
-    <!-- Filtro oscuro para que el texto resalte sobre el video -->
+    <!-- Filtro verde boscoso (cálido, no frío) + oscurecido para que el texto resalte -->
+    <div class="absolute inset-0" style="background:#4d6b23; mix-blend-mode:color; opacity:.28"></div>
+    <div class="absolute inset-0" style="background:#3d5220; mix-blend-mode:overlay; opacity:.15"></div>
     <div class="absolute inset-0"
-         style="background:linear-gradient(180deg, rgba(10,10,6,.55) 0%, rgba(10,10,6,.4) 40%, rgba(10,10,6,.45) 60%, rgba(10,10,6,.65) 100%)"></div>
-    <div class="absolute inset-0" style="background:radial-gradient(ellipse 60% 45% at 50% 50%, rgba(10,10,6,.35), transparent 70%)"></div>
+         style="background:linear-gradient(180deg, rgba(10,14,4,.55) 0%, rgba(10,14,4,.35) 40%, rgba(10,14,4,.4) 60%, rgba(10,14,4,.68) 100%)"></div>
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse 60% 45% at 50% 50%, rgba(10,14,4,.3), transparent 70%)"></div>
 
     <div class="relative z-10 text-center px-6">
       <p class="text-[14px] tracking-[.34em] uppercase text-ondark mb-6 drop-shadow-[0_2px_10px_rgba(0,0,0,.6)]">La boda de</p>

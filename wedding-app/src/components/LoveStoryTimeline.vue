@@ -1,7 +1,7 @@
 <template>
   <section v-if="items.length" class="relative py-20 md:py-24 px-6 text-ondark overflow-hidden"
            style="background:linear-gradient(rgba(20,20,12,.55),rgba(20,20,12,.75)), radial-gradient(ellipse at 30% 20%, #5c684a 0%, #33392a 50%, #1c2016 100%)">
-    <h2 v-reveal class="font-script-var text-center leading-none mb-16" style="font-size:clamp(2.2rem,4.5vw,3rem)">Our love story</h2>
+    <h2 v-reveal class="font-script-var text-center leading-none mb-16" style="font-size:clamp(2.2rem,4.5vw,3rem)">Nuestra historia de amor</h2>
 
     <div class="relative max-w-xl mx-auto">
       <div class="tl-dashed absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2"></div>

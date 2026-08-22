@@ -1,6 +1,6 @@
 <template>
   <section id="faqs" class="bg-cream text-ink px-8 py-20">
-    <h2 v-reveal class="font-script-var text-center text-olive-800 leading-none mb-14" style="font-size:clamp(2.2rem,4vw,3rem)">Frequently Asked Questions</h2>
+    <h2 v-reveal class="font-script-var text-center text-olive-800 leading-none mb-14" style="font-size:clamp(2.2rem,4vw,3rem)">Preguntas Frecuentes</h2>
 
     <div class="wrap max-w-3xl">
       <div v-for="group in groups" :key="group.name" class="mb-11">

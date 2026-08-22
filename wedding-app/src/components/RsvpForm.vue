@@ -1,6 +1,6 @@
 <template>
   <section id="rsvp" class="bg-ivory text-ink px-8 py-20">
-    <h2 v-reveal class="font-script-var text-center text-olive-800 leading-none" style="font-size:clamp(2.4rem,5vw,3.2rem)">Kindly Respond</h2>
+    <h2 v-reveal class="font-script-var text-center text-olive-800 leading-none" style="font-size:clamp(2.4rem,5vw,3.2rem)">Confirma tu Asistencia</h2>
     <p v-reveal="0.05" class="text-center text-[1rem] text-ink-mute max-w-[34ch] mx-auto mt-3 mb-9">
       Por favor responde antes del {{ deadline }}.
     </p>

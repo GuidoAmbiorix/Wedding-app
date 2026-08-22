@@ -9,7 +9,7 @@
     </svg>
 
     <div v-reveal class="wrap text-center relative z-10 max-w-[560px]">
-      <span class="font-script-var block text-olive-800 leading-none mb-7" style="font-size:clamp(2.4rem,5vw,3.4rem)">You are invited</span>
+      <span class="font-script-var block text-olive-800 leading-none mb-7" style="font-size:clamp(2.4rem,5vw,3.4rem)">Están invitados</span>
       <p class="text-[1.05rem] leading-relaxed text-ink-mute italic">
         Estamos muy felices de que estés aquí y no podemos esperar a celebrar este momento especial contigo.
       </p>

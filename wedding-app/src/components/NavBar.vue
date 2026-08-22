@@ -54,11 +54,11 @@ const initials = computed(() => {
 });
 
 const menu = [
-  { id:'home',    label:'Home' },
-  { id:'venue',   label:'Venue' },
-  { id:'details', label:'Details' },
-  { id:'party',   label:'Wedding Party' },
-  { id:'faqs',    label:'FAQ' },
+  { id:'home',    label:'Inicio' },
+  { id:'venue',   label:'Lugar' },
+  { id:'details', label:'Detalles' },
+  { id:'party',   label:'Cortejo' },
+  { id:'faqs',    label:'Preguntas' },
 ];
 
 function go(id) { scrollToId(id); }

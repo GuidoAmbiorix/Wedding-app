@@ -1,25 +1,25 @@
 <template>
   <section class="bg-forest-700 text-ondark py-20 px-6">
-    <p class="text-center text-[11px] tracking-[.34em] uppercase text-ondark-soft mb-14">Additional Information</p>
+    <p class="text-center text-[11px] tracking-[.34em] uppercase text-ondark-soft mb-14">Información adicional</p>
     <div class="wrap grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
       <div v-reveal>
-        <span class="font-script-var block mb-4" style="font-size:1.7rem">Ceremony</span>
+        <span class="font-script-var block mb-4" style="font-size:1.7rem">Ceremonia</span>
         <p class="text-[.92rem] leading-relaxed text-ondark-soft">{{ ceremonyText }}</p>
       </div>
       <div v-reveal="0.06">
-        <span class="font-script-var block mb-4" style="font-size:1.7rem">Attire</span>
+        <span class="font-script-var block mb-4" style="font-size:1.7rem">Vestimenta</span>
         <p class="text-[.92rem] leading-relaxed text-ondark-soft">{{ text }}</p>
         <div class="flex justify-center gap-2.5 mt-4">
           <span v-for="c in palette" :key="c" class="w-6 h-6 rounded-full border border-white/25" :style="{ background: c }"></span>
         </div>
       </div>
       <div v-reveal="0.12">
-        <span class="font-script-var block mb-4" style="font-size:1.7rem">Transport</span>
+        <span class="font-script-var block mb-4" style="font-size:1.7rem">Transporte</span>
         <p class="text-[.92rem] leading-relaxed text-ondark-soft">{{ transportText }}</p>
       </div>
     </div>
     <div v-reveal="0.16" class="text-center mt-16">
-      <span class="font-script-var block mb-3" style="font-size:1.4rem">Drinking &amp; Smoking</span>
+      <span class="font-script-var block mb-3" style="font-size:1.4rem">Bebidas y Fumar</span>
       <p class="text-[.9rem] leading-relaxed text-ondark-soft max-w-[52ch] mx-auto">{{ drinkingText }}</p>
     </div>
   </section>

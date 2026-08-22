@@ -16,8 +16,8 @@
       <!-- Where to stay -->
       <section class="bg-forest-800 text-ondark py-20">
         <div class="wrap text-center">
-          <span class="font-script-var block leading-none" style="font-size:clamp(1.8rem,3.5vw,2.4rem)">Where to</span>
-          <h3 class="font-display tracking-[.2em] uppercase text-2xl mt-1">Stay</h3>
+          <span class="font-script-var block leading-none" style="font-size:clamp(1.8rem,3.5vw,2.4rem)">Dónde</span>
+          <h3 class="font-display tracking-[.2em] uppercase text-2xl mt-1">Alojarse</h3>
           <p v-reveal="0.05" class="text-[1.02rem] leading-relaxed text-ondark-soft text-center max-w-[48ch] mx-auto mt-5">
             Reservamos tarifas especiales para nuestros invitados. Menciona el código
             <b class="text-sage-300">{{ promo }}</b> al reservar.
