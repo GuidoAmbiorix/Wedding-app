@@ -1,7 +1,7 @@
 <template>
   <div class="w-full min-h-screen overflow-x-hidden">
 
-      <NavBar :active="active" />
+      <NavBar :active="active" :wedding="w" />
 
       <HeroCover :wedding="w" />
 

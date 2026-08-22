@@ -1,7 +1,7 @@
 <template>
   <nav :class="['fixed top-0 left-0 right-0 z-40 flex items-center justify-between gap-4 px-6 md:px-10 py-4 transition-all duration-500',
                 isSolid ? 'bg-ivory/95 backdrop-blur shadow-[0_1px_0_rgba(0,0,0,.05)]' : 'bg-transparent']">
-    <a href="#" @click.prevent="go('home')" :class="['font-script-var text-2xl leading-none px-1', isSolid ? 'text-olive-800' : 'text-ondark drop-shadow']">J&amp;G</a>
+    <a href="#" @click.prevent="go('home')" :class="['font-script-var text-2xl leading-none px-1', isSolid ? 'text-olive-800' : 'text-ondark drop-shadow']">{{ initials }}</a>
 
     <div class="hidden md:flex gap-8">
       <a v-for="l in menu" :key="l.id" href="#" @click.prevent="go(l.id)" :class="linkCls(l.id)">{{ l.label }}</a>
@@ -42,10 +42,16 @@ import { scrollToId } from '@/composables/scroll.js';
 const props = defineProps({
   active:     { type: String,  default: 'home' },
   forceSolid: { type: Boolean, default: false },
+  wedding:    { type: Object,  default: () => ({}) },
 });
 const open   = ref(false);
 const solid  = ref(false);
 const isSolid = computed(() => props.forceSolid || solid.value);
+const initials = computed(() => {
+  const a = (props.wedding.couple_name_1 || 'J').trim().charAt(0);
+  const b = (props.wedding.couple_name_2 || 'G').trim().charAt(0);
+  return `${a}&${b}`.toUpperCase();
+});
 
 const menu = [
   { id:'home',    label:'Home' },

@@ -1,5 +1,5 @@
 <template>
-  <header id="home" class="relative min-h-[100svh] flex flex-col justify-end overflow-hidden">
+  <header id="home" class="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden">
     <video v-if="wedding.cover_video_url && (!reduceMotion || !(wedding.cover_photo_url || wedding.couple_photo_url))"
            :key="wedding.cover_video_url"
            class="absolute inset-0 w-full h-full object-cover"
@@ -12,28 +12,29 @@
          :alt="names"
          class="absolute inset-0 w-full h-full object-cover"
          loading="eager" fetchpriority="high" />
-    <!-- Overlay: oscurece arriba (nav) y abajo (texto) para legibilidad -->
+    <!-- Filtro oscuro para que el texto resalte sobre el video -->
     <div class="absolute inset-0"
-         style="background:linear-gradient(180deg, rgba(20,18,10,.4) 0%, rgba(20,18,10,.05) 32%, rgba(20,18,10,.18) 62%, rgba(20,18,10,.62) 100%)"></div>
+         style="background:linear-gradient(180deg, rgba(10,10,6,.55) 0%, rgba(10,10,6,.4) 40%, rgba(10,10,6,.45) 60%, rgba(10,10,6,.65) 100%)"></div>
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse 60% 45% at 50% 50%, rgba(10,10,6,.35), transparent 70%)"></div>
 
-    <div class="relative z-10 text-center px-6 pb-14 pt-32">
-      <p class="text-[11px] tracking-[.32em] uppercase text-ondark/90 mb-4">La boda de</p>
-      <h1 class="font-script-var text-ondark leading-[.9] flex items-center justify-center gap-4 flex-wrap drop-shadow-[0_2px_20px_rgba(0,0,0,.3)]"
-          style="font-size:clamp(3rem,10vw,6rem)">
+    <div class="relative z-10 text-center px-6">
+      <p class="text-[14px] tracking-[.34em] uppercase text-ondark mb-6 drop-shadow-[0_2px_10px_rgba(0,0,0,.6)]">La boda de</p>
+      <h1 class="font-script-var text-ondark leading-[.9] flex items-center justify-center gap-5 flex-wrap drop-shadow-[0_2px_28px_rgba(0,0,0,.6)]"
+          style="font-size:clamp(4rem,14vw,9rem)">
         <span>{{ wedding.couple_name_1 }}</span>
-        <span class="font-display italic text-ondark/85" style="font-size:.42em;font-weight:300">&amp;</span>
+        <span class="font-display italic text-ondark/90" style="font-size:.42em;font-weight:300">&amp;</span>
         <span>{{ wedding.couple_name_2 }}</span>
       </h1>
-    </div>
 
-    <div class="relative z-10 flex justify-between items-center px-6 md:px-12 pb-8 text-[11px] tracking-[.22em] uppercase text-ondark/90">
-      <span>{{ shortDate }}</span>
-      <span class="hidden sm:block h-6 w-px bg-ondark/30"></span>
-      <span>{{ wedding.venue }}</span>
+      <div class="flex justify-center items-center gap-4 mt-9 text-[13px] tracking-[.22em] uppercase text-ondark drop-shadow-[0_2px_10px_rgba(0,0,0,.6)]">
+        <span>{{ shortDate }}</span>
+        <span class="h-3.5 w-px bg-ondark/40"></span>
+        <span>{{ wedding.venue }}</span>
+      </div>
     </div>
 
     <!-- Scroll cue -->
-    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 cue-bar" style="background:linear-gradient(#f1e9d6,transparent)"></div>
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 cue-bar" style="background:linear-gradient(#f1e9d6,transparent)"></div>
   </header>
 </template>
 
