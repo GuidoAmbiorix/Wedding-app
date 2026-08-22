@@ -33,8 +33,8 @@ export const useGuestsStore = defineStore('guests', () => {
     if (loading.value) return
     loading.value = true
     const { data } = await supabase
-      .from('guests')
-      .select('*, rsvps(*)')
+      .from('wedding_guests')
+      .select('*, wedding_rsvps(*)')
       .order('guest_display_name')
     if (data) guests.value = data
     loading.value = false
@@ -46,9 +46,9 @@ export const useGuestsStore = defineStore('guests', () => {
       guest.guest_display_name = `${guest.first_name || ''} ${guest.last_name || ''}`.trim()
     }
     const { data, error } = await supabase
-      .from('guests')
+      .from('wedding_guests')
       .insert({ ...guest, status: guest.status || 'sin_enviar' })
-      .select('*, rsvps(*)')
+      .select('*, wedding_rsvps(*)')
       .single()
     if (error) throw error
     await fetchGuests()
@@ -65,7 +65,7 @@ export const useGuestsStore = defineStore('guests', () => {
     // Uncomment the line below if you haven't run the migration yet:
     // delete clean.guest_type
     const { data, error } = await supabase
-      .from('guests')
+      .from('wedding_guests')
       .update(clean)
       .eq('id', id)
       .select()
@@ -78,7 +78,7 @@ export const useGuestsStore = defineStore('guests', () => {
 
   async function updateStatus(id, status) {
     const { data, error } = await supabase
-      .from('guests')
+      .from('wedding_guests')
       .update({ status })
       .eq('id', id)
       .select()
@@ -90,15 +90,15 @@ export const useGuestsStore = defineStore('guests', () => {
   }
 
   async function deleteGuest(id) {
-    const { error } = await supabase.from('guests').delete().eq('id', id)
+    const { error } = await supabase.from('wedding_guests').delete().eq('id', id)
     if (error) throw error
     guests.value = guests.value.filter(g => g.id !== id)
   }
 
   async function fetchGuestByToken(token) {
     const { data, error } = await supabase
-      .from('guests')
-      .select('*, rsvps(*)')
+      .from('wedding_guests')
+      .select('*, wedding_rsvps(*)')
       .eq('rsvp_token', token)
       .single()
     if (error) return null
@@ -108,7 +108,7 @@ export const useGuestsStore = defineStore('guests', () => {
   async function markInvitationSent(guestId) {
     const now = new Date().toISOString()
     const { data, error } = await supabase
-      .from('guests')
+      .from('wedding_guests')
       .update({ invitation_sent_at: now, status: 'enviada' })
       .eq('id', guestId)
       .select()

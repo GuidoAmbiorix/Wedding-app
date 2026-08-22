@@ -38,13 +38,13 @@ async function load() {
     // - Evita exponer la lista de invitados en el cliente
     // - findGuest() hace la query puntual al momento de buscar
     const [w, ev, fq, rg, ac, ga, gb, wp] = await Promise.all([
-      supabase.from('weddings').select('*').limit(1).single(),
-      supabase.from('events').select('*').order('sort_order'),
-      supabase.from('faq').select('*').order('sort_order'),
-      supabase.from('registry').select('*'),
-      supabase.from('accommodations').select('*'),
-      supabase.from('gallery_photos').select('*').order('sort_order'),
-      supabase.from('guestbook').select('*').order('created_at', { ascending: false }),
+      supabase.from('wedding_info').select('*').limit(1).single(),
+      supabase.from('wedding_events').select('*').order('sort_order'),
+      supabase.from('wedding_faq').select('*').order('sort_order'),
+      supabase.from('wedding_registry').select('*'),
+      supabase.from('wedding_accommodations').select('*'),
+      supabase.from('wedding_gallery_photos').select('*').order('sort_order'),
+      supabase.from('wedding_guestbook').select('*').order('created_at', { ascending: false }),
       supabase.from('wedding_party').select('*').order('sort_order'),
     ]);
     if (w.data) state.wedding    = w.data;
@@ -71,7 +71,7 @@ async function findGuest(name) {
   if (isLive) {
     // Busca primero por guest_display_name, luego por first_name
     const { data } = await supabase
-      .from('guests')
+      .from('wedding_guests')
       .select('*')
       .or(`guest_display_name.ilike.%${q}%,first_name.ilike.%${q.split(' ')[0]}%`)
       .limit(20);
@@ -92,7 +92,7 @@ async function findGuest(name) {
 
 async function findGuestByToken(token) {
   if (isLive) {
-    const { data } = await supabase.from('guests').select('*').eq('rsvp_token', token).single();
+    const { data } = await supabase.from('wedding_guests').select('*').eq('rsvp_token', token).single();
     return data || null;
   }
   return state.guests.find(g => g.rsvp_token === token) || null;
@@ -102,7 +102,7 @@ async function markInvitationSent(guestId) {
   const ts = new Date().toISOString();
   const guest = state.guests.find(g => g.id === guestId);
   if (guest) guest.invitation_sent_at = ts;
-  if (isLive) await supabase.from('guests').update({ invitation_sent_at: ts }).eq('id', guestId);
+  if (isLive) await supabase.from('wedding_guests').update({ invitation_sent_at: ts }).eq('id', guestId);
 }
 
 async function submitRsvp(guest, payload) {
@@ -118,13 +118,13 @@ async function submitRsvp(guest, payload) {
   };
   if (isLive) {
     // Upsert por guest_id
-    const { data: existing } = await supabase.from('rsvps').select('id').eq('guest_id', row.guest_id).maybeSingle();
+    const { data: existing } = await supabase.from('wedding_rsvps').select('id').eq('guest_id', row.guest_id).maybeSingle();
     let data;
     if (existing) {
-      const res = await supabase.from('rsvps').update({ ...row, id: undefined }).eq('id', existing.id).select().single();
+      const res = await supabase.from('wedding_rsvps').update({ ...row, id: undefined }).eq('id', existing.id).select().single();
       data = res.data;
     } else {
-      const res = await supabase.from('rsvps').insert({ ...row, id: undefined }).select().single();
+      const res = await supabase.from('wedding_rsvps').insert({ ...row, id: undefined }).select().single();
       data = res.data;
     }
     if (data) {
@@ -140,7 +140,7 @@ async function submitRsvp(guest, payload) {
 
 async function addGuestbook(name, message) {
   const row = { id: uid(), guest_name: name, message, approved: false, created_at: new Date().toISOString() };
-  if (isLive) { await supabase.from('guestbook').insert({ ...row, id: undefined }); }
+  if (isLive) { await supabase.from('wedding_guestbook').insert({ ...row, id: undefined }); }
   state.guestbook.unshift(row);
   return row;
 }
@@ -171,19 +171,19 @@ function table(key, tbl) {
 }
 
 const actions = {
-  events:         table('events', 'events'),
-  faq:            table('faq', 'faq'),
-  registry:       table('registry', 'registry'),
-  accommodations: table('accommodations', 'accommodations'),
-  gallery:        table('gallery', 'gallery_photos'),
-  guests:         table('guests', 'guests'),
-  guestbook:      table('guestbook', 'guestbook'),
+  events:         table('events', 'wedding_events'),
+  faq:            table('faq', 'wedding_faq'),
+  registry:       table('registry', 'wedding_registry'),
+  accommodations: table('accommodations', 'wedding_accommodations'),
+  gallery:        table('gallery', 'wedding_gallery_photos'),
+  guests:         table('guests', 'wedding_guests'),
+  guestbook:      table('guestbook', 'wedding_guestbook'),
   weddingParty:   table('weddingParty', 'wedding_party'),
 };
 
 async function updateWedding(patch) {
   Object.assign(state.wedding, patch);
-  if (isLive) await supabase.from('weddings').update(patch).eq('id', state.wedding.id);
+  if (isLive) await supabase.from('wedding_info').update(patch).eq('id', state.wedding.id);
 }
 
 // ── Stats ──────────────────────────────────────────────────────

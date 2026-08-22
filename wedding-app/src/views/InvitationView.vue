@@ -257,11 +257,11 @@ async function fetchGuest() {
   if (!token) { loading.value = false; return; }
 
   if (isLive) {
-    const { data } = await supabase.from('guests').select('*').eq('rsvp_token', token).single();
+    const { data } = await supabase.from('wedding_guests').select('*').eq('rsvp_token', token).single();
     guest.value = data || null;
     if (guest.value) {
       // Sin auto-tracking — el admin actualiza el status manualmente
-      const { data: rsvp } = await supabase.from('rsvps').select('*').eq('guest_id', guest.value.id).maybeSingle();
+      const { data: rsvp } = await supabase.from('wedding_rsvps').select('*').eq('guest_id', guest.value.id).maybeSingle();
       if (rsvp && rsvp.status !== 'pending') {
         existingRsvp.value = rsvp;
         alreadyRsvped.value = true;

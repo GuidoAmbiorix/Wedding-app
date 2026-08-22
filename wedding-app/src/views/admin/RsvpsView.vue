@@ -117,18 +117,18 @@ const mealLabel = { chicken:'Pollo', beef:'Res', fish:'Pescado', vegetarian:'Veg
           </div>
 
           <!-- Menú por miembros (si tiene rsvp con members_responses) -->
-          <div v-if="guest.rsvps?.[0]?.members_responses?.length" class="mt-3 pt-3 border-t border-gray-50 space-y-1">
+          <div v-if="guest.wedding_rsvps?.[0]?.members_responses?.length" class="mt-3 pt-3 border-t border-gray-50 space-y-1">
             <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Menú</p>
-            <div v-for="mr in guest.rsvps[0].members_responses" :key="mr.name"
+            <div v-for="mr in guest.wedding_rsvps[0].members_responses" :key="mr.name"
                  class="flex justify-between text-xs">
               <span class="text-gray-600">{{ mr.name }}</span>
               <span class="text-gray-400">{{ mealLabel[mr.meal_choice] || '—' }}</span>
             </div>
           </div>
           <!-- Mensaje -->
-          <p v-if="guest.rsvps?.[0]?.message"
+          <p v-if="guest.wedding_rsvps?.[0]?.message"
              class="mt-3 pt-3 border-t border-gray-50 text-xs text-gray-500 italic line-clamp-2">
-            "{{ guest.rsvps[0].message }}"
+            "{{ guest.wedding_rsvps[0].message }}"
           </p>
         </div>
       </div>
@@ -179,16 +179,16 @@ const mealLabel = { chicken:'Pollo', beef:'Res', fish:'Pescado', vegetarian:'Veg
                 </td>
                 <!-- Menú -->
                 <td class="px-4 py-4 text-xs text-gray-500 hidden lg:table-cell">
-                  <div v-if="guest.rsvps?.[0]?.members_responses?.length" class="space-y-0.5">
-                    <p v-for="mr in guest.rsvps[0].members_responses" :key="mr.name" class="truncate">
+                  <div v-if="guest.wedding_rsvps?.[0]?.members_responses?.length" class="space-y-0.5">
+                    <p v-for="mr in guest.wedding_rsvps[0].members_responses" :key="mr.name" class="truncate">
                       {{ mr.name }}: {{ mealLabel[mr.meal_choice] || '—' }}
                     </p>
                   </div>
-                  <span v-else>{{ mealLabel[guest.rsvps?.[0]?.meal_choice] || '—' }}</span>
+                  <span v-else>{{ mealLabel[guest.wedding_rsvps?.[0]?.meal_choice] || '—' }}</span>
                 </td>
                 <!-- Mensaje -->
                 <td class="px-4 py-4 text-xs text-gray-400 hidden xl:table-cell max-w-xs">
-                  <span class="line-clamp-2 italic">{{ guest.rsvps?.[0]?.message || '—' }}</span>
+                  <span class="line-clamp-2 italic">{{ guest.wedding_rsvps?.[0]?.message || '—' }}</span>
                 </td>
               </tr>
 
