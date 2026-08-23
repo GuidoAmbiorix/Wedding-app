@@ -9,6 +9,7 @@ export const demoWedding = {
   venue_address:      'Bosque San Miguel, Santo Domingo, D.N.',
   cover_photo_url:    IMG + 'hero.jpg',
   cover_video_url:    '/video/hero.mp4',
+  save_the_date_image_url: '',
   couple_photo_url:   IMG + 'couple.jpg',
   venue_photo_url:    IMG + 'venue.jpg',
   details_photo_url:  IMG + 'lake.jpg',

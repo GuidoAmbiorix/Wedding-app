@@ -5,6 +5,8 @@
 
       <HeroCover :wedding="w" />
 
+      <SaveTheDate :wedding="w" />
+
       <InvitedIntro :wedding="w" />
 
       <DateCountdown :wedding="w" />
@@ -99,6 +101,7 @@ import { scrollToId } from '@/composables/scroll.js';
 // Above-fold: carga inmediata
 import NavBar from '@/components/NavBar.vue';
 import HeroCover from '@/components/HeroCover.vue';
+import SaveTheDate from '@/components/SaveTheDate.vue';
 import InvitedIntro from '@/components/InvitedIntro.vue';
 import DateCountdown from '@/components/DateCountdown.vue';
 import RsvpTeaser from '@/components/RsvpTeaser.vue';
@@ -126,7 +129,7 @@ function goRsvp() { scrollToId('rsvp'); }
 
 const active = ref('home');
 const showFab = ref(false);
-const ids = ['home', 'venue', 'details', 'party', 'faqs', 'rsvp'];
+const ids = ['home', 'save-the-date', 'venue', 'details', 'party', 'faqs', 'rsvp'];
 
 // offsetTop no fuerza layout reflow (getBoundingClientRect sí lo hace en cada scroll)
 let rafId = null;

@@ -22,6 +22,7 @@ const form = ref({
   venue_address: '',
   cover_photo_url: '',
   cover_video_url: '',
+  save_the_date_image_url: '',
   couple_photo_url: '',
   venue_photo_url: '',
   details_photo_url: '',
@@ -177,6 +178,28 @@ async function save() {
             </div>
             <div v-else class="mt-3 rounded-xl border-2 border-dashed border-gray-200 h-24 flex items-center justify-center">
               <p class="text-xs text-gray-400">La imagen o video aparecerá aquí</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección: Save the Date -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-50 flex items-center gap-3">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center bg-rose-50">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <p class="text-sm font-semibold text-gray-800">Save the Date</p>
+          </div>
+          <div class="p-4 sm:p-6 space-y-3">
+            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Imagen del save the date</label>
+            <input v-model="form.save_the_date_image_url"
+              class="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:bg-white focus:border-transparent transition"
+              placeholder="https://tu-imagen.com/save-the-date.jpg" />
+            <p class="text-xs text-gray-400">Pega la URL pública de la imagen que diseñaron para el "save the date". Se muestra dentro de la tarjeta que aparece al romper el sello, en la nueva sección del menú. Si se deja vacío, se muestra una tarjeta de texto con los nombres, fecha y venue.</p>
+            <div v-if="form.save_the_date_image_url" class="mt-2 rounded-xl overflow-hidden bg-gray-100" style="max-height:220px;">
+              <img :src="form.save_the_date_image_url" alt="Preview" class="w-full h-auto object-contain" style="max-height:220px" @error="$event.target.style.display='none'" />
             </div>
           </div>
         </div>

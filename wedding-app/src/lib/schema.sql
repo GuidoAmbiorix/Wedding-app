@@ -11,6 +11,7 @@ create table if not exists wedding_info (
   venue_address text,
   cover_photo_url text,
   cover_video_url text,
+  save_the_date_image_url text,
   story text,
   theme text default 'ivory',
   created_at timestamptz default now()
