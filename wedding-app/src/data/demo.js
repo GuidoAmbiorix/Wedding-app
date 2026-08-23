@@ -54,6 +54,11 @@ export const demoRegistry = [
   { id:'r3', store_name:'Luna de miel', store_url:'#', description:'Fondo de viaje' },
 ];
 
+export const demoBankAccounts = [
+  { id:'b1', bank_name:'Banreservas', account_number:'1234567890', holder_name:'Jennifer Alondra', account_type:'ahorros', holder_id:'', note:'', sort_order:1 },
+  { id:'b2', bank_name:'Banco Popular', account_number:'0987654321', holder_name:'Guido Ambiorix', account_type:'corriente', holder_id:'', note:'', sort_order:2 },
+];
+
 export const demoAccommodations = [
   { id:'a1', hotel_name:'JW Marriott',            address:'Av. Winston Churchill', url:'#', promo_code:'JENNIFER&GUIDO', distance_km:6 },
   { id:'a2', hotel_name:'Embassy Suites',          address:'Av. Tiradentes',        url:'#', promo_code:'JENNIFER&GUIDO', distance_km:4 },

@@ -112,6 +112,19 @@ create table if not exists wedding_accommodations (
   created_at timestamptz default now()
 );
 
+-- Cuentas bancarias (opción de regalo)
+create table if not exists wedding_bank_accounts (
+  id uuid primary key default gen_random_uuid(),
+  bank_name text not null,
+  account_number text not null,
+  holder_name text not null,
+  account_type text check (account_type in ('ahorros','corriente')) default 'ahorros',
+  holder_id text,
+  note text,
+  sort_order integer default 0,
+  created_at timestamptz default now()
+);
+
 -- Wedding party table (padrinos, damas, etc.)
 create table if not exists wedding_party (
   id uuid primary key default gen_random_uuid(),
@@ -146,6 +159,7 @@ alter table wedding_faq enable row level security;
 alter table wedding_accommodations enable row level security;
 alter table wedding_guestbook enable row level security;
 alter table wedding_party enable row level security;
+alter table wedding_bank_accounts enable row level security;
 
 -- Policies: allow anon to read public data
 create policy "Public read wedding_info" on wedding_info for select using (true);
@@ -157,6 +171,7 @@ create policy "Public read wedding_faq" on wedding_faq for select using (true);
 create policy "Public read wedding_accommodations" on wedding_accommodations for select using (true);
 create policy "Public read approved wedding_guestbook" on wedding_guestbook for select using (approved = true);
 create policy "Public read wedding_party" on wedding_party for select using (true);
+create policy "Public read wedding_bank_accounts" on wedding_bank_accounts for select using (true);
 
 -- Guests: only readable by token match (handled in app)
 create policy "Public read wedding_guests by token" on wedding_guests for select using (true);
@@ -192,3 +207,6 @@ create policy "Anyone can delete wedding_guests" on wedding_guests for delete us
 create policy "Anyone can insert wedding_party" on wedding_party for insert with check (true);
 create policy "Anyone can update wedding_party" on wedding_party for update using (true);
 create policy "Anyone can delete wedding_party" on wedding_party for delete using (true);
+create policy "Anyone can insert wedding_bank_accounts" on wedding_bank_accounts for insert with check (true);
+create policy "Anyone can update wedding_bank_accounts" on wedding_bank_accounts for update using (true);
+create policy "Anyone can delete wedding_bank_accounts" on wedding_bank_accounts for delete using (true);

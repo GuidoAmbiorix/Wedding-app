@@ -1,7 +1,7 @@
 <template>
   <section class="bg-forest-700 text-ondark py-20 px-6">
     <p class="text-center text-[11px] tracking-[.34em] uppercase text-ondark-soft mb-14">Información adicional</p>
-    <div class="wrap grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+    <div class="wrap grid grid-cols-1 md:grid-cols-2 gap-12 text-center max-w-2xl">
       <div v-reveal>
         <span class="font-script-var block mb-4" style="font-size:1.7rem">Ceremonia</span>
         <p class="text-[.92rem] leading-relaxed text-ondark-soft">{{ ceremonyText }}</p>
@@ -12,10 +12,6 @@
         <div class="flex justify-center gap-2.5 mt-4">
           <span v-for="c in palette" :key="c" class="w-6 h-6 rounded-full border border-white/25" :style="{ background: c }"></span>
         </div>
-      </div>
-      <div v-reveal="0.12">
-        <span class="font-script-var block mb-4" style="font-size:1.7rem">Transporte</span>
-        <p class="text-[.92rem] leading-relaxed text-ondark-soft">{{ transportText }}</p>
       </div>
     </div>
     <div v-reveal="0.16" class="text-center mt-16">
@@ -31,8 +27,6 @@ const text = props.wedding?.dress_code
   || 'Etiqueta formal. Nos inspira la paleta del bosque: verdes profundos, salvia y tonos tierra. Te pedimos reservar el blanco, marfil y crema para la novia.';
 const ceremonyText = props.wedding?.ceremony_info
   || `La ceremonia se realizará en ${props.wedding?.venue || 'nuestro venue'}. Te pedimos llegar con anticipación para acomodarte antes de que comience.`;
-const transportText = props.wedding?.transport_info
-  || 'Habrá parqueo disponible en el lugar. Si necesitas transporte, contáctanos para coordinar.';
 const drinkingText = props.wedding?.drinking_note
   || 'Por favor usa las áreas designadas si deseas fumar. Anima a quienes beban a hacerlo con responsabilidad y a planear transporte seguro.';
 const palette = ['#241d16', '#4a4530', '#6b6640', '#8a8354', '#c9bd9c'];

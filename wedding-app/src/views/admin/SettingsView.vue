@@ -37,7 +37,6 @@ const form = ref({
   venue_description: '',
   dress_code: '',
   ceremony_info: '',
-  transport_info: '',
   drinking_note: '',
   rsvp_deadline: '',
   total_capacity: 0,
@@ -70,7 +69,6 @@ const tabs = [
   { id: 'itinerario',   label: 'Itinerario',        icon: 'M8 2v3M16 2v3M3.5 9h17M5 5h14a1.5 1.5 0 011.5 1.5v13A1.5 1.5 0 0119 21H5a1.5 1.5 0 01-1.5-1.5v-13A1.5 1.5 0 015 5z' },
   { id: 'faq',          label: 'Preguntas',         icon: 'M9.5 9a2.5 2.5 0 115 0c0 1.5-2.5 2-2.5 4M12 17h.01M12 21a9 9 0 100-18 9 9 0 000 18z' },
   { id: 'regalos',      label: 'Regalos',           icon: 'M20 12v9H4v-9M2 7h20v5H2V7zM12 22V7M12 7C10 3 5 3 5 5.5S9 7 12 7zM12 7c2-4 7-4 7-1.5S15 7 12 7z' },
-  { id: 'hospedaje',    label: 'Hospedaje',         icon: 'M3 21V8l9-5 9 5v13M9 21v-6h6v6M3 12h18' },
   { id: 'cortejo',      label: 'Cortejo',           icon: 'M16 11a4 4 0 10-8 0 4 4 0 008 0zM6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2' },
   { id: 'galeria',      label: 'Galería',           icon: 'M4 5h16a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V6a1 1 0 011-1zM8 11a2 2 0 100-4 2 2 0 000 4zM3 16l5-5 4 4 3-3 6 6' },
 ]
@@ -87,18 +85,16 @@ const faqFields = [
   { key: 'answer', label: 'Respuesta', type: 'textarea', placeholder: 'Pedimos vestimenta elegante...' },
   { key: 'category', label: 'Categoría (opcional)', type: 'text', placeholder: 'Detalles generales' },
 ]
-const registryFields = [
-  { key: 'store_name', label: 'Nombre de la tienda', type: 'text', placeholder: 'Liverpool' },
-  { key: 'store_url', label: 'URL de la lista', type: 'text', placeholder: 'https://...' },
-  { key: 'description', label: 'Descripción', type: 'textarea', placeholder: 'Nuestra lista con artículos para el hogar' },
-]
-const accommodationFields = [
-  { key: 'hotel_name', label: 'Nombre del hotel', type: 'text', placeholder: 'Hotel Bosque & Spa' },
-  { key: 'address', label: 'Dirección', type: 'text', placeholder: 'Av. del Pinar 45' },
-  { key: 'url', label: 'URL de reserva', type: 'text', placeholder: 'https://...' },
-  { key: 'promo_code', label: 'Código promocional', type: 'text', placeholder: 'JENNIFER2026' },
-  { key: 'price_range', label: 'Rango de precio', type: 'text', placeholder: '$120 - $180 / noche' },
-  { key: 'distance_km', label: 'Distancia al venue (km)', type: 'number' },
+const bankAccountFields = [
+  { key: 'bank_name', label: 'Banco', type: 'text', placeholder: 'Banreservas' },
+  { key: 'account_number', label: 'Número de cuenta', type: 'text', placeholder: '1234567890' },
+  { key: 'holder_name', label: 'Nombre del titular', type: 'text', placeholder: 'Jennifer Alondra' },
+  { key: 'account_type', label: 'Tipo de cuenta', type: 'select', options: [
+    { value: 'ahorros', label: 'Ahorros' },
+    { value: 'corriente', label: 'Corriente' },
+  ] },
+  { key: 'holder_id', label: 'Cédula/RNC del titular (opcional)', type: 'text', placeholder: '000-0000000-0' },
+  { key: 'note', label: 'Nota/instrucciones (opcional)', type: 'textarea', placeholder: 'Por favor escribe tu nombre en el concepto de la transferencia' },
 ]
 const partyFields = [
   { key: 'name', label: 'Nombre', type: 'text', placeholder: 'Amelia Davis' },
@@ -299,12 +295,6 @@ async function save() {
               <textarea v-model="form.ceremony_info" rows="2"
                 class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition resize-none"
                 placeholder="La ceremonia se realizará en... Te pedimos llegar..." />
-            </div>
-            <div>
-              <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Transporte</label>
-              <textarea v-model="form.transport_info" rows="2"
-                class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition resize-none"
-                placeholder="Habrá transporte disponible desde..." />
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Nota sobre bebidas / fumar</label>
@@ -540,28 +530,42 @@ async function save() {
     </div>
 
     <!-- ── Tab: Mesa de Regalos ── -->
-    <div v-else-if="activeTab === 'regalos'" class="max-w-2xl">
+    <div v-else-if="activeTab === 'regalos'" class="max-w-2xl space-y-5">
+
+      <form @submit.prevent="save">
+        <div class="bg-white rounded-2xl border border-[#ece5d6] shadow-[0_1px_3px_rgba(58,54,35,0.05)] overflow-hidden">
+          <div class="px-6 py-4 border-b border-[#f2ecdf] flex items-center gap-3">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center bg-amber-50">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <p class="font-serif text-[16px] font-semibold text-[#2a2620] tracking-wide">Foto de la sección</p>
+          </div>
+          <div class="p-4 sm:p-6 space-y-3">
+            <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider">Imagen al lado del texto</label>
+            <input v-model="form.registry_photo_url"
+              class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition"
+              placeholder="https://..." />
+            <p class="text-xs text-gray-400">Aparece junto al texto "Mesa de Regalos" en el sitio.</p>
+          </div>
+        </div>
+        <button type="submit" class="mt-3 px-5 py-2 rounded-lg text-sm font-semibold text-[#faf7f0]" style="background:#3a3623">Guardar foto</button>
+        <Transition name="fade">
+          <span v-if="saved" class="ml-3 text-sm font-medium text-emerald-600">Guardado ✓</span>
+        </Transition>
+      </form>
+
       <AdminListEditor
-        title="Mesa de Regalos" description="Tiendas o listas de regalo que verán los invitados."
+        title="Cuentas Bancarias" description="Opciones de regalo en efectivo por transferencia bancaria."
         icon="M20 12v9H4v-9M2 7h20v5H2V7zM12 22V7M12 7C10 3 5 3 5 5.5S9 7 12 7zM12 7c2-4 7-4 7-1.5S15 7 12 7z"
         icon-bg="#fff7ed" icon-color="#c2621a"
-        :items="listState.registry" :fields="registryFields"
-        title-field="store_name" subtitle-field="description" item-label="tienda"
-        :empty-defaults="{ store_name: '', store_url: '', description: '' }"
-        :add="listActions.registry.add" :update="listActions.registry.update" :remove="listActions.registry.remove" />
+        :items="listState.bankAccounts" :fields="bankAccountFields"
+        title-field="bank_name" subtitle-field="holder_name" item-label="cuenta" sortable
+        :empty-defaults="{ bank_name: '', account_number: '', holder_name: '', account_type: 'ahorros', holder_id: '', note: '' }"
+        :add="listActions.bankAccounts.add" :update="listActions.bankAccounts.update" :remove="listActions.bankAccounts.remove" />
     </div>
 
-    <!-- ── Tab: Hospedaje ── -->
-    <div v-else-if="activeTab === 'hospedaje'" class="max-w-2xl">
-      <AdminListEditor
-        title="Dónde Alojarse" description="Hoteles u opciones de hospedaje sugeridas para tus invitados."
-        icon="M3 21V8l9-5 9 5v13M9 21v-6h6v6M3 12h18"
-        icon-bg="#eff6ff" icon-color="#1d4ed8"
-        :items="listState.accommodations" :fields="accommodationFields"
-        title-field="hotel_name" subtitle-field="address" item-label="hotel"
-        :empty-defaults="{ hotel_name: '', address: '', url: '', promo_code: '', price_range: '', distance_km: null }"
-        :add="listActions.accommodations.add" :update="listActions.accommodations.update" :remove="listActions.accommodations.remove" />
-    </div>
 
     <!-- ── Tab: Cortejo ── -->
     <div v-else-if="activeTab === 'cortejo'" class="max-w-2xl">
@@ -660,7 +664,6 @@ async function save() {
             <div v-for="field in [
               { key: 'couple_photo_url',   label: 'Foto de la pareja',   hint: 'Sección Nuestra Historia' },
               { key: 'venue_photo_url',    label: 'Foto del venue',       hint: 'Sección Dónde sucede todo' },
-              { key: 'details_photo_url',  label: 'Foto de detalles',     hint: 'Encabezado sección Detalles' },
               { key: 'registry_photo_url', label: 'Foto mesa de regalos', hint: 'Sección Mesa de Regalos' },
             ]" :key="field.key" class="space-y-1">
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider">{{ field.label }}</label>

@@ -15,26 +15,6 @@
 
       <LoveStoryTimeline :photos="state.gallery" />
 
-      <!-- Where to stay -->
-      <section class="bg-forest-800 text-ondark py-20">
-        <div class="wrap text-center">
-          <span class="font-script-var block leading-none" style="font-size:clamp(1.8rem,3.5vw,2.4rem)">Dónde</span>
-          <h3 class="font-display tracking-[.2em] uppercase text-2xl mt-1">Alojarse</h3>
-          <p v-reveal="0.05" class="text-[1.02rem] leading-relaxed text-ondark-soft text-center max-w-[48ch] mx-auto mt-5">
-            Reservamos tarifas especiales para nuestros invitados. Menciona el código
-            <b class="text-sage-300">{{ promo }}</b> al reservar.
-          </p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-9 max-w-xl mx-auto">
-            <a v-for="(a, i) in state.accommodations" :key="a.id" v-reveal="i*0.05"
-               class="border border-white/25 px-5 py-6 text-center no-underline transition hover:bg-white/5"
-               :href="a.url" target="_blank" rel="noopener">
-              <h5 class="font-display tracking-[.1em] uppercase text-[.95rem]">{{ a.hotel_name }}</h5>
-              <p class="text-[.8rem] text-ondark-soft mt-1.5">{{ a.address }} · {{ a.distance_km }} km del lugar</p>
-            </a>
-          </div>
-        </div>
-      </section>
-
       <!-- Venue -->
       <section id="venue" class="bg-forest-900 text-ondark py-20">
         <div class="wrap">
@@ -48,7 +28,7 @@
 
       <DirectionsMap :wedding="w" />
 
-      <ScheduleTimeline :events="state.events" :image="w.details_photo_url || img('lake.jpg')" />
+      <ScheduleTimeline :events="state.events" />
 
       <DressCode :wedding="w" />
 
@@ -58,16 +38,24 @@
           <EditorialBlock :image="w.registry_photo_url || img('hands.jpg')" alt="Detalle" frame="tl">
             <h3 class="font-display font-medium tracking-[.12em] uppercase text-2xl">Mesa de</h3>
             <span class="block font-script-var leading-[.8] mb-3.5 text-olive-800" style="font-size:clamp(2.2rem,4vw,3.2rem)">Regalos</span>
-            <p class="text-[1.06rem] leading-relaxed text-ink-mute">Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, te dejamos algunas opciones.</p>
+            <p class="text-[1.06rem] leading-relaxed text-ink-mute">Tu presencia es nuestro mejor regalo. Si deseas tener un detalle con nosotros, aquí puedes hacerlo por transferencia bancaria.</p>
             <div class="flex flex-col gap-3.5 mt-4">
-              <div v-for="r in state.registry" :key="r.id" class="bg-cream border border-line px-[18px] py-4 flex justify-between items-center gap-3.5">
-                <div class="flex-1 min-w-0">
-                  <h5 class="font-serif font-semibold text-[1.12rem]">{{ r.store_name }}</h5>
-                  <p class="text-[11px] tracking-[.14em] uppercase text-green mt-0.5">{{ r.description }}</p>
+              <div v-for="b in state.bankAccounts" :key="b.id" class="bg-cream border border-line px-[18px] py-4">
+                <div class="flex justify-between items-start gap-3.5">
+                  <div class="flex-1 min-w-0">
+                    <h5 class="font-serif font-semibold text-[1.12rem]">{{ b.bank_name }}</h5>
+                    <p class="text-[11px] tracking-[.14em] uppercase text-green mt-0.5">{{ b.holder_name }} · {{ b.account_type === 'corriente' ? 'Corriente' : 'Ahorros' }}</p>
+                  </div>
+                  <button type="button" @click="copyAccount(b)"
+                    class="font-serif text-[11px] tracking-[.14em] uppercase text-olive-800 no-underline border-b border-current pb-0.5 whitespace-nowrap flex-shrink-0">
+                    {{ copiedId === b.id ? '¡Copiado!' : 'Copiar' }}
+                  </button>
                 </div>
-                <a class="font-serif text-[12px] tracking-[.16em] uppercase text-olive-800 no-underline border-b border-current pb-0.5 whitespace-nowrap"
-                   :href="r.store_url" target="_blank" rel="noopener">Ver lista</a>
+                <p class="font-display text-[1.15rem] tracking-[.04em] text-ink mt-2.5">{{ b.account_number }}</p>
+                <p v-if="b.holder_id" class="text-[.8rem] text-ink-mute mt-1">Cédula/RNC: {{ b.holder_id }}</p>
+                <p v-if="b.note" class="text-[.82rem] italic text-ink-mute mt-1.5">{{ b.note }}</p>
               </div>
+              <p v-if="!state.bankAccounts.length" class="text-[.92rem] text-ink-mute italic">Pronto compartiremos los datos de la cuenta.</p>
             </div>
           </EditorialBlock>
         </div>
@@ -117,9 +105,17 @@ load();
 
 const w = computed(() => state.wedding);
 const img = (f) => '/img/' + f;
-const promo = computed(() => (state.accommodations[0] && state.accommodations[0].promo_code) || 'JENNIFER&GUIDO');
 
 function goRsvp() { scrollToId('rsvp'); }
+
+const copiedId = ref(null);
+async function copyAccount(b) {
+  try {
+    await navigator.clipboard.writeText(b.account_number);
+    copiedId.value = b.id;
+    setTimeout(() => { if (copiedId.value === b.id) copiedId.value = null; }, 2000);
+  } catch (e) { /* clipboard no disponible, ignorar */ }
+}
 
 const active = ref('home');
 const ids = ['home', 'save-the-date', 'venue', 'details', 'party', 'faqs', 'rsvp'];
