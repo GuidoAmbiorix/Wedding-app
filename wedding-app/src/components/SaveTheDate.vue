@@ -21,7 +21,7 @@
         <div class="env-flap"></div>
         <div class="seal-wrap">
           <div class="seal-glow"></div>
-          <div class="seal"><div class="inner">{{ initials }}<small>{{ shortDate }}</small></div></div>
+          <div class="seal"><div class="inner">{{ initials }}</div></div>
           <div class="shard" v-for="i in 5" :key="i"></div>
         </div>
       </div>
@@ -177,11 +177,6 @@ const initials = computed(() => {
   return `${a}&${b}`.toUpperCase();
 });
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-const shortDate = computed(() => {
-  if (!props.wedding.wedding_date) return '';
-  const d = new Date(props.wedding.wedding_date + 'T00:00:00');
-  return `${String(d.getDate()).padStart(2,'0')}·${String(d.getMonth()+1).padStart(2,'0')}·${String(d.getFullYear()).slice(2)}`;
-});
 const longDate = computed(() => {
   if (!props.wedding.wedding_date) return '';
   const d = new Date(props.wedding.wedding_date + 'T00:00:00');
@@ -323,8 +318,7 @@ onUnmounted(clearTimers);
   0%,72%,100%{ transform:scale(1) rotate(0deg); }
   84%{ transform:scale(1.08) rotate(-3deg); }
 }
-.seal .inner{ width:80%; height:80%; border-radius:50%; border:1.2px solid rgba(58,54,35,.5); display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:var(--font-script,'Pinyon Script',cursive); color:#3a3623; font-size:.85rem; line-height:1; opacity:.75; }
-.seal .inner small{ font-family:var(--font-display); font-weight:700; font-size:12.5px; letter-spacing:.1em; margin-top:4px; color:#2a2410; }
+.seal .inner{ width:80%; height:80%; border-radius:50%; border:1.2px solid rgba(58,54,35,.5); display:flex; align-items:center; justify-content:center; font-family:var(--font-script,'Pinyon Script',cursive); color:#3a3623; font-size:1.3rem; line-height:1; }
 .envelope:not(.open):hover .seal{ transform:scale(1.05) rotate(-2deg); }
 
 .shard{ position:absolute; top:50%; left:50%; width:16px; height:16px; margin:-8px; background:radial-gradient(circle at 30% 25%, #e6c17a, var(--gold-dark)); border-radius:3px; opacity:0; pointer-events:none; }
