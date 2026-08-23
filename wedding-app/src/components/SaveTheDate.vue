@@ -36,78 +36,7 @@
     <div class="forest-root" :class="{ active, shake: shaking, open: forestOpen, burst }">
       <div class="forest-dim"></div>
 
-      <div class="bush left">
-        <svg class="leaf-deco" width="130" height="100%" viewBox="0 0 130 900" preserveAspectRatio="none">
-          <path class="vine-stem" d="M110 0 C60 60 130 130 90 200 C50 270 120 330 80 400 C40 470 115 540 85 610 C55 680 120 740 90 810 C70 860 100 880 95 900"
-                fill="none" stroke="#2c4622" stroke-width="4"/>
-          <g fill="#243a1d">
-            <ellipse cx="60" cy="40" rx="17" ry="10" transform="rotate(25 60 40)"/>
-            <ellipse cx="65" cy="160" rx="18" ry="10" transform="rotate(-20 65 160)"/>
-            <ellipse cx="58" cy="290" rx="17" ry="10" transform="rotate(30 58 290)"/>
-            <ellipse cx="62" cy="420" rx="18" ry="10" transform="rotate(-25 62 420)"/>
-            <ellipse cx="56" cy="550" rx="17" ry="10" transform="rotate(20 56 550)"/>
-            <ellipse cx="64" cy="680" rx="18" ry="10" transform="rotate(-30 64 680)"/>
-            <ellipse cx="70" cy="800" rx="16" ry="9"  transform="rotate(18 70 800)"/>
-          </g>
-          <g fill="#4f6e38">
-            <ellipse cx="112" cy="90" rx="15" ry="9" transform="rotate(-15 112 90)"/>
-            <ellipse cx="108" cy="230" rx="16" ry="9" transform="rotate(22 108 230)"/>
-            <ellipse cx="118" cy="360" rx="15" ry="9" transform="rotate(-20 118 360)"/>
-            <ellipse cx="110" cy="490" rx="16" ry="9" transform="rotate(18 110 490)"/>
-            <ellipse cx="120" cy="620" rx="15" ry="9" transform="rotate(-24 120 620)"/>
-            <ellipse cx="112" cy="750" rx="16" ry="9" transform="rotate(16 112 750)"/>
-          </g>
-          <g fill="#8a8354">
-            <ellipse cx="85" cy="100" rx="8" ry="5" transform="rotate(10 85 100)"/>
-            <ellipse cx="80" cy="250" rx="9" ry="5" transform="rotate(-14 80 250)"/>
-            <ellipse cx="88" cy="400" rx="8" ry="5" transform="rotate(12 88 400)"/>
-            <ellipse cx="78" cy="560" rx="9" ry="5" transform="rotate(-10 78 560)"/>
-            <ellipse cx="86" cy="710" rx="8" ry="5" transform="rotate(14 86 710)"/>
-          </g>
-          <g fill="#c9a24b">
-            <ellipse cx="95" cy="180" rx="6" ry="4" transform="rotate(8 95 180)"/>
-            <ellipse cx="92" cy="470" rx="6" ry="4" transform="rotate(-10 92 470)"/>
-            <ellipse cx="98" cy="740" rx="6" ry="4" transform="rotate(12 98 740)"/>
-          </g>
-        </svg>
-      </div>
-      <div class="bush right">
-        <svg class="leaf-deco flip" width="130" height="100%" viewBox="0 0 130 900" preserveAspectRatio="none">
-          <path class="vine-stem" d="M110 0 C60 60 130 130 90 200 C50 270 120 330 80 400 C40 470 115 540 85 610 C55 680 120 740 90 810 C70 860 100 880 95 900"
-                fill="none" stroke="#2c4622" stroke-width="4"/>
-          <g fill="#243a1d">
-            <ellipse cx="60" cy="40" rx="17" ry="10" transform="rotate(25 60 40)"/>
-            <ellipse cx="65" cy="160" rx="18" ry="10" transform="rotate(-20 65 160)"/>
-            <ellipse cx="58" cy="290" rx="17" ry="10" transform="rotate(30 58 290)"/>
-            <ellipse cx="62" cy="420" rx="18" ry="10" transform="rotate(-25 62 420)"/>
-            <ellipse cx="56" cy="550" rx="17" ry="10" transform="rotate(20 56 550)"/>
-            <ellipse cx="64" cy="680" rx="18" ry="10" transform="rotate(-30 64 680)"/>
-            <ellipse cx="70" cy="800" rx="16" ry="9"  transform="rotate(18 70 800)"/>
-          </g>
-          <g fill="#4f6e38">
-            <ellipse cx="112" cy="90" rx="15" ry="9" transform="rotate(-15 112 90)"/>
-            <ellipse cx="108" cy="230" rx="16" ry="9" transform="rotate(22 108 230)"/>
-            <ellipse cx="118" cy="360" rx="15" ry="9" transform="rotate(-20 118 360)"/>
-            <ellipse cx="110" cy="490" rx="16" ry="9" transform="rotate(18 110 490)"/>
-            <ellipse cx="120" cy="620" rx="15" ry="9" transform="rotate(-24 120 620)"/>
-            <ellipse cx="112" cy="750" rx="16" ry="9" transform="rotate(16 112 750)"/>
-          </g>
-          <g fill="#8a8354">
-            <ellipse cx="85" cy="100" rx="8" ry="5" transform="rotate(10 85 100)"/>
-            <ellipse cx="80" cy="250" rx="9" ry="5" transform="rotate(-14 80 250)"/>
-            <ellipse cx="88" cy="400" rx="8" ry="5" transform="rotate(12 88 400)"/>
-            <ellipse cx="78" cy="560" rx="9" ry="5" transform="rotate(-10 78 560)"/>
-            <ellipse cx="86" cy="710" rx="8" ry="5" transform="rotate(14 86 710)"/>
-          </g>
-          <g fill="#c9a24b">
-            <ellipse cx="95" cy="180" rx="6" ry="4" transform="rotate(8 95 180)"/>
-            <ellipse cx="92" cy="470" rx="6" ry="4" transform="rotate(-10 92 470)"/>
-            <ellipse cx="98" cy="740" rx="6" ry="4" transform="rotate(12 98 740)"/>
-          </g>
-        </svg>
-      </div>
-
-      <!-- Ráfaga de hojas al remenear los arbustos -->
+      <!-- Ráfaga de hojas -->
       <div class="leaf-burst" v-for="l in burstLeaves" :key="'b'+l.id"
            :style="{ left: l.left, '--dur': l.dur, '--delay': l.delay, '--drift': l.drift, '--spin': l.spin, background: `linear-gradient(135deg, ${l.color}, ${l.color}bb)` }"></div>
 
@@ -197,14 +126,13 @@ const FOREST_LEAF_COLORS = ['#3a5228', '#4f6e38', '#6b8f4a', '#8a8354', '#c9a24b
 
 function makeBurstLeaves() {
   const leaves = [];
-  for (let i = 0; i < 16; i++) {
-    const fromLeft = i % 2 === 0;
+  for (let i = 0; i < 18; i++) {
     leaves.push({
       id: i,
-      left: fromLeft ? `${Math.random()*14}%` : `${86 + Math.random()*14}%`,
-      dur: `${(1.1 + Math.random()*.9).toFixed(2)}s`,
-      delay: `${(Math.random()*.5).toFixed(2)}s`,
-      drift: `${Math.round((fromLeft ? 1 : -1) * (120 + Math.random()*160))}px`,
+      left: `${Math.random()*100}%`,
+      dur: `${(1.3 + Math.random()*1.1).toFixed(2)}s`,
+      delay: `${(Math.random()*.8).toFixed(2)}s`,
+      drift: `${Math.round((Math.random() < .5 ? -1 : 1) * (30 + Math.random()*90))}px`,
       spin: `${Math.round(300 + Math.random()*400)}deg`,
       color: FOREST_LEAF_COLORS[Math.floor(Math.random() * FOREST_LEAF_COLORS.length)],
     });
@@ -345,44 +273,16 @@ onUnmounted(clearTimers);
 }
 .forest-root.active .forest-dim{ opacity:1; }
 
-/* Arbustos a los lados que se remenean y sueltan hojas */
-.bush{
-  position:absolute; top:0; bottom:0; width:140px; opacity:0;
-  transition:opacity .4s ease;
-  transform-origin:50% 15%;
-}
-.bush.left{ left:-20px; }
-.bush.right{ right:-20px; }
-.forest-root.active .bush{ opacity:1; }
-.forest-root.shake .bush.left{ animation:rustle-left .6s ease-in-out 2; }
-.forest-root.shake .bush.right{ animation:rustle-right .6s ease-in-out 2; }
-@keyframes rustle-left{
-  0%,100%{ transform:rotate(0deg) translateX(0); }
-  25%{ transform:rotate(-6deg) translateX(-6px); }
-  50%{ transform:rotate(4deg) translateX(4px); }
-  75%{ transform:rotate(-3deg) translateX(-3px); }
-}
-@keyframes rustle-right{
-  0%,100%{ transform:rotate(0deg) translateX(0); }
-  25%{ transform:rotate(6deg) translateX(6px); }
-  50%{ transform:rotate(-4deg) translateX(-4px); }
-  75%{ transform:rotate(3deg) translateX(3px); }
-}
-.bush .leaf-deco{ position:absolute; opacity:.95; filter:drop-shadow(0 8px 14px rgba(0,0,0,.4)); }
-.bush.left .leaf-deco{ left:0; }
-.bush.right .leaf-deco{ right:0; }
-.bush .leaf-deco.flip{ transform:scaleX(-1); }
-
-/* Ráfaga de hojas que salen volando de los arbustos */
+/* Ráfaga de hojas cayendo */
 .leaf-burst{
-  position:absolute; top:18%; width:13px; height:17px; border-radius:70% 10% 70% 10%;
+  position:absolute; top:-6%; width:13px; height:17px; border-radius:70% 10% 70% 10%;
   background:linear-gradient(135deg, var(--gold-glow), var(--olive-600));
   opacity:0;
 }
 .forest-root.shake .leaf-burst{ animation:leaf-burst-fly var(--dur,1.4s) ease-out forwards; animation-delay:var(--delay,0s); }
 @keyframes leaf-burst-fly{
   0%{ opacity:1; transform:translate(0,0) rotate(0deg); }
-  100%{ opacity:0; transform:translate(var(--drift,140px), 60vh) rotate(var(--spin,380deg)); }
+  100%{ opacity:0; transform:translate(var(--drift,60px), 90vh) rotate(var(--spin,380deg)); }
 }
 
 .glade{
