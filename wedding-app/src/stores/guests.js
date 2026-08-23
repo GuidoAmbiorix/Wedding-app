@@ -57,7 +57,7 @@ export const useGuestsStore = defineStore('guests', () => {
 
   async function updateGuest(id, payload) {
     // Strip virtual/joined fields that are not real DB columns
-    const { rsvps, id: _id, ...clean } = payload
+    const { wedding_rsvps, id: _id, ...clean } = payload
     if (!clean.guest_display_name) {
       clean.guest_display_name = `${clean.first_name || ''} ${clean.last_name || ''}`.trim()
     }
