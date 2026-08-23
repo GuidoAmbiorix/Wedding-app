@@ -86,12 +86,6 @@
       <ClosingFooter :wedding="w" :photos="state.gallery.slice(0, 3)" @rsvp="goRsvp" />
     </div>
 
-    <!-- FAB confirmar -->
-    <a href="#" @click.prevent="goRsvp"
-       :class="['fixed z-[35] bottom-5 left-1/2 -translate-x-1/2 bg-forest-900 text-ondark border border-white/20 font-display text-[12px] tracking-[.22em] uppercase px-6 py-3 shadow-xl transition-all duration-500',
-                showFab ? 'translate-y-0' : 'translate-y-[140px]']"
-       style="transition-timing-function:cubic-bezier(.2,.8,.2,1)">Confirmar asistencia</a>
-
 </template>
 
 <script setup>
@@ -128,7 +122,6 @@ const promo = computed(() => (state.accommodations[0] && state.accommodations[0]
 function goRsvp() { scrollToId('rsvp'); }
 
 const active = ref('home');
-const showFab = ref(false);
 const ids = ['home', 'save-the-date', 'venue', 'details', 'party', 'faqs', 'rsvp'];
 
 // offsetTop no fuerza layout reflow (getBoundingClientRect sí lo hace en cada scroll)
@@ -138,7 +131,6 @@ function onScroll() {
   rafId = requestAnimationFrame(() => {
     rafId = null;
     const y = window.scrollY;
-    showFab.value = y > window.innerHeight * 0.8;
     let cur = 'home';
     for (const id of ids) {
       const el = document.getElementById(id);
