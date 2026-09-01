@@ -1,6 +1,21 @@
 <template>
   <div class="w-full min-h-screen overflow-x-hidden">
 
+    <Transition name="preloader-fade">
+      <div v-if="!ready" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#0e1a0e]">
+        <div class="text-center px-6">
+          <p class="font-script-var text-ondark leading-none" style="font-size:clamp(2.2rem,7vw,3.2rem)">
+            {{ w.couple_name_1 }} &amp; {{ w.couple_name_2 }}
+          </p>
+          <div class="mt-6 h-[2px] w-28 mx-auto overflow-hidden bg-white/15 rounded-full">
+            <div class="h-full bg-gold animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    </Transition>
+
+    <div v-show="ready">
+
       <NavBar :active="active" :wedding="w" />
 
       <HeroCover :wedding="w" />
@@ -20,16 +35,19 @@
         <div class="wrap">
           <p class="text-center text-[11px] tracking-[.34em] uppercase text-ondark-soft mb-2">Venue</p>
           <span class="font-script-var block text-center leading-none mb-10" style="font-size:clamp(2rem,4vw,2.8rem)">{{ w.venue }}</span>
-          <div class="flex flex-col md:flex-row gap-10 md:gap-16 items-center">
-            <div v-if="state.venuePhotos.length" class="relative w-full md:w-[46%] flex-shrink-0" style="min-height:230px">
-              <div v-for="(p, i) in state.venuePhotos.slice(0, 3)" :key="p.id"
-                   class="absolute w-[62%] border-4 border-ivory shadow-xl"
-                   :style="venuePhotoStyle(i)">
-                <img :src="p.url" :alt="p.caption || w.venue" class="block w-full h-[160px] object-cover" loading="lazy">
+          <div class="flex flex-col items-center gap-10">
+            <div class="w-full flex justify-center">
+              <div v-if="state.venuePhotos.length === 1" class="border-4 border-ivory shadow-xl overflow-hidden">
+                <img :src="state.venuePhotos[0].url" :alt="state.venuePhotos[0].caption || w.venue" class="block w-full max-w-[520px] h-[420px] object-cover" loading="lazy">
               </div>
+              <div v-else-if="state.venuePhotos.length" class="flex flex-wrap justify-center gap-4">
+                <div v-for="p in state.venuePhotos.slice(0, 4)" :key="p.id" class="border-4 border-ivory shadow-xl overflow-hidden">
+                  <img :src="p.url" :alt="p.caption || w.venue" class="block w-[260px] h-[300px] object-cover" loading="lazy">
+                </div>
+              </div>
+              <img v-else :src="img('venue.jpg')" :alt="w.venue" class="w-full max-w-[520px] h-auto" loading="lazy">
             </div>
-            <img v-else :src="img('venue.jpg')" :alt="w.venue" class="w-full md:w-[46%] flex-shrink-0 h-auto" loading="lazy">
-            <div class="w-full md:flex-1">
+            <div class="w-full max-w-[560px] text-center">
               <p class="text-[1.02rem] leading-relaxed text-ondark-soft">{{ w.venue_description }}</p>
             </div>
           </div>
@@ -84,6 +102,8 @@
       <ClosingFooter :wedding="w" :photos="state.gallery.slice(0, 3)" @rsvp="goRsvp" />
     </div>
 
+  </div>
+
 </template>
 
 <script setup>
@@ -111,22 +131,46 @@ const RsvpForm          = defineAsyncComponent(() => import('@/components/RsvpFo
 const ClosingFooter     = defineAsyncComponent(() => import('@/components/ClosingFooter.vue'));
 
 const { state, load } = useData();
-load();
 
 const w = computed(() => state.wedding);
 const img = (f) => '/img/' + f;
 
 function goRsvp() { scrollToId('rsvp'); }
 
-const VENUE_PHOTO_POS = [
-  { top: '0',    left: '0',    rotate: '-6deg', z: 1 },
-  { top: '55px', left: '34%',  rotate: '4deg',  z: 2 },
-  { top: '110px',left: '4%',   rotate: '-3deg', z: 3 },
-];
-function venuePhotoStyle(i) {
-  const p = VENUE_PHOTO_POS[i] || VENUE_PHOTO_POS[0];
-  return { top: p.top, left: p.left, transform: `rotate(${p.rotate})`, zIndex: p.z };
+// Muestra el sitio recien cuando todas las fotos ya cargaron/decodificaron,
+// para evitar el "pop-in" y sensacion de lag con las imagenes base64.
+const ready = ref(false);
+
+function preloadImage(url) {
+  return new Promise((resolve) => {
+    if (!url) return resolve();
+    const el = new Image();
+    el.onload = () => (el.decode ? el.decode().then(resolve).catch(resolve) : resolve());
+    el.onerror = () => resolve();
+    el.src = url;
+  });
 }
+
+function withTimeout(promise, ms) {
+  return Promise.race([promise, new Promise((resolve) => setTimeout(resolve, ms))]);
+}
+
+async function preloadAndReveal() {
+  await load();
+  const urls = [
+    w.value.cover_photo_url,
+    w.value.save_the_date_image_url,
+    w.value.couple_photo_url,
+    w.value.registry_photo_url,
+    ...state.gallery.map((g) => g.url),
+    ...state.venuePhotos.map((v) => v.url),
+    ...state.weddingParty.map((p) => p.photo_url),
+  ].filter(Boolean);
+
+  await withTimeout(Promise.all(urls.map(preloadImage)), 6000);
+  ready.value = true;
+}
+preloadAndReveal();
 
 const copiedId = ref(null);
 async function copyAccount(b) {
@@ -158,3 +202,8 @@ function onScroll() {
 onMounted(() => { window.addEventListener('scroll', onScroll, { passive: true }); onScroll(); });
 onUnmounted(() => { window.removeEventListener('scroll', onScroll); if (rafId) cancelAnimationFrame(rafId); });
 </script>
+
+<style scoped>
+.preloader-fade-leave-active { transition: opacity .5s ease; }
+.preloader-fade-leave-to { opacity: 0; }
+</style>
