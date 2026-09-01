@@ -158,8 +158,10 @@ function table(key, tbl) {
   return {
     async add(rec) {
       if (isLive) {
-        const { data } = await supabase.from(tbl).insert({ ...rec }).select().single();
-        if (data) { state[key].push(data); return data; }
+        const { data, error } = await supabase.from(tbl).insert({ ...rec }).select().single();
+        if (error) throw error;
+        state[key].push(data);
+        return data;
       }
       const row = { id: uid(), ...rec };
       state[key].push(row);
@@ -167,13 +169,27 @@ function table(key, tbl) {
     },
     async update(id, patch) {
       const item = state[key].find(x => x.id === id);
+      const prev = item ? { ...item } : null;
       if (item) Object.assign(item, patch);
-      if (isLive) await supabase.from(tbl).update(patch).eq('id', id);
+      if (isLive) {
+        const { error } = await supabase.from(tbl).update(patch).eq('id', id);
+        if (error) {
+          if (item && prev) Object.assign(item, prev);
+          throw error;
+        }
+      }
     },
     async remove(id) {
       const i = state[key].findIndex(x => x.id === id);
+      const removed = i > -1 ? state[key][i] : null;
       if (i > -1) state[key].splice(i, 1);
-      if (isLive) await supabase.from(tbl).delete().eq('id', id);
+      if (isLive) {
+        const { error } = await supabase.from(tbl).delete().eq('id', id);
+        if (error) {
+          if (removed) state[key].splice(i, 0, removed);
+          throw error;
+        }
+      }
     },
   };
 }

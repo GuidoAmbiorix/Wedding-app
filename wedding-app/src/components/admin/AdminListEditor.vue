@@ -43,15 +43,15 @@
               class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:border-[#c9a24b] transition">
               <option v-for="o in f.options" :key="o.value" :value="o.value">{{ o.label }}</option>
             </select>
-            <FileToBase64Input v-else-if="f.type === 'image'" v-model="draft[f.key]" accept="image/*" :max-size-m-b="5" :placeholder="f.placeholder" />
+            <FileToBase64Input v-else-if="f.type === 'image'" v-model="draft[f.key]" accept="image/*" :max-size-m-b="12" :placeholder="f.placeholder" />
             <input v-else :type="f.type === 'time' ? 'time' : f.type === 'number' ? 'number' : 'text'"
               v-model="draft[f.key]" :placeholder="f.placeholder"
               class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:border-[#c9a24b] transition" />
           </div>
           <div class="flex items-center gap-2 pt-1">
-            <button type="button" @click="saveEdit"
-              class="px-4 py-2 rounded-lg text-sm font-semibold text-[#faf7f0] transition" style="background:#3a3623">Guardar</button>
-            <button type="button" @click="cancelEdit" class="px-4 py-2 rounded-lg text-sm font-medium text-[#9a9280] hover:text-[#5a5442] transition">Cancelar</button>
+            <button type="button" @click="saveEdit" :disabled="saving"
+              class="px-4 py-2 rounded-lg text-sm font-semibold text-[#faf7f0] transition disabled:opacity-60" style="background:#3a3623">{{ saving ? 'Guardando...' : 'Guardar' }}</button>
+            <button type="button" @click="cancelEdit" :disabled="saving" class="px-4 py-2 rounded-lg text-sm font-medium text-[#9a9280] hover:text-[#5a5442] transition disabled:opacity-60">Cancelar</button>
           </div>
         </div>
       </div>
@@ -68,17 +68,24 @@
             class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:border-[#c9a24b] transition">
             <option v-for="o in f.options" :key="o.value" :value="o.value">{{ o.label }}</option>
           </select>
+          <FileToBase64Input v-else-if="f.type === 'image'" v-model="draft[f.key]" accept="image/*" :max-size-m-b="12" :placeholder="f.placeholder" />
           <input v-else :type="f.type === 'time' ? 'time' : f.type === 'number' ? 'number' : 'text'"
             v-model="draft[f.key]" :placeholder="f.placeholder"
             class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:border-[#c9a24b] transition" />
         </div>
         <div class="flex items-center gap-2 pt-1">
-          <button type="button" @click="saveNew"
-            class="px-4 py-2 rounded-lg text-sm font-semibold text-[#faf7f0] transition" style="background:#3a3623">Agregar</button>
-          <button type="button" @click="cancelEdit" class="px-4 py-2 rounded-lg text-sm font-medium text-[#9a9280] hover:text-[#5a5442] transition">Cancelar</button>
+          <button type="button" @click="saveNew" :disabled="saving"
+            class="px-4 py-2 rounded-lg text-sm font-semibold text-[#faf7f0] transition disabled:opacity-60" style="background:#3a3623">{{ saving ? 'Agregando...' : 'Agregar' }}</button>
+          <button type="button" @click="cancelEdit" :disabled="saving" class="px-4 py-2 rounded-lg text-sm font-medium text-[#9a9280] hover:text-[#5a5442] transition disabled:opacity-60">Cancelar</button>
         </div>
       </div>
     </div>
+
+    <Transition name="fade">
+      <p v-if="feedback" :class="['px-5 py-2.5 text-[13px] font-medium border-t', feedback.type === 'success' ? 'text-emerald-600 border-[#f2ecdf] bg-emerald-50/40' : 'text-[#b3665a] border-[#f2ecdf] bg-[#fdf3f1]']">
+        {{ feedback.message }}
+      </p>
+    </Transition>
 
     <div class="px-5 py-3.5 border-t border-[#f2ecdf]">
       <button v-if="editingId === null" type="button" @click="startNew"
@@ -116,6 +123,23 @@ const sortedItems = computed(() => {
 
 const editingId = ref(null);
 const draft = ref({});
+const saving = ref(false);
+const feedback = ref(null); // { type: 'success' | 'error', message }
+let feedbackTimer = null;
+
+function showFeedback(type, message) {
+  clearTimeout(feedbackTimer);
+  feedback.value = { type, message };
+  if (type === 'success') {
+    feedbackTimer = setTimeout(() => { feedback.value = null; }, 2500);
+  }
+}
+
+function describeError(e) {
+  console.error(e);
+  return e?.message || e?.error_description || e?.details || e?.hint
+    || (typeof e === 'string' ? e : 'revisa la consola del navegador para más detalle');
+}
 
 function startEdit(item) {
   draft.value = { ...item };
@@ -131,19 +155,40 @@ function cancelEdit() {
 }
 async function saveEdit() {
   const { id, ...patch } = draft.value;
-  await props.update(id, patch);
-  cancelEdit();
+  saving.value = true;
+  try {
+    await props.update(id, patch);
+    cancelEdit();
+    showFeedback('success', 'Guardado');
+  } catch (e) {
+    showFeedback('error', `No se pudo guardar: ${describeError(e)}`);
+  } finally {
+    saving.value = false;
+  }
 }
 async function saveNew() {
   const rec = { ...draft.value };
   if (props.sortable && rec.sort_order === undefined) {
     rec.sort_order = props.items.length;
   }
-  await props.add(rec);
-  cancelEdit();
+  saving.value = true;
+  try {
+    await props.add(rec);
+    cancelEdit();
+    showFeedback('success', 'Agregado');
+  } catch (e) {
+    showFeedback('error', `No se pudo agregar: ${describeError(e)}`);
+  } finally {
+    saving.value = false;
+  }
 }
 async function confirmRemove(item) {
-  await props.remove(item.id);
+  try {
+    await props.remove(item.id);
+    showFeedback('success', 'Eliminado');
+  } catch (e) {
+    showFeedback('error', `No se pudo borrar: ${describeError(e)}`);
+  }
 }
 async function move(item, dir) {
   const list = sortedItems.value;
@@ -152,9 +197,13 @@ async function move(item, dir) {
   if (!swapWith) return;
   const a = item.sort_order ?? idx;
   const b = swapWith.sort_order ?? (idx + dir);
-  await Promise.all([
-    props.update(item.id, { sort_order: b }),
-    props.update(swapWith.id, { sort_order: a }),
-  ]);
+  try {
+    await Promise.all([
+      props.update(item.id, { sort_order: b }),
+      props.update(swapWith.id, { sort_order: a }),
+    ]);
+  } catch (e) {
+    showFeedback('error', `No se pudo reordenar: ${describeError(e)}`);
+  }
 }
 </script>

@@ -548,7 +548,7 @@ async function save() {
           </div>
           <div class="p-4 sm:p-6 space-y-3">
             <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider">Imagen al lado del texto</label>
-            <FileToBase64Input v-model="form.registry_photo_url" accept="image/*" :max-size-m-b="5" />
+            <FileToBase64Input v-model="form.registry_photo_url" accept="image/*" :max-size-m-b="12" />
             <p class="text-xs text-gray-400">Aparece junto al texto "Mesa de Regalos" en el sitio.</p>
           </div>
         </div>
@@ -598,7 +598,7 @@ async function save() {
           <div class="p-4 sm:p-6 space-y-4">
             <div>
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Foto de fondo</label>
-              <FileToBase64Input v-model="form.cover_photo_url" accept="image/*" :max-size-m-b="5" placeholder="https://tu-foto.com/imagen.jpg" />
+              <FileToBase64Input v-model="form.cover_photo_url" accept="image/*" :max-size-m-b="12" placeholder="https://tu-foto.com/imagen.jpg" />
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Video de fondo (opcional)</label>
@@ -636,7 +636,7 @@ async function save() {
           </div>
           <div class="p-4 sm:p-6 space-y-3">
             <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider">Imagen del save the date</label>
-            <FileToBase64Input v-model="form.save_the_date_image_url" accept="image/*" :max-size-m-b="5" placeholder="https://tu-imagen.com/save-the-date.jpg" />
+            <FileToBase64Input v-model="form.save_the_date_image_url" accept="image/*" :max-size-m-b="12" placeholder="https://tu-imagen.com/save-the-date.jpg" />
             <p class="text-xs text-gray-400">Se muestra dentro de la tarjeta que aparece al romper el sello. Si se deja vacío, se muestra una tarjeta de texto con los nombres, fecha y venue.</p>
             <div v-if="form.save_the_date_image_url" class="mt-2 rounded-xl overflow-hidden bg-[#f2ecdf]" style="max-height:220px;">
               <img :src="form.save_the_date_image_url" alt="Preview" class="w-full h-auto object-contain" style="max-height:220px" @error="$event.target.style.display='none'" />
@@ -657,7 +657,7 @@ async function save() {
           <div class="p-4 sm:p-6 space-y-4">
             <div class="space-y-1">
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider">Foto de la pareja</label>
-              <FileToBase64Input v-model="form.couple_photo_url" accept="image/*" :max-size-m-b="5" />
+              <FileToBase64Input v-model="form.couple_photo_url" accept="image/*" :max-size-m-b="12" />
               <p class="text-xs text-gray-400">Sección Nuestra Historia. Si se deja vacía se usa la imagen por defecto de <code class="bg-[#f2ecdf] px-1 rounded text-[#6b6350]">public/img/</code>.</p>
             </div>
           </div>

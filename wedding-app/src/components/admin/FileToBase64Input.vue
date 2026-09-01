@@ -28,7 +28,39 @@ const emit = defineEmits(['update:modelValue']);
 const loading = ref(false);
 const error = ref('');
 
-function onFile(e) {
+function readAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function loadImage(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => { resolve(img); URL.revokeObjectURL(url); };
+    img.onerror = () => { reject(new Error('No se pudo procesar la imagen.')); URL.revokeObjectURL(url); };
+    img.src = url;
+  });
+}
+
+// Redimensiona/recomprime en el navegador antes de convertir a base64: las fotos de
+// cámara (4-12MB) rompían el insert en Supabase (proxy/límite de payload) y además
+// inflaban el HTML con strings enormes, causando el lag al cargar el sitio.
+async function compressImage(file, maxDim = 1920, quality = 0.82) {
+  const img = await loadImage(file);
+  const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(img.width * scale);
+  canvas.height = Math.round(img.height * scale);
+  canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL('image/jpeg', quality);
+}
+
+async function onFile(e) {
   const file = e.target.files?.[0];
   e.target.value = '';
   if (!file) return;
@@ -38,15 +70,15 @@ function onFile(e) {
     return;
   }
   loading.value = true;
-  const reader = new FileReader();
-  reader.onload = () => {
-    emit('update:modelValue', reader.result);
+  try {
+    const dataUrl = file.type.startsWith('image/')
+      ? await compressImage(file)
+      : await readAsDataURL(file);
+    emit('update:modelValue', dataUrl);
+  } catch (err) {
+    error.value = err.message || 'No se pudo procesar el archivo.';
+  } finally {
     loading.value = false;
-  };
-  reader.onerror = () => {
-    error.value = 'No se pudo leer el archivo.';
-    loading.value = false;
-  };
-  reader.readAsDataURL(file);
+  }
 }
 </script>

@@ -1,17 +1,19 @@
 <template>
-  <header id="home" class="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden">
+  <header id="home" class="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden bg-[#0e1a0e]">
     <video v-if="wedding.cover_video_url && (!reduceMotion || !(wedding.cover_photo_url || wedding.couple_photo_url))"
            :key="wedding.cover_video_url"
-           class="absolute inset-0 w-full h-full object-cover"
+           :class="['absolute inset-0 w-full h-full object-cover transition-opacity duration-700', mediaLoaded ? 'opacity-100' : 'opacity-0']"
            :poster="wedding.cover_photo_url || undefined"
-           autoplay muted loop playsinline preload="auto">
+           autoplay muted loop playsinline preload="auto"
+           @loadeddata="mediaLoaded = true">
       <source :src="wedding.cover_video_url" type="video/mp4">
     </video>
     <img v-else
          :src="wedding.cover_photo_url || wedding.couple_photo_url"
          :alt="names"
-         class="absolute inset-0 w-full h-full object-cover"
-         loading="eager" fetchpriority="high" />
+         :class="['absolute inset-0 w-full h-full object-cover transition-opacity duration-700', mediaLoaded ? 'opacity-100' : 'opacity-0']"
+         loading="eager" fetchpriority="high" decoding="async"
+         @load="mediaLoaded = true" />
     <!-- Filtro verde boscoso (cálido, no frío) + oscurecido para que el texto resalte -->
     <div class="absolute inset-0" style="background:#4d6b23; mix-blend-mode:color; opacity:.28"></div>
     <div class="absolute inset-0" style="background:#3d5220; mix-blend-mode:overlay; opacity:.15"></div>
@@ -41,9 +43,10 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps({ wedding: { type: Object, required: true } });
+const mediaLoaded = ref(false);
 const names  = computed(() => `${props.wedding.couple_name_1} & ${props.wedding.couple_name_2}`);
 const reduceMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
