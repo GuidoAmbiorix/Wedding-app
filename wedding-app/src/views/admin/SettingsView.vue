@@ -5,6 +5,7 @@ import { useGuestsStore } from '@/stores/guests'
 import { storeToRefs } from 'pinia'
 import { useData } from '@/composables/useData.js'
 import AdminListEditor from '@/components/admin/AdminListEditor.vue'
+import FileToBase64Input from '@/components/admin/FileToBase64Input.vue'
 
 const weddingStore = useWeddingStore()
 const guestsStore  = useGuestsStore()
@@ -103,15 +104,15 @@ const partyFields = [
     { value: 'groomsman', label: 'Padrinos' },
   ] },
   { key: 'role_label', label: 'Rol (opcional)', type: 'text', placeholder: 'Madrina de honor' },
-  { key: 'photo_url', label: 'Foto', type: 'text', placeholder: 'https://...' },
+  { key: 'photo_url', label: 'Foto', type: 'image' },
 ]
 const galleryFields = [
-  { key: 'url', label: 'URL de la foto', type: 'text', placeholder: 'https://...' },
+  { key: 'url', label: 'URL de la foto', type: 'image' },
   { key: 'caption', label: 'Descripción', type: 'text', placeholder: 'El primer paseo' },
   { key: 'year', label: 'Año (opcional)', type: 'text', placeholder: '2024' },
 ]
 const venuePhotoFields = [
-  { key: 'url', label: 'URL de la foto', type: 'text', placeholder: 'https://...' },
+  { key: 'url', label: 'URL de la foto', type: 'image' },
   { key: 'caption', label: 'Descripción (opcional)', type: 'text', placeholder: 'Entrada principal' },
 ]
 
@@ -547,9 +548,7 @@ async function save() {
           </div>
           <div class="p-4 sm:p-6 space-y-3">
             <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider">Imagen al lado del texto</label>
-            <input v-model="form.registry_photo_url"
-              class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition"
-              placeholder="https://..." />
+            <FileToBase64Input v-model="form.registry_photo_url" accept="image/*" :max-size-m-b="5" />
             <p class="text-xs text-gray-400">Aparece junto al texto "Mesa de Regalos" en el sitio.</p>
           </div>
         </div>
@@ -599,17 +598,12 @@ async function save() {
           <div class="p-4 sm:p-6 space-y-4">
             <div>
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Foto de fondo</label>
-              <input v-model="form.cover_photo_url"
-                class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition"
-                placeholder="https://tu-foto.com/imagen.jpg" />
-              <p class="text-xs text-gray-400 mt-2">Pega la URL pública de Supabase Storage, Cloudinary o cualquier host de imágenes. También se usa como poster mientras carga el video.</p>
+              <FileToBase64Input v-model="form.cover_photo_url" accept="image/*" :max-size-m-b="5" placeholder="https://tu-foto.com/imagen.jpg" />
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Video de fondo (opcional)</label>
-              <input v-model="form.cover_video_url"
-                class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition"
-                placeholder="https://tu-video.com/hero.mp4" />
-              <p class="text-xs text-gray-400 mt-2">Si se llena, el hero reproduce este video en loop (sin audio) en vez de la foto. Recomendado: mp4 H.264, 1920×1080, sin audio, pocos MB. Se ignora si el visitante tiene "reducir movimiento" activado.</p>
+              <FileToBase64Input v-model="form.cover_video_url" accept="video/*" :max-size-m-b="15" placeholder="https://tu-video.com/hero.mp4" />
+              <p class="text-xs text-gray-400 mt-2">Recomendado: mp4 H.264, 1920×1080, sin audio, lo más liviano posible. Se ignora si el visitante tiene "reducir movimiento" activado.</p>
             </div>
             <!-- Preview inline -->
             <div v-if="form.cover_video_url" class="mt-3 rounded-xl overflow-hidden bg-[#f2ecdf] relative" style="height:140px;">
@@ -642,10 +636,8 @@ async function save() {
           </div>
           <div class="p-4 sm:p-6 space-y-3">
             <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider">Imagen del save the date</label>
-            <input v-model="form.save_the_date_image_url"
-              class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition"
-              placeholder="https://tu-imagen.com/save-the-date.jpg" />
-            <p class="text-xs text-gray-400">Pega la URL pública de la imagen que diseñaron para el "save the date". Se muestra dentro de la tarjeta que aparece al romper el sello. Si se deja vacío, se muestra una tarjeta de texto con los nombres, fecha y venue.</p>
+            <FileToBase64Input v-model="form.save_the_date_image_url" accept="image/*" :max-size-m-b="5" placeholder="https://tu-imagen.com/save-the-date.jpg" />
+            <p class="text-xs text-gray-400">Se muestra dentro de la tarjeta que aparece al romper el sello. Si se deja vacío, se muestra una tarjeta de texto con los nombres, fecha y venue.</p>
             <div v-if="form.save_the_date_image_url" class="mt-2 rounded-xl overflow-hidden bg-[#f2ecdf]" style="max-height:220px;">
               <img :src="form.save_the_date_image_url" alt="Preview" class="w-full h-auto object-contain" style="max-height:220px" @error="$event.target.style.display='none'" />
             </div>
@@ -663,15 +655,10 @@ async function save() {
             <p class="font-serif text-[16px] font-semibold text-[#2a2620] tracking-wide">Fotos adicionales</p>
           </div>
           <div class="p-4 sm:p-6 space-y-4">
-            <p class="text-xs text-gray-400">Pega URLs públicas de Supabase Storage, Cloudinary u otro host. Si se dejan vacíos se usan las imágenes por defecto de <code class="bg-[#f2ecdf] px-1 rounded text-[#6b6350]">public/img/</code>.</p>
-            <div v-for="field in [
-              { key: 'couple_photo_url',   label: 'Foto de la pareja',   hint: 'Sección Nuestra Historia' },
-            ]" :key="field.key" class="space-y-1">
-              <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider">{{ field.label }}</label>
-              <input v-model="form[field.key]"
-                class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition"
-                placeholder="https://..." />
-              <p class="text-xs text-gray-400">{{ field.hint }}</p>
+            <div class="space-y-1">
+              <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider">Foto de la pareja</label>
+              <FileToBase64Input v-model="form.couple_photo_url" accept="image/*" :max-size-m-b="5" />
+              <p class="text-xs text-gray-400">Sección Nuestra Historia. Si se deja vacía se usa la imagen por defecto de <code class="bg-[#f2ecdf] px-1 rounded text-[#6b6350]">public/img/</code>.</p>
             </div>
           </div>
         </div>

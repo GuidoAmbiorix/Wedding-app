@@ -43,6 +43,7 @@
               class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:border-[#c9a24b] transition">
               <option v-for="o in f.options" :key="o.value" :value="o.value">{{ o.label }}</option>
             </select>
+            <FileToBase64Input v-else-if="f.type === 'image'" v-model="draft[f.key]" accept="image/*" :max-size-m-b="5" :placeholder="f.placeholder" />
             <input v-else :type="f.type === 'time' ? 'time' : f.type === 'number' ? 'number' : 'text'"
               v-model="draft[f.key]" :placeholder="f.placeholder"
               class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:border-[#c9a24b] transition" />
@@ -88,6 +89,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import FileToBase64Input from '@/components/admin/FileToBase64Input.vue';
 
 const props = defineProps({
   title: { type: String, required: true },
