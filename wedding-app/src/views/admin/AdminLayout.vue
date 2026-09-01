@@ -56,7 +56,7 @@ const weddingDate = computed(() => {
 </script>
 
 <template>
-  <div class="min-h-screen flex" style="background:#f8f7f5;">
+  <div class="min-h-screen flex" style="background:var(--color-secondary);">
 
     <!-- ── SIDEBAR (desktop) ── -->
     <aside
@@ -67,7 +67,7 @@ const weddingDate = computed(() => {
       <!-- Brand -->
       <div class="px-4 py-5 border-b border-white/10 flex items-center gap-3 min-h-[64px]">
         <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-             style="background: linear-gradient(135deg, #3d1f6b, #2d5a27);">
+             style="background: linear-gradient(135deg, var(--color-primary), var(--color-heading));">
           <span class="text-white text-xs font-bold">
             {{ wedding?.couple_name_1?.[0] }}{{ wedding?.couple_name_2?.[0] }}
           </span>
@@ -104,7 +104,7 @@ const weddingDate = computed(() => {
         >
           <div v-if="route.path === link.to"
                class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-r-full"
-               style="background:#7b4fa6;" />
+               style="background:var(--color-primary);" />
           <span class="flex-shrink-0 w-4 h-4" v-html="link.icon" />
           <div v-if="sidebarOpen" class="flex-1 min-w-0">
             <p class="text-sm font-medium leading-none mb-0.5">{{ link.label }}</p>
@@ -133,7 +133,7 @@ const weddingDate = computed(() => {
       <header class="h-14 md:h-16 bg-white border-b border-gray-100 flex items-center px-4 md:px-6 gap-3 flex-shrink-0 shadow-sm">
         <!-- Mobile: logo -->
         <div class="md:hidden w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-             style="background: linear-gradient(135deg, #3d1f6b, #2d5a27);">
+             style="background: linear-gradient(135deg, var(--color-primary), var(--color-heading));">
           <span class="text-white text-[10px] font-bold">
             {{ wedding?.couple_name_1?.[0] }}{{ wedding?.couple_name_2?.[0] }}
           </span>
@@ -171,13 +171,13 @@ const weddingDate = computed(() => {
 
         <!-- Avatar -->
         <div class="w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-             style="background: linear-gradient(135deg, #3d1f6b, #2d5a27);">
+             style="background: linear-gradient(135deg, var(--color-primary), var(--color-heading));">
           {{ wedding?.couple_name_1?.[0] }}{{ wedding?.couple_name_2?.[0] }}
         </div>
       </header>
 
       <!-- Page content -->
-      <main class="flex-1 overflow-auto pb-20 md:pb-0" style="background:#f8f7f5;">
+      <main class="flex-1 overflow-auto pb-20 md:pb-0" style="background:var(--color-secondary);">
         <RouterView />
       </main>
     </div>
@@ -190,7 +190,7 @@ const weddingDate = computed(() => {
       :key="link.to"
       :to="link.to"
       class="flex-1 flex flex-col items-center justify-center py-2.5 gap-1 no-underline transition-colors"
-      :class="route.path === link.to ? 'text-green-700' : 'text-gray-400'"
+      :class="route.path === link.to ? 'text-primary' : 'text-gray-400'"
     >
       <span class="w-5 h-5" v-html="link.icon" />
       <span class="text-[10px] font-semibold tracking-wide">{{ link.label }}</span>

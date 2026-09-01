@@ -3,8 +3,8 @@
     <div class="flex items-stretch gap-2">
       <input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
         :placeholder="placeholder"
-        class="flex-1 min-w-0 rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition" />
-      <label class="flex-shrink-0 flex items-center justify-center px-4 rounded-xl border border-[#e8e1d3] bg-white text-[12px] font-semibold text-[#8a6a24] uppercase tracking-wider cursor-pointer hover:bg-[#faf7f0] transition">
+        class="flex-1 min-w-0 rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition" />
+      <label class="flex-shrink-0 flex items-center justify-center px-4 rounded-xl border border-[#e8e1d3] bg-white text-[12px] font-semibold text-primary uppercase tracking-wider cursor-pointer hover:bg-secondary transition">
         {{ loading ? '...' : 'Subir' }}
         <input type="file" :accept="accept" class="hidden" @change="onFile" :disabled="loading" />
       </label>

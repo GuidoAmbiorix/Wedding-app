@@ -4,6 +4,7 @@ import { useWeddingStore } from '@/stores/wedding'
 import { useGuestsStore } from '@/stores/guests'
 import { storeToRefs } from 'pinia'
 import { useData } from '@/composables/useData.js'
+import { applyTheme } from '@/lib/applyTheme.js'
 import AdminListEditor from '@/components/admin/AdminListEditor.vue'
 import FileToBase64Input from '@/components/admin/FileToBase64Input.vue'
 
@@ -42,7 +43,16 @@ const form = ref({
   total_capacity: 0,
   jennifer_quota: 0,
   guido_quota: 0,
+  theme_primary: '#808A68',
+  theme_secondary: '#EEEFE1',
+  theme_text: '#3a3623',
 })
+
+// Vista previa en vivo: al tocar un color se aplica al instante en toda la
+// app (admin + sitio público), sin esperar a "Guardar cambios".
+function previewTheme() {
+  applyTheme(form.value)
+}
 
 // ── Cupos en uso ──────────────────────────────────────────────────────────────
 const quotaStats = computed(() => {
@@ -128,7 +138,7 @@ async function save() {
 </script>
 
 <template>
-  <div class="p-4 sm:p-6 lg:p-8 pb-24 sm:pb-8" style="background:#faf7f0; min-height:100%;">
+  <div class="p-4 sm:p-6 lg:p-8 pb-24 sm:pb-8" style="background:var(--color-secondary); min-height:100%;">
 
     <!-- ── Tabs ── -->
     <div class="mb-6 -mx-1 px-1 overflow-x-auto">
@@ -139,7 +149,7 @@ async function save() {
           @click="activeTab = t.id"
           :class="['flex items-center gap-2 px-4 py-3 text-[13px] font-medium whitespace-nowrap border-b-2 -mb-px transition-colors',
                     activeTab === t.id
-                      ? 'border-[#c9a24b] text-[#3a3623]'
+                      ? 'border-primary text-heading'
                       : 'border-transparent text-[#9a9280] hover:text-[#5a5442]']"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
@@ -170,15 +180,62 @@ async function save() {
             <div>
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Nombre 1 *</label>
               <input v-model="form.couple_name_1" required
-                class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition"
+                class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition"
                 placeholder="Jennifer Alondra" />
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Nombre 2 *</label>
               <input v-model="form.couple_name_2" required
-                class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition"
+                class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition"
                 placeholder="Guido Ambiorix" />
             </div>
+          </div>
+        </div>
+
+        <!-- Sección: Marca y colores -->
+        <div class="bg-white rounded-2xl border border-[#ece5d6] shadow-[0_1px_3px_rgba(58,54,35,0.05)] overflow-hidden">
+          <div class="px-6 py-4 border-b border-[#f2ecdf] flex items-center gap-3">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:#f0fdf4;">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" style="color:#2d5a27;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.5"/>
+              </svg>
+            </div>
+            <p class="font-serif text-[16px] font-semibold text-[#2a2620] tracking-wide">Marca y colores</p>
+          </div>
+          <div class="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Primario</label>
+              <div class="flex items-center gap-2">
+                <input type="color" v-model="form.theme_primary" @input="previewTheme"
+                  class="w-11 h-11 rounded-lg border border-[#e8e1d3] cursor-pointer flex-shrink-0 p-0.5 bg-white" />
+                <input v-model="form.theme_primary" @input="previewTheme"
+                  class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-3 py-2.5 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition" />
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Botones y acentos, en toda la app.</p>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Secundario</label>
+              <div class="flex items-center gap-2">
+                <input type="color" v-model="form.theme_secondary" @input="previewTheme"
+                  class="w-11 h-11 rounded-lg border border-[#e8e1d3] cursor-pointer flex-shrink-0 p-0.5 bg-white" />
+                <input v-model="form.theme_secondary" @input="previewTheme"
+                  class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-3 py-2.5 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition" />
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Fondos, en toda la app.</p>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Texto / títulos</label>
+              <div class="flex items-center gap-2">
+                <input type="color" v-model="form.theme_text" @input="previewTheme"
+                  class="w-11 h-11 rounded-lg border border-[#e8e1d3] cursor-pointer flex-shrink-0 p-0.5 bg-white" />
+                <input v-model="form.theme_text" @input="previewTheme"
+                  class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-3 py-2.5 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition" />
+              </div>
+              <p class="text-xs text-gray-400 mt-1">Títulos y nombres en script, en el sitio público.</p>
+            </div>
+          </div>
+          <div class="px-4 sm:px-6 pb-5 -mt-1">
+            <p class="text-xs text-gray-400">Los cambios se ven al instante mientras editas; se guardan con "Guardar cambios" al final.</p>
           </div>
         </div>
 
@@ -196,19 +253,19 @@ async function save() {
             <div>
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Fecha de la boda *</label>
               <input v-model="form.wedding_date" type="date" required
-                class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition" />
+                class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition" />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Venue / Salón</label>
                 <input v-model="form.venue"
-                  class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition"
+                  class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition"
                   placeholder="Bosque San Miguel" />
               </div>
               <div>
                 <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Dirección</label>
                 <input v-model="form.venue_address"
-                  class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition"
+                  class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition"
                   placeholder="Km 12, San Miguel" />
               </div>
             </div>
@@ -228,12 +285,12 @@ async function save() {
           </div>
           <div class="p-4 sm:p-6 space-y-4">
             <textarea v-model="form.story" rows="5"
-              class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition resize-none"
+              class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition resize-none"
               placeholder="Cuéntanos cómo se conocieron, qué los une, qué los hace especiales..." />
             <div>
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Texto de invitación</label>
               <textarea v-model="form.invitation_text" rows="3"
-                class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition resize-none"
+                class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition resize-none"
                 placeholder="Nos encantaría que estuvieras presente en este momento tan especial..." />
               <p class="text-xs text-gray-400 mt-1">Aparece debajo del relato en la sección "Nuestra historia".</p>
             </div>
@@ -254,7 +311,7 @@ async function save() {
           <div class="p-4 sm:p-6">
             <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Descripción del venue</label>
             <textarea v-model="form.venue_description" rows="3"
-              class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition resize-none"
+              class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition resize-none"
               placeholder="Celebraremos entre jardines y luz cálida, rodeados de naturaleza..." />
             <p class="text-xs text-gray-400 mt-1">Aparece en la sección "Dónde sucede todo".</p>
           </div>
@@ -272,12 +329,12 @@ async function save() {
           </div>
           <div class="p-4 sm:p-6 space-y-4">
             <textarea v-model="form.dress_code" rows="3"
-              class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition resize-none"
+              class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition resize-none"
               placeholder="Etiqueta formal. Nos inspira la paleta del bosque: verdes profundos, salvia y tonos tierra..." />
             <div>
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Fecha límite de RSVP</label>
               <input v-model="form.rsvp_deadline" type="date"
-                class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition" />
+                class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition" />
               <p class="text-xs text-gray-400 mt-1">Los invitados verán esta fecha como límite para confirmar.</p>
             </div>
           </div>
@@ -297,13 +354,13 @@ async function save() {
             <div>
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Ceremonia</label>
               <textarea v-model="form.ceremony_info" rows="2"
-                class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition resize-none"
+                class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition resize-none"
                 placeholder="La ceremonia se realizará en... Te pedimos llegar..." />
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Nota sobre bebidas / fumar</label>
               <textarea v-model="form.drinking_note" rows="2"
-                class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition resize-none"
+                class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition resize-none"
                 placeholder="Por favor usa las áreas designadas..." />
             </div>
             <p class="text-xs text-gray-400">Aparecen en la sección "Información adicional" del sitio. Los padrinos/damas se administran en la tabla <code class="bg-[#f2ecdf] px-1 rounded text-[#6b6350]">wedding_party</code> de Supabase.</p>
@@ -327,7 +384,7 @@ async function save() {
               <div>
                 <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-2">Total del evento</label>
                 <input v-model.number="form.total_capacity" type="number" min="0"
-                  class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:bg-white focus:border-[#c9a24b] transition"
+                  class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:bg-white focus:border-primary transition"
                   placeholder="0" />
                 <p class="text-xs text-gray-400 mt-1">Capacidad máxima del venue</p>
               </div>
@@ -336,7 +393,7 @@ async function save() {
                   Cupo Jennifer
                 </label>
                 <input v-model.number="form.jennifer_quota" type="number" min="0"
-                  class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#b3665a]/40 focus:bg-white focus:border-[#b3665a] transition"
+                  class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#b3665a]/40 focus:bg-white focus:border-[#b3665a] transition"
                   placeholder="0" />
                 <p class="text-xs text-gray-400 mt-1">Personas que puede invitar</p>
               </div>
@@ -345,7 +402,7 @@ async function save() {
                   Cupo Guido
                 </label>
                 <input v-model.number="form.guido_quota" type="number" min="0"
-                  class="w-full rounded-xl border border-[#e8e1d3] bg-[#faf7f0] px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#3d6b6b]/40 focus:bg-white focus:border-[#3d6b6b] transition"
+                  class="w-full rounded-xl border border-[#e8e1d3] bg-secondary px-4 py-3 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#3d6b6b]/40 focus:bg-white focus:border-[#3d6b6b] transition"
                   placeholder="0" />
                 <p class="text-xs text-gray-400 mt-1">Personas que puede invitar</p>
               </div>
@@ -353,7 +410,7 @@ async function save() {
 
             <!-- Stats en tiempo real -->
             <div class="rounded-2xl border border-gray-100 overflow-hidden">
-              <div class="px-4 py-2.5 bg-[#faf7f0] border-b border-[#ece5d6]">
+              <div class="px-4 py-2.5 bg-secondary border-b border-[#ece5d6]">
                 <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Uso actual · {{ quotaStats.total }} personas registradas</p>
               </div>
               <div class="divide-y divide-gray-50">
@@ -406,7 +463,7 @@ async function save() {
                 </div>
 
                 <!-- Total vs capacidad -->
-                <div class="px-4 py-3.5 flex items-center gap-4 bg-[#faf7f0]/60">
+                <div class="px-4 py-3.5 flex items-center gap-4 bg-secondary/60">
                   <div class="w-2.5 h-2.5 rounded-full flex-shrink-0 bg-gray-400"></div>
                   <p class="text-sm font-semibold text-gray-500 w-16 sm:w-24">Total</p>
                   <div class="flex-1">
@@ -430,8 +487,8 @@ async function save() {
         <div class="sticky bottom-4 z-20 bg-white/95 backdrop-blur rounded-2xl border border-[#ece5d6] shadow-[0_8px_24px_rgba(58,54,35,0.12)] px-4 sm:px-6 py-4 flex flex-wrap items-center gap-3">
           <button
             type="submit"
-            class="w-full sm:w-auto px-7 py-2.5 text-[#faf7f0] text-sm font-semibold rounded-xl hover:brightness-110 active:brightness-95 transition cursor-pointer border-none shadow-sm"
-            style="background: linear-gradient(135deg, #4a4530, #3a3623);"
+            class="w-full sm:w-auto px-7 py-2.5 text-secondary text-sm font-semibold rounded-xl hover:brightness-110 active:brightness-95 transition cursor-pointer border-none shadow-sm"
+            style="background: linear-gradient(135deg, var(--color-primary), var(--color-heading));"
           >
             Guardar cambios
           </button>
@@ -499,7 +556,7 @@ async function save() {
         <div class="bg-white rounded-2xl border border-[#ece5d6] shadow-[0_1px_3px_rgba(58,54,35,0.05)] p-4">
           <p class="text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-3">Sitio público</p>
           <a href="/" target="_blank"
-            class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#e8e1d3] text-sm text-[#5a5442] hover:border-[#c9a24b] hover:text-[#8a6a24] transition no-underline">
+            class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#e8e1d3] text-sm text-[#5a5442] hover:border-primary hover:text-primary transition no-underline">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
             </svg>
@@ -552,7 +609,7 @@ async function save() {
             <p class="text-xs text-gray-400">Aparece junto al texto "Mesa de Regalos" en el sitio.</p>
           </div>
         </div>
-        <button type="submit" class="mt-3 px-5 py-2 rounded-lg text-sm font-semibold text-[#faf7f0]" style="background:#3a3623">Guardar foto</button>
+        <button type="submit" class="mt-3 px-5 py-2 rounded-lg text-sm font-semibold text-secondary" style="background:var(--color-primary)">Guardar foto</button>
         <Transition name="fade">
           <span v-if="saved" class="ml-3 text-sm font-medium text-emerald-600">Guardado ✓</span>
         </Transition>
@@ -666,8 +723,8 @@ async function save() {
         <!-- Save bar -->
         <div class="sticky bottom-4 z-20 bg-white/95 backdrop-blur rounded-2xl border border-[#ece5d6] shadow-[0_8px_24px_rgba(58,54,35,0.12)] px-4 sm:px-6 py-4 flex flex-wrap items-center gap-3">
           <button type="submit"
-            class="w-full sm:w-auto px-7 py-2.5 text-[#faf7f0] text-sm font-semibold rounded-xl hover:brightness-110 active:brightness-95 transition cursor-pointer border-none shadow-sm"
-            style="background: linear-gradient(135deg, #4a4530, #3a3623);">
+            class="w-full sm:w-auto px-7 py-2.5 text-secondary text-sm font-semibold rounded-xl hover:brightness-110 active:brightness-95 transition cursor-pointer border-none shadow-sm"
+            style="background: linear-gradient(135deg, var(--color-primary), var(--color-heading));">
             Guardar cambios
           </button>
           <Transition name="fade">

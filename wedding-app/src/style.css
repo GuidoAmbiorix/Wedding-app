@@ -28,6 +28,11 @@
   --color-ink:      #2a2620;
   --color-ink-mute: #6e6552;
 
+  /* Marca configurable desde Configuración (extraídos de la ilustración de la boda) */
+  --color-primary:   #808A68;
+  --color-secondary: #EEEFE1;
+  --color-heading:   #3a3623;
+
   /* On-dark */
   --color-ondark:      #f1e9d6;
   --color-ondark-soft: #c9bd9c;

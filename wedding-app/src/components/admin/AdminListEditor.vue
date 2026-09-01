@@ -19,38 +19,38 @@
         <div v-if="editingId !== item.id" class="px-5 py-3.5 flex items-center gap-3">
           <div v-if="sortable" class="flex flex-col -my-1 flex-shrink-0">
             <button type="button" :disabled="idx === 0" @click="move(item, -1)"
-              class="text-[#c2b89e] hover:text-[#8a6a24] disabled:opacity-25 disabled:hover:text-[#c2b89e] leading-none px-0.5">▲</button>
+              class="text-[#c2b89e] hover:text-primary disabled:opacity-25 disabled:hover:text-[#c2b89e] leading-none px-0.5">▲</button>
             <button type="button" :disabled="idx === sortedItems.length - 1" @click="move(item, 1)"
-              class="text-[#c2b89e] hover:text-[#8a6a24] disabled:opacity-25 disabled:hover:text-[#c2b89e] leading-none px-0.5">▼</button>
+              class="text-[#c2b89e] hover:text-primary disabled:opacity-25 disabled:hover:text-[#c2b89e] leading-none px-0.5">▼</button>
           </div>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-semibold text-[#2a2620] truncate">{{ item[titleField] || '(sin título)' }}</p>
             <p v-if="subtitleField && item[subtitleField]" class="text-[12px] text-[#9a9280] truncate mt-0.5">{{ item[subtitleField] }}</p>
           </div>
           <button type="button" @click="startEdit(item)"
-            class="text-[12px] font-medium text-[#8a6a24] hover:text-[#3a3623] px-2 py-1 flex-shrink-0">Editar</button>
+            class="text-[12px] font-medium text-primary hover:text-heading px-2 py-1 flex-shrink-0">Editar</button>
           <button type="button" @click="confirmRemove(item)"
             class="text-[12px] font-medium text-[#b3665a] hover:text-[#8a3a2e] px-2 py-1 flex-shrink-0">Borrar</button>
         </div>
 
         <!-- Formulario inline -->
-        <div v-else class="px-5 py-4 bg-[#faf7f0] space-y-3">
+        <div v-else class="px-5 py-4 bg-secondary space-y-3">
           <div v-for="f in fields" :key="f.key">
             <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-1.5">{{ f.label }}</label>
             <textarea v-if="f.type === 'textarea'" v-model="draft[f.key]" rows="2" :placeholder="f.placeholder"
-              class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:border-[#c9a24b] transition resize-none"></textarea>
+              class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition resize-none"></textarea>
             <select v-else-if="f.type === 'select'" v-model="draft[f.key]"
-              class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:border-[#c9a24b] transition">
+              class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
               <option v-for="o in f.options" :key="o.value" :value="o.value">{{ o.label }}</option>
             </select>
             <FileToBase64Input v-else-if="f.type === 'image'" v-model="draft[f.key]" accept="image/*" :max-size-m-b="12" :placeholder="f.placeholder" />
             <input v-else :type="f.type === 'time' ? 'time' : f.type === 'number' ? 'number' : 'text'"
               v-model="draft[f.key]" :placeholder="f.placeholder"
-              class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:border-[#c9a24b] transition" />
+              class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition" />
           </div>
           <div class="flex items-center gap-2 pt-1">
             <button type="button" @click="saveEdit" :disabled="saving"
-              class="px-4 py-2 rounded-lg text-sm font-semibold text-[#faf7f0] transition disabled:opacity-60" style="background:#3a3623">{{ saving ? 'Guardando...' : 'Guardar' }}</button>
+              class="px-4 py-2 rounded-lg text-sm font-semibold text-secondary transition disabled:opacity-60" style="background:var(--color-primary)">{{ saving ? 'Guardando...' : 'Guardar' }}</button>
             <button type="button" @click="cancelEdit" :disabled="saving" class="px-4 py-2 rounded-lg text-sm font-medium text-[#9a9280] hover:text-[#5a5442] transition disabled:opacity-60">Cancelar</button>
           </div>
         </div>
@@ -59,23 +59,23 @@
       <p v-if="!sortedItems.length && editingId !== 'new'" class="px-5 py-6 text-sm text-[#9a9280] text-center italic">Todavía no hay elementos.</p>
 
       <!-- Nuevo item -->
-      <div v-if="editingId === 'new'" class="px-5 py-4 bg-[#faf7f0] space-y-3">
+      <div v-if="editingId === 'new'" class="px-5 py-4 bg-secondary space-y-3">
         <div v-for="f in fields" :key="f.key">
           <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider mb-1.5">{{ f.label }}</label>
           <textarea v-if="f.type === 'textarea'" v-model="draft[f.key]" rows="2" :placeholder="f.placeholder"
-            class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:border-[#c9a24b] transition resize-none"></textarea>
+            class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition resize-none"></textarea>
           <select v-else-if="f.type === 'select'" v-model="draft[f.key]"
-            class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:border-[#c9a24b] transition">
+            class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition">
             <option v-for="o in f.options" :key="o.value" :value="o.value">{{ o.label }}</option>
           </select>
           <FileToBase64Input v-else-if="f.type === 'image'" v-model="draft[f.key]" accept="image/*" :max-size-m-b="12" :placeholder="f.placeholder" />
           <input v-else :type="f.type === 'time' ? 'time' : f.type === 'number' ? 'number' : 'text'"
             v-model="draft[f.key]" :placeholder="f.placeholder"
-            class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-[#c9a24b]/40 focus:border-[#c9a24b] transition" />
+            class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition" />
         </div>
         <div class="flex items-center gap-2 pt-1">
           <button type="button" @click="saveNew" :disabled="saving"
-            class="px-4 py-2 rounded-lg text-sm font-semibold text-[#faf7f0] transition disabled:opacity-60" style="background:#3a3623">{{ saving ? 'Agregando...' : 'Agregar' }}</button>
+            class="px-4 py-2 rounded-lg text-sm font-semibold text-secondary transition disabled:opacity-60" style="background:var(--color-primary)">{{ saving ? 'Agregando...' : 'Agregar' }}</button>
           <button type="button" @click="cancelEdit" :disabled="saving" class="px-4 py-2 rounded-lg text-sm font-medium text-[#9a9280] hover:text-[#5a5442] transition disabled:opacity-60">Cancelar</button>
         </div>
       </div>
@@ -89,7 +89,7 @@
 
     <div class="px-5 py-3.5 border-t border-[#f2ecdf]">
       <button v-if="editingId === null" type="button" @click="startNew"
-        class="text-[13px] font-semibold text-[#8a6a24] hover:text-[#3a3623] transition">+ Agregar {{ itemLabel }}</button>
+        class="text-[13px] font-semibold text-primary hover:text-heading transition">+ Agregar {{ itemLabel }}</button>
     </div>
   </div>
 </template>

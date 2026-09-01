@@ -498,7 +498,7 @@ const mealOptions = [
       </div>
 
       <!-- Form body -->
-      <div class="flex-1 overflow-y-auto" style="background:#f8f7f5;">
+      <div class="flex-1 overflow-y-auto" style="background:var(--color-secondary);">
         <form @submit.prevent="save" id="guest-form" class="p-5 space-y-4">
 
           <!-- Tipo de invitado -->

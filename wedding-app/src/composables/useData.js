@@ -1,6 +1,7 @@
 import { reactive, ref, computed } from 'vue';
 import { supabase, isLive } from '@/lib/supabase.js';
 import * as demo from '@/data/demo.js';
+import { applyTheme } from '@/lib/applyTheme.js';
 
 const state = reactive({
   wedding: { ...demo.demoWedding },
@@ -20,6 +21,7 @@ const loaded = ref(false);
 
 function seedDemo() {
   state.wedding        = { ...demo.demoWedding };
+  applyTheme(state.wedding);
   state.events         = demo.demoEvents.map(x => ({ ...x }));
   state.faq            = demo.demoFaq.map(x => ({ ...x }));
   state.registry       = demo.demoRegistry.map(x => ({ ...x }));
@@ -54,6 +56,7 @@ async function load() {
       supabase.from('wedding_venue_photos').select('*').order('sort_order'),
     ]);
     if (w.data) state.wedding    = w.data;
+    applyTheme(state.wedding);
     state.events         = ev.data  || [];
     state.faq            = fq.data  || [];
     state.registry       = rg.data  || [];
@@ -209,6 +212,7 @@ const actions = {
 
 async function updateWedding(patch) {
   Object.assign(state.wedding, patch);
+  applyTheme(state.wedding);
   if (isLive) await supabase.from('wedding_info').update(patch).eq('id', state.wedding.id);
 }
 

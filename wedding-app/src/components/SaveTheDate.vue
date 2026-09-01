@@ -178,8 +178,8 @@ onUnmounted(clearTimers);
 
 <style scoped>
 .std-section{
-  --ivory:#f8f3e7; --cream:#f3ecdc; --paper:#ece3cd;
-  --olive-800:#3a3623; --olive-600:#6b6640; --sage:#8a8354;
+  --ivory:var(--color-ivory, #f8f3e7); --cream:var(--color-cream, #f3ecdc); --paper:#ece3cd;
+  --olive-800:var(--color-olive-800, #3a3623); --olive-600:#6b6640; --sage:#8a8354;
   --gold:#c9a24b; --gold-dark:#8a6a24; --gold-glow:#e8c877;
   --forest-1:#0e1a0d; --forest-2:#1c3018; --forest-3:#2c4622;
   --ink:#2a2620; --ink-mute:#6e6552; --line:#c9bd9c;
