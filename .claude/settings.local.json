@@ -21,7 +21,8 @@
       "Bash(curl *)",
       "Bash(taskkill //F //PID 32948)",
       "Bash(taskkill //F //PID 34572)",
-      "Bash(netstat -ano)"
+      "Bash(netstat -ano)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:5180/\" -UseBasicParsing -TimeoutSec 5 | Select-Object -ExpandProperty StatusCode)"
     ]
   }
 }
