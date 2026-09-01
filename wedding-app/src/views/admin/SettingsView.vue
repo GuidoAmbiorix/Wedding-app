@@ -29,7 +29,6 @@ const form = ref({
   cover_video_url: '',
   save_the_date_image_url: '',
   couple_photo_url: '',
-  venue_photo_url: '',
   details_photo_url: '',
   registry_photo_url: '',
   story: '',
@@ -110,6 +109,10 @@ const galleryFields = [
   { key: 'url', label: 'URL de la foto', type: 'text', placeholder: 'https://...' },
   { key: 'caption', label: 'Descripción', type: 'text', placeholder: 'El primer paseo' },
   { key: 'year', label: 'Año (opcional)', type: 'text', placeholder: '2024' },
+]
+const venuePhotoFields = [
+  { key: 'url', label: 'URL de la foto', type: 'text', placeholder: 'https://...' },
+  { key: 'caption', label: 'Descripción (opcional)', type: 'text', placeholder: 'Entrada principal' },
 ]
 
 watch(wedding, (val) => {
@@ -663,8 +666,6 @@ async function save() {
             <p class="text-xs text-gray-400">Pega URLs públicas de Supabase Storage, Cloudinary u otro host. Si se dejan vacíos se usan las imágenes por defecto de <code class="bg-[#f2ecdf] px-1 rounded text-[#6b6350]">public/img/</code>.</p>
             <div v-for="field in [
               { key: 'couple_photo_url',   label: 'Foto de la pareja',   hint: 'Sección Nuestra Historia' },
-              { key: 'venue_photo_url',    label: 'Foto del venue',       hint: 'Sección Dónde sucede todo' },
-              { key: 'registry_photo_url', label: 'Foto mesa de regalos', hint: 'Sección Mesa de Regalos' },
             ]" :key="field.key" class="space-y-1">
               <label class="block text-[11px] font-semibold text-[#9a9280] uppercase tracking-wider">{{ field.label }}</label>
               <input v-model="form[field.key]"
@@ -692,6 +693,15 @@ async function save() {
           </Transition>
         </div>
       </form>
+
+      <AdminListEditor
+        title="Fotos del Venue" description="Varias fotos del lugar, se muestran en la sección Venue."
+        icon="M3 21V8l9-5 9 5v13M9 21v-6h6v6M3 12h18"
+        icon-bg="#eff6ff" icon-color="#1d4ed8"
+        :items="listState.venuePhotos" :fields="venuePhotoFields"
+        title-field="caption" subtitle-field="url" item-label="foto" sortable
+        :empty-defaults="{ url: '', caption: '' }"
+        :add="listActions.venuePhotos.add" :update="listActions.venuePhotos.update" :remove="listActions.venuePhotos.remove" />
 
       <AdminListEditor
         title="Galería" description="Fotos que aparecen en Our love story y en la galería del sitio."

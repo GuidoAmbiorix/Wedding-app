@@ -19,10 +19,20 @@
       <section id="venue" class="bg-forest-900 text-ondark py-20">
         <div class="wrap">
           <p class="text-center text-[11px] tracking-[.34em] uppercase text-ondark-soft mb-2">Venue</p>
-          <span class="font-script-var block text-center leading-none mb-8" style="font-size:clamp(2rem,4vw,2.8rem)">{{ w.venue }}</span>
-          <EditorialBlock :image="w.venue_photo_url || img('venue.jpg')" alt="El lugar" frame="tl">
-            <p class="text-[1.02rem] leading-relaxed text-ondark-soft">{{ w.venue_description }}</p>
-          </EditorialBlock>
+          <span class="font-script-var block text-center leading-none mb-10" style="font-size:clamp(2rem,4vw,2.8rem)">{{ w.venue }}</span>
+          <div class="flex flex-col md:flex-row gap-10 md:gap-16 items-center">
+            <div v-if="state.venuePhotos.length" class="relative w-full md:w-[46%] flex-shrink-0" style="min-height:230px">
+              <div v-for="(p, i) in state.venuePhotos.slice(0, 3)" :key="p.id"
+                   class="absolute w-[62%] border-4 border-ivory shadow-xl"
+                   :style="venuePhotoStyle(i)">
+                <img :src="p.url" :alt="p.caption || w.venue" class="block w-full h-[160px] object-cover" loading="lazy">
+              </div>
+            </div>
+            <img v-else :src="img('venue.jpg')" :alt="w.venue" class="w-full md:w-[46%] flex-shrink-0 h-auto" loading="lazy">
+            <div class="w-full md:flex-1">
+              <p class="text-[1.02rem] leading-relaxed text-ondark-soft">{{ w.venue_description }}</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -107,6 +117,16 @@ const w = computed(() => state.wedding);
 const img = (f) => '/img/' + f;
 
 function goRsvp() { scrollToId('rsvp'); }
+
+const VENUE_PHOTO_POS = [
+  { top: '0',    left: '0',    rotate: '-6deg', z: 1 },
+  { top: '55px', left: '34%',  rotate: '4deg',  z: 2 },
+  { top: '110px',left: '4%',   rotate: '-3deg', z: 3 },
+];
+function venuePhotoStyle(i) {
+  const p = VENUE_PHOTO_POS[i] || VENUE_PHOTO_POS[0];
+  return { top: p.top, left: p.left, transform: `rotate(${p.rotate})`, zIndex: p.z };
+}
 
 const copiedId = ref(null);
 async function copyAccount(b) {

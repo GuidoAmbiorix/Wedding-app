@@ -11,7 +11,6 @@ export const demoWedding = {
   cover_video_url:    '/video/hero.mp4',
   save_the_date_image_url: '',
   couple_photo_url:   IMG + 'couple.jpg',
-  venue_photo_url:    IMG + 'venue.jpg',
   details_photo_url:  IMG + 'lake.jpg',
   registry_photo_url: IMG + 'hands.jpg',
   story:              'Lo que empezó como una amistad de café a media tarde se convirtió, sin que lo notáramos, en una conversación que no quisimos terminar. Años después, seguimos eligiéndonos cada día.',
@@ -57,6 +56,12 @@ export const demoRegistry = [
 export const demoBankAccounts = [
   { id:'b1', bank_name:'Banreservas', account_number:'1234567890', holder_name:'Jennifer Alondra', account_type:'ahorros', holder_id:'', note:'', sort_order:1 },
   { id:'b2', bank_name:'Banco Popular', account_number:'0987654321', holder_name:'Guido Ambiorix', account_type:'corriente', holder_id:'', note:'', sort_order:2 },
+];
+
+export const demoVenuePhotos = [
+  { id:'vp1', url:IMG+'venue.jpg', caption:'Entrada principal', sort_order:1 },
+  { id:'vp2', url:IMG+'lake.jpg',  caption:'Vista del lago',     sort_order:2 },
+  { id:'vp3', url:IMG+'forest.jpg', caption:'Jardines',          sort_order:3 },
 ];
 
 export const demoAccommodations = [

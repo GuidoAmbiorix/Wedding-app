@@ -9,6 +9,7 @@ const state = reactive({
   registry: [],
   accommodations: [],
   bankAccounts: [],
+  venuePhotos: [],
   gallery: [],
   guestbook: [],
   weddingParty: [],
@@ -24,6 +25,7 @@ function seedDemo() {
   state.registry       = demo.demoRegistry.map(x => ({ ...x }));
   state.accommodations = demo.demoAccommodations.map(x => ({ ...x }));
   state.bankAccounts    = demo.demoBankAccounts.map(x => ({ ...x }));
+  state.venuePhotos     = demo.demoVenuePhotos.map(x => ({ ...x }));
   state.gallery        = demo.demoGallery.map(x => ({ ...x }));
   state.guestbook      = demo.demoGuestbook.map(x => ({ ...x }));
   state.weddingParty   = demo.demoWeddingParty.map(x => ({ ...x }));
@@ -39,7 +41,7 @@ async function load() {
     // - Reduce queries innecesarias (~40% menos data)
     // - Evita exponer la lista de invitados en el cliente
     // - findGuest() hace la query puntual al momento de buscar
-    const [w, ev, fq, rg, ac, ga, gb, wp, ba] = await Promise.all([
+    const [w, ev, fq, rg, ac, ga, gb, wp, ba, vp] = await Promise.all([
       supabase.from('wedding_info').select('*').limit(1).single(),
       supabase.from('wedding_events').select('*').order('sort_order'),
       supabase.from('wedding_faq').select('*').order('sort_order'),
@@ -49,6 +51,7 @@ async function load() {
       supabase.from('wedding_guestbook').select('*').order('created_at', { ascending: false }),
       supabase.from('wedding_party').select('*').order('sort_order'),
       supabase.from('wedding_bank_accounts').select('*').order('sort_order'),
+      supabase.from('wedding_venue_photos').select('*').order('sort_order'),
     ]);
     if (w.data) state.wedding    = w.data;
     state.events         = ev.data  || [];
@@ -59,6 +62,7 @@ async function load() {
     state.guestbook      = gb.data  || [];
     state.weddingParty   = wp.data  || [];
     state.bankAccounts   = ba.data  || [];
+    state.venuePhotos    = vp.data  || [];
   } catch (e) {
     console.warn('Supabase falló, usando demo:', e);
     seedDemo();
@@ -184,6 +188,7 @@ const actions = {
   guestbook:      table('guestbook', 'wedding_guestbook'),
   weddingParty:   table('weddingParty', 'wedding_party'),
   bankAccounts:   table('bankAccounts', 'wedding_bank_accounts'),
+  venuePhotos:    table('venuePhotos', 'wedding_venue_photos'),
 };
 
 async function updateWedding(patch) {

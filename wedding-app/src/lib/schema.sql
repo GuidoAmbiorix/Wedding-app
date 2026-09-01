@@ -112,6 +112,15 @@ create table if not exists wedding_accommodations (
   created_at timestamptz default now()
 );
 
+-- Fotos del venue (varias, para la sección Venue)
+create table if not exists wedding_venue_photos (
+  id uuid primary key default gen_random_uuid(),
+  url text not null,
+  caption text,
+  sort_order integer default 0,
+  created_at timestamptz default now()
+);
+
 -- Cuentas bancarias (opción de regalo)
 create table if not exists wedding_bank_accounts (
   id uuid primary key default gen_random_uuid(),
@@ -160,6 +169,7 @@ alter table wedding_accommodations enable row level security;
 alter table wedding_guestbook enable row level security;
 alter table wedding_party enable row level security;
 alter table wedding_bank_accounts enable row level security;
+alter table wedding_venue_photos enable row level security;
 
 -- Policies: allow anon to read public data
 create policy "Public read wedding_info" on wedding_info for select using (true);
@@ -172,6 +182,7 @@ create policy "Public read wedding_accommodations" on wedding_accommodations for
 create policy "Public read approved wedding_guestbook" on wedding_guestbook for select using (approved = true);
 create policy "Public read wedding_party" on wedding_party for select using (true);
 create policy "Public read wedding_bank_accounts" on wedding_bank_accounts for select using (true);
+create policy "Public read wedding_venue_photos" on wedding_venue_photos for select using (true);
 
 -- Guests: only readable by token match (handled in app)
 create policy "Public read wedding_guests by token" on wedding_guests for select using (true);
@@ -210,3 +221,10 @@ create policy "Anyone can delete wedding_party" on wedding_party for delete usin
 create policy "Anyone can insert wedding_bank_accounts" on wedding_bank_accounts for insert with check (true);
 create policy "Anyone can update wedding_bank_accounts" on wedding_bank_accounts for update using (true);
 create policy "Anyone can delete wedding_bank_accounts" on wedding_bank_accounts for delete using (true);
+create policy "Anyone can insert wedding_venue_photos" on wedding_venue_photos for insert with check (true);
+create policy "Anyone can update wedding_venue_photos" on wedding_venue_photos for update using (true);
+create policy "Anyone can delete wedding_venue_photos" on wedding_venue_photos for delete using (true);
+
+-- Grants explícitos para instancias self-hosted donde las tablas
+-- nuevas no heredan privilegios de anon/authenticated por default.
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO anon, authenticated;
