@@ -29,5 +29,11 @@ const ceremonyText = props.wedding?.ceremony_info
   || `La ceremonia se realizará en ${props.wedding?.venue || 'nuestro venue'}. Te pedimos llegar con anticipación para acomodarte antes de que comience.`;
 const drinkingText = props.wedding?.drinking_note
   || 'Por favor usa las áreas designadas si deseas fumar. Anima a quienes beban a hacerlo con responsabilidad y a planear transporte seguro.';
-const palette = ['#241d16', '#4a4530', '#6b6640', '#8a8354', '#c9bd9c'];
+const palette = [
+  'var(--color-forest-900)',
+  'var(--color-heading)',
+  'var(--color-primary)',
+  'var(--color-forest-600)',
+  'var(--color-ondark-soft)',
+];
 </script>

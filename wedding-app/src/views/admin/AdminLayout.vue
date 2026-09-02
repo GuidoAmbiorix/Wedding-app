@@ -62,7 +62,7 @@ const weddingDate = computed(() => {
     <aside
       class="hidden md:flex flex-shrink-0 flex-col transition-all duration-300 relative z-20"
       :class="sidebarOpen ? 'w-64' : 'w-16'"
-      style="background: linear-gradient(180deg, #0e1a0e 0%, #1e0f35 100%);"
+      style="background: linear-gradient(180deg, var(--color-forest-900) 0%, var(--color-forest-800) 100%);"
     >
       <!-- Brand -->
       <div class="px-4 py-5 border-b border-white/10 flex items-center gap-3 min-h-[64px]">

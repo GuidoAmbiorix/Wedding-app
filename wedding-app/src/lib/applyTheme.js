@@ -21,10 +21,18 @@ export function applyTheme(wedding) {
     root.setProperty('--color-cream', wedding.theme_secondary);
   }
   if (wedding.theme_text) {
-    root.setProperty('--color-heading', wedding.theme_text);
+    const t = wedding.theme_text;
+    root.setProperty('--color-heading', t);
     // "olive-800" es el verde oscuro que ya usan los títulos en script
     // (FaqList, InvitedIntro, RsvpForm, NavBar activo, hover de botones):
     // ese es el "otro verde" para letras que se configura por separado.
-    root.setProperty('--color-olive-800', wedding.theme_text);
+    root.setProperty('--color-olive-800', t);
+    // Las bandas oscuras (Venue, menú móvil, footer, countdown, sidebar
+    // del admin) usaban un marrón fijo. Se derivan del mismo verde de
+    // texto mezclado con negro, para que también sigan el tema.
+    root.setProperty('--color-forest-900', `color-mix(in srgb, ${t} 35%, black)`);
+    root.setProperty('--color-forest-800', `color-mix(in srgb, ${t} 55%, black)`);
+    root.setProperty('--color-forest-700', `color-mix(in srgb, ${t} 75%, black)`);
+    root.setProperty('--color-forest-600', `color-mix(in srgb, ${t} 95%, black)`);
   }
 }

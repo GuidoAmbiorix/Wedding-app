@@ -1,5 +1,5 @@
 <template>
-  <header id="home" class="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden bg-[#0e1a0e]">
+  <header id="home" class="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden" style="background:var(--color-forest-900);">
     <video v-if="wedding.cover_video_url && (!reduceMotion || !(wedding.cover_photo_url || wedding.couple_photo_url))"
            :key="wedding.cover_video_url"
            :class="['absolute inset-0 w-full h-full object-cover transition-opacity duration-700', mediaLoaded ? 'opacity-100' : 'opacity-0']"
@@ -15,8 +15,8 @@
          loading="eager" fetchpriority="high" decoding="async"
          @load="mediaLoaded = true" />
     <!-- Filtro verde boscoso (cálido, no frío) + oscurecido para que el texto resalte -->
-    <div class="absolute inset-0" style="background:#4d6b23; mix-blend-mode:color; opacity:.28"></div>
-    <div class="absolute inset-0" style="background:#3d5220; mix-blend-mode:overlay; opacity:.15"></div>
+    <div class="absolute inset-0" style="background:var(--color-primary); mix-blend-mode:color; opacity:.28"></div>
+    <div class="absolute inset-0" style="background:var(--color-heading); mix-blend-mode:overlay; opacity:.15"></div>
     <div class="absolute inset-0"
          style="background:linear-gradient(180deg, rgba(10,14,4,.55) 0%, rgba(10,14,4,.35) 40%, rgba(10,14,4,.4) 60%, rgba(10,14,4,.68) 100%)"></div>
     <div class="absolute inset-0" style="background:radial-gradient(ellipse 60% 45% at 50% 50%, rgba(10,14,4,.3), transparent 70%)"></div>
