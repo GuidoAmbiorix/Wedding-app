@@ -58,7 +58,7 @@
 
       <ScheduleTimeline :events="state.events" />
 
-      <DressCode :wedding="w" />
+      <DressCode :wedding="w" :palette="state.dressPalette" />
 
       <!-- Mesa de regalos -->
       <section class="bg-cream text-ink py-20">

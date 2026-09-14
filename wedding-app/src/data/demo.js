@@ -67,6 +67,17 @@ export const demoVenuePhotos = [
   { id:'vp3', url:IMG+'forest.jpg', caption:'Jardines',          sort_order:3 },
 ];
 
+export const demoDressPalette = [
+  { id:'dp1', color:'#666352', label:'Verde Oliva',      sort_order:1 },
+  { id:'dp2', color:'#454637', label:'Verde Bosque',      sort_order:2 },
+  { id:'dp3', color:'#9C8E9D', label:'Lavanda Suave',     sort_order:3 },
+  { id:'dp4', color:'#6A505B', label:'Morado Grisáceo',   sort_order:4 },
+  { id:'dp5', color:'#B08483', label:'Rosa Viejo',        sort_order:5 },
+  { id:'dp6', color:'#87604F', label:'Terracota Suave',   sort_order:6 },
+  { id:'dp7', color:'#5A4238', label:'Marrón Moka',       sort_order:7 },
+  { id:'dp8', color:'#A48266', label:'Dorado Antiguo',    sort_order:8 },
+];
+
 export const demoAccommodations = [
   { id:'a1', hotel_name:'JW Marriott',            address:'Av. Winston Churchill', url:'#', promo_code:'JENNIFER&GUIDO', distance_km:6 },
   { id:'a2', hotel_name:'Embassy Suites',          address:'Av. Tiradentes',        url:'#', promo_code:'JENNIFER&GUIDO', distance_km:4 },

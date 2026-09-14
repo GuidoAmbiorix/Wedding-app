@@ -44,6 +44,12 @@
               <option v-for="o in f.options" :key="o.value" :value="o.value">{{ o.label }}</option>
             </select>
             <FileToBase64Input v-else-if="f.type === 'image'" v-model="draft[f.key]" accept="image/*" :max-size-m-b="12" :placeholder="f.placeholder" />
+            <div v-else-if="f.type === 'color'" class="flex items-center gap-2">
+              <input type="color" v-model="draft[f.key]"
+                class="w-11 h-11 rounded-lg border border-[#e8e1d3] cursor-pointer flex-shrink-0 p-0.5 bg-white" />
+              <input v-model="draft[f.key]" :placeholder="f.placeholder"
+                class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition" />
+            </div>
             <input v-else :type="f.type === 'time' ? 'time' : f.type === 'number' ? 'number' : 'text'"
               v-model="draft[f.key]" :placeholder="f.placeholder"
               class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition" />
@@ -69,6 +75,12 @@
             <option v-for="o in f.options" :key="o.value" :value="o.value">{{ o.label }}</option>
           </select>
           <FileToBase64Input v-else-if="f.type === 'image'" v-model="draft[f.key]" accept="image/*" :max-size-m-b="12" :placeholder="f.placeholder" />
+          <div v-else-if="f.type === 'color'" class="flex items-center gap-2">
+            <input type="color" v-model="draft[f.key]"
+              class="w-11 h-11 rounded-lg border border-[#e8e1d3] cursor-pointer flex-shrink-0 p-0.5 bg-white" />
+            <input v-model="draft[f.key]" :placeholder="f.placeholder"
+              class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition" />
+          </div>
           <input v-else :type="f.type === 'time' ? 'time' : f.type === 'number' ? 'number' : 'text'"
             v-model="draft[f.key]" :placeholder="f.placeholder"
             class="w-full rounded-xl border border-[#e8e1d3] bg-white px-3.5 py-2.5 text-sm text-[#2a2620] placeholder-[#a8a08f] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition" />

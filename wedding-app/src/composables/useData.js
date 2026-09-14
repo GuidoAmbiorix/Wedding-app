@@ -11,6 +11,7 @@ const state = reactive({
   accommodations: [],
   bankAccounts: [],
   venuePhotos: [],
+  dressPalette: [],
   gallery: [],
   guestbook: [],
   weddingParty: [],
@@ -28,6 +29,7 @@ function seedDemo() {
   state.accommodations = demo.demoAccommodations.map(x => ({ ...x }));
   state.bankAccounts    = demo.demoBankAccounts.map(x => ({ ...x }));
   state.venuePhotos     = demo.demoVenuePhotos.map(x => ({ ...x }));
+  state.dressPalette    = demo.demoDressPalette.map(x => ({ ...x }));
   state.gallery        = demo.demoGallery.map(x => ({ ...x }));
   state.guestbook      = demo.demoGuestbook.map(x => ({ ...x }));
   state.weddingParty   = demo.demoWeddingParty.map(x => ({ ...x }));
@@ -98,7 +100,8 @@ async function load() {
       supabase.from('wedding_party').select('*').order('sort_order'),
       supabase.from('wedding_bank_accounts').select('*').order('sort_order'),
       supabase.from('wedding_venue_photos').select('*').order('sort_order'),
-    ]).then(([rg, ac, ga, gb, wp, ba, vp]) => {
+      supabase.from('wedding_dress_palette').select('*').order('sort_order'),
+    ]).then(([rg, ac, ga, gb, wp, ba, vp, dp]) => {
       state.registry       = rg.data || [];
       state.accommodations = ac.data || [];
       state.gallery        = ga.data || [];
@@ -106,6 +109,7 @@ async function load() {
       state.weddingParty    = wp.data || [];
       state.bankAccounts    = ba.data || [];
       state.venuePhotos     = vp.data || [];
+      state.dressPalette    = dp.data || [];
     }).catch((e) => console.warn('Carga secundaria falló:', e));
   } catch (e) {
     console.warn('Supabase falló, usando demo:', e);
@@ -249,6 +253,7 @@ const actions = {
   weddingParty:   table('weddingParty', 'wedding_party'),
   bankAccounts:   table('bankAccounts', 'wedding_bank_accounts'),
   venuePhotos:    table('venuePhotos', 'wedding_venue_photos'),
+  dressPalette:   table('dressPalette', 'wedding_dress_palette'),
 };
 
 async function updateWedding(patch) {

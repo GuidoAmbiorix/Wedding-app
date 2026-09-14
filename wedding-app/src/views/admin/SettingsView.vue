@@ -125,6 +125,10 @@ const venuePhotoFields = [
   { key: 'url', label: 'URL de la foto', type: 'image' },
   { key: 'caption', label: 'Descripción (opcional)', type: 'text', placeholder: 'Entrada principal' },
 ]
+const dressPaletteFields = [
+  { key: 'color', label: 'Color', type: 'color' },
+  { key: 'label', label: 'Nombre (opcional)', type: 'text', placeholder: 'Verde Oliva' },
+]
 
 watch(wedding, (val) => {
   if (val) form.value = { ...val }
@@ -581,6 +585,18 @@ async function save() {
           </a>
         </div>
       </div>
+    </div>
+
+    <!-- Paleta de vestimenta: fuera del <form> porque cada color se guarda al instante -->
+    <div v-if="activeTab === 'general'" class="max-w-2xl mt-6">
+      <AdminListEditor
+        title="Paleta de Vestimenta" description="Colores sugeridos para los invitados, se muestran junto al código de vestimenta."
+        icon="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.5"
+        icon-bg="#f0fdf4" icon-color="#2d5a27"
+        :items="listState.dressPalette" :fields="dressPaletteFields"
+        title-field="label" subtitle-field="color" item-label="color" sortable
+        :empty-defaults="{ color: '#666352', label: '' }"
+        :add="listActions.dressPalette.add" :update="listActions.dressPalette.update" :remove="listActions.dressPalette.remove" />
     </div>
 
     <!-- ── Tab: Itinerario ── -->
