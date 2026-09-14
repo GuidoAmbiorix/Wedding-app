@@ -39,14 +39,26 @@ async function load() {
   if (loaded.value) return;
   if (!isLive) { seedDemo(); loaded.value = true; return; }
   try {
+    // Camino crítico: solo lo necesario para pintar la portada rápido.
+    // Las tablas con fotos embebidas en base64 (galería, venue, cortejo)
+    // pueden pesar varios MB y no deben bloquear el primer render — se
+    // rellenan en segundo plano una vez que la página ya está visible.
+    const [w, ev, fq] = await Promise.all([
+      supabase.from('wedding_info').select('*').limit(1).single(),
+      supabase.from('wedding_events').select('*').order('sort_order'),
+      supabase.from('wedding_faq').select('*').order('sort_order'),
+    ]);
+    if (w.data) state.wedding = w.data;
+    applyTheme(state.wedding);
+    state.events = ev.data || [];
+    state.faq    = fq.data || [];
+    loaded.value = true;
+
     // No cargamos guests ni rsvps en el sitio público:
     // - Reduce queries innecesarias (~40% menos data)
     // - Evita exponer la lista de invitados en el cliente
     // - findGuest() hace la query puntual al momento de buscar
-    const [w, ev, fq, rg, ac, ga, gb, wp, ba, vp] = await Promise.all([
-      supabase.from('wedding_info').select('*').limit(1).single(),
-      supabase.from('wedding_events').select('*').order('sort_order'),
-      supabase.from('wedding_faq').select('*').order('sort_order'),
+    Promise.all([
       supabase.from('wedding_registry').select('*'),
       supabase.from('wedding_accommodations').select('*'),
       supabase.from('wedding_gallery_photos').select('*').order('sort_order'),
@@ -54,23 +66,20 @@ async function load() {
       supabase.from('wedding_party').select('*').order('sort_order'),
       supabase.from('wedding_bank_accounts').select('*').order('sort_order'),
       supabase.from('wedding_venue_photos').select('*').order('sort_order'),
-    ]);
-    if (w.data) state.wedding    = w.data;
-    applyTheme(state.wedding);
-    state.events         = ev.data  || [];
-    state.faq            = fq.data  || [];
-    state.registry       = rg.data  || [];
-    state.accommodations = ac.data  || [];
-    state.gallery        = ga.data  || [];
-    state.guestbook      = gb.data  || [];
-    state.weddingParty   = wp.data  || [];
-    state.bankAccounts   = ba.data  || [];
-    state.venuePhotos    = vp.data  || [];
+    ]).then(([rg, ac, ga, gb, wp, ba, vp]) => {
+      state.registry       = rg.data || [];
+      state.accommodations = ac.data || [];
+      state.gallery        = ga.data || [];
+      state.guestbook       = gb.data || [];
+      state.weddingParty    = wp.data || [];
+      state.bankAccounts    = ba.data || [];
+      state.venuePhotos     = vp.data || [];
+    }).catch((e) => console.warn('Carga secundaria falló:', e));
   } catch (e) {
     console.warn('Supabase falló, usando demo:', e);
     seedDemo();
+    loaded.value = true;
   }
-  loaded.value = true;
 }
 
 const uid = () => 'loc-' + Math.random().toString(36).slice(2, 9);

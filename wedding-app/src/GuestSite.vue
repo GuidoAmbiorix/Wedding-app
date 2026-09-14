@@ -155,19 +155,13 @@ function withTimeout(promise, ms) {
   return Promise.race([promise, new Promise((resolve) => setTimeout(resolve, ms))]);
 }
 
+// Solo espera la foto de portada (lo único visible al instante): esperar
+// TODAS las fotos del sitio (galería, venue, cortejo...) antes de revelar
+// la página hacía que la carga inicial se sintiera lentísima. El resto
+// de las fotos ya cargan con loading="lazy" + fade-in propio al llegar.
 async function preloadAndReveal() {
   await load();
-  const urls = [
-    w.value.cover_photo_url,
-    w.value.save_the_date_image_url,
-    w.value.couple_photo_url,
-    w.value.registry_photo_url,
-    ...state.gallery.map((g) => g.url),
-    ...state.venuePhotos.map((v) => v.url),
-    ...state.weddingParty.map((p) => p.photo_url),
-  ].filter(Boolean);
-
-  await withTimeout(Promise.all(urls.map(preloadImage)), 6000);
+  await withTimeout(preloadImage(w.value.cover_photo_url), 2500);
   ready.value = true;
 }
 preloadAndReveal();
