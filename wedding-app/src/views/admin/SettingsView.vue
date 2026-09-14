@@ -13,13 +13,17 @@ const guestsStore  = useGuestsStore()
 const { wedding }  = storeToRefs(weddingStore)
 const { guests }   = storeToRefs(guestsStore)
 
-const { state: listState, load: loadLists, actions: listActions } = useData()
+const { state: listState, load: loadLists, actions: listActions, loaded: listsLoaded } = useData()
 loadLists()
 
 onMounted(() => {
   if (!wedding.value) weddingStore.fetchWedding()
   if (!guests.value.length) guestsStore.fetchGuests()
 })
+
+// Pantalla de carga: evita mostrar el formulario con valores vacíos
+// que luego "saltan" cuando llegan wedding_info y las listas.
+const ready = computed(() => !!wedding.value && listsLoaded.value)
 
 const form = ref({
   couple_name_1: '',
@@ -157,6 +161,13 @@ async function save() {
 
 <template>
   <div class="p-4 sm:p-6 lg:p-8 pb-24 sm:pb-8" style="background:var(--color-secondary); min-height:100%;">
+
+    <div v-if="!ready" class="flex flex-col items-center justify-center gap-4 py-32">
+      <div class="w-10 h-10 rounded-full animate-spin" style="border:3px solid var(--color-primary); border-top-color:transparent;"></div>
+      <p class="text-sm text-[#9a9280]">Cargando configuración...</p>
+    </div>
+
+    <template v-else>
 
     <!-- ── Tabs ── -->
     <div class="mb-6 -mx-1 px-1 overflow-x-auto">
@@ -789,5 +800,7 @@ async function save() {
         :empty-defaults="{ url: '', caption: '', year: '' }"
         :add="listActions.gallery.add" :update="listActions.gallery.update" :remove="listActions.gallery.remove" />
     </div>
+
+    </template>
   </div>
 </template>
