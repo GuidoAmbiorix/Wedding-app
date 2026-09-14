@@ -35,6 +35,25 @@ function seedDemo() {
   state.rsvps          = demo.demoRsvps.map(x => ({ ...x }));
 }
 
+// Columnas con fotos/video en base64: una sola fila de wedding_info con
+// estas columnas puede pesar varios MB (¡medido: 6+ MB, 6+ segundos!).
+// Se piden aparte para que el resto de wedding_info (nombres, fecha,
+// textos, colores) llegue casi al instante.
+const WEDDING_PHOTO_COLS = [
+  'cover_photo_url', 'cover_video_url', 'save_the_date_image_url',
+  'couple_photo_url', 'venue_photo_url', 'details_photo_url', 'registry_photo_url',
+];
+// theme_primary/secondary/text quedan afuera: son de migration_v8.sql y si
+// esa migración no se corrió todavía, un select con un nombre de columna
+// inexistente hace fallar la query ENTERA (PostgREST responde 400). Se piden
+// aparte, con su propio try/catch, para que nunca puedan romper el resto.
+const WEDDING_LIGHT_COLS = [
+  'id', 'couple_name_1', 'couple_name_2', 'wedding_date', 'venue', 'venue_address',
+  'story', 'theme', 'created_at', 'rsvp_deadline', 'dress_code', 'venue_description',
+  'invitation_text', 'total_capacity', 'jennifer_quota', 'guido_quota', 'ceremony_info',
+  'transport_info', 'drinking_note',
+].join(',');
+
 async function load() {
   if (loaded.value) return;
   if (!isLive) { seedDemo(); loaded.value = true; return; }
@@ -44,15 +63,28 @@ async function load() {
     // pueden pesar varios MB y no deben bloquear el primer render — se
     // rellenan en segundo plano una vez que la página ya está visible.
     const [w, ev, fq] = await Promise.all([
-      supabase.from('wedding_info').select('*').limit(1).single(),
+      supabase.from('wedding_info').select(WEDDING_LIGHT_COLS).limit(1).single(),
       supabase.from('wedding_events').select('*').order('sort_order'),
       supabase.from('wedding_faq').select('*').order('sort_order'),
     ]);
-    if (w.data) state.wedding = w.data;
+    if (w.data) state.wedding = { ...state.wedding, ...w.data };
     applyTheme(state.wedding);
     state.events = ev.data || [];
     state.faq    = fq.data || [];
     loaded.value = true;
+
+    // Fotos/video de wedding_info: llegan después, sin bloquear el primer render.
+    if (w.data?.id) {
+      supabase.from('wedding_info').select(WEDDING_PHOTO_COLS.join(',')).eq('id', w.data.id).single()
+        .then(({ data }) => { if (data) Object.assign(state.wedding, data); })
+        .catch((e) => console.warn('Fotos de wedding_info fallaron:', e));
+
+      // Silencioso a propósito: falla si migration_v8.sql no se corrió aún,
+      // y en ese caso los colores por defecto de style.css ya cubren el tema.
+      supabase.from('wedding_info').select('theme_primary,theme_secondary,theme_text').eq('id', w.data.id).single()
+        .then(({ data, error }) => { if (data && !error) { Object.assign(state.wedding, data); applyTheme(state.wedding); } })
+        .catch(() => {});
+    }
 
     // No cargamos guests ni rsvps en el sitio público:
     // - Reduce queries innecesarias (~40% menos data)

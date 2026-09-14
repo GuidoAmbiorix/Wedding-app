@@ -130,8 +130,22 @@ watch(wedding, (val) => {
   if (val) form.value = { ...val }
 }, { immediate: true })
 
+const themeWarning = ref(false)
+
 async function save() {
-  await weddingStore.updateWedding(form.value)
+  // theme_primary/secondary/text van aparte: si migration_v8.sql todavía no
+  // se corrió en la base de datos, esas columnas no existen y Postgres
+  // rechaza el UPDATE completo — separarlas evita que eso tumbe el resto
+  // de los cambios (nombres, fecha, textos, etc.).
+  const { theme_primary, theme_secondary, theme_text, ...rest } = form.value
+  await weddingStore.updateWedding(rest)
+  try {
+    await weddingStore.updateWedding({ theme_primary, theme_secondary, theme_text })
+    themeWarning.value = false
+  } catch (e) {
+    console.warn('No se pudieron guardar los colores (¿falta correr migration_v8.sql?):', e)
+    themeWarning.value = true
+  }
   saved.value = true
   setTimeout(() => { saved.value = false }, 2500)
 }
@@ -234,8 +248,11 @@ async function save() {
               <p class="text-xs text-gray-400 mt-1">Títulos y nombres en script, en el sitio público.</p>
             </div>
           </div>
-          <div class="px-4 sm:px-6 pb-5 -mt-1">
+          <div class="px-4 sm:px-6 pb-5 -mt-1 space-y-1.5">
             <p class="text-xs text-gray-400">Los cambios se ven al instante mientras editas; se guardan con "Guardar cambios" al final.</p>
+            <p v-if="themeWarning" class="text-xs font-medium" style="color:#b3665a;">
+              No se pudieron guardar los colores: falta correr <code class="bg-[#fdf3f1] px-1 rounded">migration_v8.sql</code> en la base de datos. El resto de los cambios sí se guardó.
+            </p>
           </div>
         </div>
 

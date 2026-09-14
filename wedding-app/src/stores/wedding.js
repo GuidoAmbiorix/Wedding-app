@@ -17,19 +17,21 @@ export const useWeddingStore = defineStore('wedding', () => {
 
   async function updateWedding(payload) {
     if (wedding.value?.id) {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('wedding_info')
         .update(payload)
         .eq('id', wedding.value.id)
         .select()
         .single()
+      if (error) throw error
       if (data) { wedding.value = data; applyTheme(data) }
     } else {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('wedding_info')
         .insert(payload)
         .select()
         .single()
+      if (error) throw error
       if (data) { wedding.value = data; applyTheme(data) }
     }
   }
